@@ -62,7 +62,7 @@ const processSteps = [
 
 const resultStats = [
   { value: '+40%', color: 'text-vc-primary', desc: 'Improvement in task completion rates' },
-  { value: '\u221225%', color: 'text-vc-accent', desc: 'Reduction in support tickets' },
+  { value: '\u221225%', color: 'text-vc-secondary', desc: 'Reduction in support tickets' },
   { value: '+60%', color: 'text-vc-primary', desc: 'Increase in feature adoption' },
 ] as const;
 

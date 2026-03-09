@@ -44,7 +44,7 @@ export function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-gray-600 dark:text-gray-400 hover:text-vc-primary transition-colors"
+                    className="text-gray-600 dark:text-gray-400 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer"
                   >
                     {link.label}
                   </a>
@@ -63,7 +63,7 @@ export function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-gray-600 dark:text-gray-400 hover:text-vc-accent transition-colors"
+                    className="text-gray-600 dark:text-gray-400 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer"
                   >
                     {link.label}
                   </a>

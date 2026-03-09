@@ -39,7 +39,7 @@ export function Hero() {
           <div className="text-center md:text-left max-w-4xl">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 text-vc-light-text dark:text-vc-dark-text">
               I design products built for{" "}
-              <span className="text-vc-accent">impact</span>, designed to{" "}
+              <span className="text-vc-secondary">impact</span>, designed to{" "}
               <span className="text-vc-primary">scale</span>.
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-2xl">

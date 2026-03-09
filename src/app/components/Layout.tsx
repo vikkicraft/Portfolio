@@ -1,10 +1,12 @@
 import { Outlet } from 'react-router';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
+import { CustomCursor } from './CustomCursor';
 
 export function Layout() {
   return (
     <div className="min-h-screen bg-vc-light-bg dark:bg-vc-dark-bg">
+      <CustomCursor />
       <Navbar />
       <main>
         <Outlet />
