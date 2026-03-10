@@ -7,8 +7,8 @@ import { useScrollScale } from './hooks/useScrollScale';
 const projects = [
   {
     id: 1,
-    title: 'Project Title 1',
-    description: 'Project description goes here',
+    title: 'Model & Datasets',
+    description: 'An all-in-one AI platform to explore, share, and discover datasets & models',
     image:
       'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     locked: false,

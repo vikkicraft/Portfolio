@@ -142,7 +142,7 @@
     @apply border-border outline-ring/50;
     user-select: none;
     -webkit-user-select: none;
-    cursor: none !important;
+    /* cursor: none !important; */
   }
 
   body {
