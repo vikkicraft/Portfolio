@@ -98,7 +98,7 @@ export function About() {
           {/* Left section - Title */}
           <div className="md:sticky md:top-20 md:self-start flex flex-col items-center md:items-start">
             <h2 className="text-3xl font-medium sm:text-4xl md:text-5xl mb-8 text-vc-light-text dark:text-vc-dark-text self-start">
-              About
+              About player
             </h2>
             <img
               ref={imgRef}
