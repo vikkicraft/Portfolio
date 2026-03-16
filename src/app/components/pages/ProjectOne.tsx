@@ -1,8 +1,23 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
-import { useNavigate } from 'react-router';
-import { ArrowLeft, ArrowUpRight } from 'lucide-react';
-import { motion, useTransform, useMotionValue, AnimatePresence } from 'motion/react';
-import { ImageWithFallback } from '../figma/ImageWithFallback';
+import {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+} from "react";
+import { useNavigate } from "react-router";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import {
+  motion,
+  useTransform,
+  useMotionValue,
+  useScroll,
+  AnimatePresence,
+} from "motion/react";
+import { ImageWithFallback } from "../figma/ImageWithFallback";
+
+// ============================================================
+// Animation Constants
+// ============================================================
 
 const EASE_OUT_EXPO = [0.22, 1, 0.36, 1] as const;
 
@@ -30,47 +45,66 @@ const staggerChildren = {
   },
 };
 
-const viewportOnce = { once: true, margin: '-80px' } as const;
+const viewportOnce = { once: true, margin: "-80px" } as const;
 
-const HERO_IMG = 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+// ============================================================
+// Image Assets
+// ============================================================
+
+const HERO_IMG =
+  "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 const galleryImages = [
   {
-    src: 'https://images.unsplash.com/photo-1543067361-9bf996edf6ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsJTIwYXJjaGl0ZWN0dXJlJTIwd2hpdGUlMjBidWlsZGluZ3xlbnwxfHx8fDE3NzMwNTk3NjN8MA&ixlib=rb-4.1.0&q=80&w=1080',
-    alt: 'Architecture exploration',
+    src: "https://images.unsplash.com/photo-1543067361-9bf996edf6ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsJTIwYXJjaGl0ZWN0dXJlJTIwd2hpdGUlMjBidWlsZGluZ3xlbnwxfHx8fDE3NzMwNTk3NjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "Architecture exploration",
   },
   {
-    src: 'https://images.unsplash.com/photo-1633339257118-28dd67299a4d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXJrJTIwbW9vZHklMjBwcm9kdWN0JTIwcGhvdG9ncmFwaHl8ZW58MXx8fHwxNzcyOTY4ODAzfDA&ixlib=rb-4.1.0&q=80&w=1080',
-    alt: 'Product details',
+    src: "https://images.unsplash.com/photo-1633339257118-28dd67299a4d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXJrJTIwbW9vZHklMjBwcm9kdWN0JTIwcGhvdG9ncmFwaHl8ZW58MXx8fHwxNzcyOTY4ODAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "Product details",
   },
   {
-    src: 'https://images.unsplash.com/photo-1742440710136-1976b1cad864?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZXNpZ24lMjB3b3Jrc3BhY2UlMjBjcmVhdGl2ZSUyMHN0dWRpb3xlbnwxfHx8fDE3NzMwNTk3NjR8MA&ixlib=rb-4.1.0&q=80&w=1080',
-    alt: 'Creative workspace',
+    src: "https://images.unsplash.com/photo-1742440710136-1976b1cad864?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZXNpZ24lMjB3b3Jrc3BhY2UlMjBjcmVhdGl2ZSUyMHN0dWRpb3xlbnwxfHx8fDE3NzMwNTk3NjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "Creative workspace",
   },
   {
-    src: 'https://images.unsplash.com/photo-1632516643720-e7f5d7d6ecc9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGdyYWRpZW50JTIwbWluaW1hbCUyMGFydHxlbnwxfHx8fDE3NzMwNTk3NjV8MA&ixlib=rb-4.1.0&q=80&w=1080',
-    alt: 'Abstract gradient',
+    src: "https://images.unsplash.com/photo-1632516643720-e7f5d7d6ecc9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGdyYWRpZW50JTIwbWluaW1hbCUyMGFydHxlbnwxfHx8fDE3NzMwNTk3NjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "Abstract gradient",
   },
   {
-    src: 'https://images.unsplash.com/photo-1760544139691-360b5e092e97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcmNoaXRlY3R1cmFsJTIwZGV0YWlsJTIwY29uY3JldGUlMjB0ZXh0dXJlfGVufDF8fHx8MTc3MzA1OTc2Nnww&ixlib=rb-4.1.0&q=80&w=1080',
-    alt: 'Concrete texture',
+    src: "https://images.unsplash.com/photo-1760544139691-360b5e092e97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcmNoaXRlY3R1cmFsJTIwZGV0YWlsJTIwY29uY3JldGUlMjB0ZXh0dXJlfGVufDF8fHx8MTc3MzA1OTc2Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "Concrete texture",
   },
 ];
 
 const contentImages = {
-  research: 'https://images.unsplash.com/photo-1511871893393-82e9c16b81e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3aXJlZnJhbWUlMjBza2V0Y2glMjBub3RlYm9vayUyMGRlc2lnbnxlbnwxfHx8fDE3NzMwNTk3NjR8MA&ixlib=rb-4.1.0&q=80&w=1080',
-  prototype: 'https://images.unsplash.com/photo-1694878981905-b742a32f8121?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2JpbGUlMjBhcHAlMjBpbnRlcmZhY2UlMjBtb2NrdXAlMjBzY3JlZW58ZW58MXx8fHwxNzczMDU5NzY1fDA&ixlib=rb-4.1.0&q=80&w=1080',
-  testing: 'https://images.unsplash.com/photo-1621036579842-9080c7119f67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1c2VyJTIwZXhwZXJpZW5jZSUyMHRlc3RpbmclMjBzZXNzaW9ufGVufDF8fHx8MTc3MzA1OTc2NXww&ixlib=rb-4.1.0&q=80&w=1080',
-  system: 'https://images.unsplash.com/photo-1565495296896-0a2b8081086e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0eXBvZ3JhcGh5JTIwZGVzaWduJTIwY2xlYW4lMjBsYXlvdXR8ZW58MXx8fHwxNzczMDU5NzY2fDA&ixlib=rb-4.1.0&q=80&w=1080',
-  dashboard: 'https://images.unsplash.com/photo-1602343457765-812c355ea50d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBkYXNoYm9hcmQlMjB1aSUyMGRlc2lnbiUyMGRhcmt8ZW58MXx8fHwxNzczMDU5NzY2fDA&ixlib=rb-4.1.0&q=80&w=1080',
-  collab: 'https://images.unsplash.com/photo-1759884247160-27b8465544b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZWFtJTIwY29sbGFib3JhdGlvbiUyMG1lZXRpbmclMjB3aGl0ZWJvYXJkfGVufDF8fHx8MTc3MzA1OTc2N3ww&ixlib=rb-4.1.0&q=80&w=1080',
+  research:
+    "https://images.unsplash.com/photo-1511871893393-82e9c16b81e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3aXJlZnJhbWUlMjBza2V0Y2glMjBub3RlYm9vayUyMGRlc2lnbnxlbnwxfHx8fDE3NzMwNTk3NjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+  prototype:
+    "https://images.unsplash.com/photo-1694878981905-b742a32f8121?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2JpbGUlMjBhcHAlMjBpbnRlcmZhY2UlMjBtb2NrdXAlMjBzY3JlZW58ZW58MXx8fHwxNzczMDU5NzY1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+  testing:
+    "https://images.unsplash.com/photo-1621036579842-9080c7119f67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1c2VyJTIwZXhwZXJpZW5jZSUyMHRlc3RpbmclMjBzZXNzaW9ufGVufDF8fHx8MTc3MzA1OTc2NXww&ixlib=rb-4.1.0&q=80&w=1080",
+  system:
+    "https://images.unsplash.com/photo-1565495296896-0a2b8081086e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0eXBvZ3JhcGh5JTIwZGVzaWduJTIwY2xlYW4lMjBsYXlvdXR8ZW58MXx8fHwxNzczMDU5NzY2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+  dashboard:
+    "https://images.unsplash.com/photo-1602343457765-812c355ea50d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBkYXNoYm9hcmQlMjB1aSUyMGRlc2lnbiUyMGRhcmt8ZW58MXx8fHwxNzczMDU5NzY2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+  collab:
+    "https://images.unsplash.com/photo-1759884247160-27b8465544b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZWFtJTIwY29sbGFib3JhdGlvbiUyMG1lZXRpbmclMjB3aGl0ZWJvYXJkfGVufDF8fHx8MTc3MzA1OTc2N3ww&ixlib=rb-4.1.0&q=80&w=1080",
 };
+
+// ============================================================
+// HeroSection Component
+// ============================================================
 
 function HeroSection() {
   const ref = useRef<HTMLDivElement>(null);
   const scrollProgress = useMotionValue(0);
-  const y = useTransform(scrollProgress, [0, 1], ['0%', '30%']);
-  const opacity = useTransform(scrollProgress, [0, 0.8], [1, 0]);
+  const y = useTransform(scrollProgress, [0, 1], ["0%", "30%"]);
+  const opacity = useTransform(
+    scrollProgress,
+    [0, 0.8],
+    [1, 0],
+  );
 
   useEffect(() => {
     const el = ref.current;
@@ -80,22 +114,34 @@ function HeroSection() {
       const rect = el.getBoundingClientRect();
       const height = el.offsetHeight;
       if (height === 0) return;
-      const progress = Math.min(Math.max(-rect.top / height, 0), 1);
+      const progress = Math.min(
+        Math.max(-rect.top / height, 0),
+        1,
+      );
       scrollProgress.set(progress);
     };
 
-    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener("scroll", update, {
+      passive: true,
+    });
     update();
-    return () => window.removeEventListener('scroll', update);
+    return () => window.removeEventListener("scroll", update);
   }, [scrollProgress]);
 
   return (
-    <div ref={ref} className="relative h-[85vh] md:h-[95vh] overflow-hidden">
+    <div
+      ref={ref}
+      className="relative h-[85vh] md:h-[95vh] overflow-hidden"
+    >
       {/* Top-to-bottom reveal overlay */}
       <motion.div
         initial={{ scaleY: 1 }}
         animate={{ scaleY: 0 }}
-        transition={{ duration: 1.2, ease: EASE_OUT_EXPO, delay: 0.1 }}
+        transition={{
+          duration: 1.2,
+          ease: EASE_OUT_EXPO,
+          delay: 0.1,
+        }}
         className="absolute inset-0 z-20 bg-vc-light-bg dark:bg-vc-dark-bg origin-bottom"
       />
 
@@ -104,7 +150,11 @@ function HeroSection() {
         className="absolute inset-0"
         initial={{ scale: 1.15 }}
         animate={{ scale: 1.05 }}
-        transition={{ duration: 1.8, ease: EASE_OUT_EXPO, delay: 0.2 }}
+        transition={{
+          duration: 1.8,
+          ease: EASE_OUT_EXPO,
+          delay: 0.2,
+        }}
       >
         <ImageWithFallback
           src={HERO_IMG}
@@ -121,12 +171,16 @@ function HeroSection() {
           <motion.div
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: EASE_OUT_EXPO, delay: 0.8 }}
+            transition={{
+              duration: 1,
+              ease: EASE_OUT_EXPO,
+              delay: 0.8,
+            }}
           >
             <p className="text-white/70 text-sm tracking-[0.2em] uppercase mb-4">
               Case Study
             </p>
-            <h1 className="text-white text-4xl sm:text-5xl md:text-7xl lg:text-8xl tracking-tight max-w-4xl">
+            <h1 className="text-white font-medium text-4xl sm:text-5xl md:text-7xl lg:text-8xl tracking-tight max-w-4xl">
               Model & Datasets
             </h1>
           </motion.div>
@@ -136,12 +190,16 @@ function HeroSection() {
   );
 }
 
+// ============================================================
+// MetaStrip Component
+// ============================================================
+
 function MetaStrip() {
   const items = [
-    { label: 'Client', value: 'NDA' },
-    { label: 'Role', value: 'Product Designer' },
-    { label: 'Year', value: '2025' },
-    { label: 'Duration', value: '12 Weeks' },
+    { label: "Client", value: "NDA" },
+    { label: "Role", value: "Product Designer" },
+    { label: "Year", value: "2025" },
+    { label: "Duration", value: "12 Weeks" },
   ];
 
   return (
@@ -166,7 +224,17 @@ function MetaStrip() {
   );
 }
 
-function SectionLabel({ number, label }: { number: string; label: string }) {
+// ============================================================
+// SectionLabel Component
+// ============================================================
+
+function SectionLabel({
+  number,
+  label,
+}: {
+  number: string;
+  label: string;
+}) {
   return (
     <motion.div
       variants={fadeUp}
@@ -185,6 +253,10 @@ function SectionLabel({ number, label }: { number: string; label: string }) {
     </motion.div>
   );
 }
+
+// ============================================================
+// TwoColumnText Component
+// ============================================================
 
 function TwoColumnText({
   heading,
@@ -209,7 +281,7 @@ function TwoColumnText({
       {heading && (
         <motion.h2
           variants={fadeUp}
-          className="text-3xl sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
+          className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
         >
           {heading}
         </motion.h2>
@@ -240,7 +312,17 @@ function TwoColumnText({
   );
 }
 
-function FullBleedImage({ src, alt }: { src: string; alt: string }) {
+// ============================================================
+// FullBleedImage Component
+// ============================================================
+
+function FullBleedImage({
+  src,
+  alt,
+}: {
+  src: string;
+  alt: string;
+}) {
   return (
     <motion.div
       variants={fadeIn}
@@ -257,6 +339,10 @@ function FullBleedImage({ src, alt }: { src: string; alt: string }) {
     </motion.div>
   );
 }
+
+// ============================================================
+// TwoImageGrid Component
+// ============================================================
 
 function TwoImageGrid({
   src1,
@@ -277,14 +363,20 @@ function TwoImageGrid({
       viewport={viewportOnce}
       className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
     >
-      <motion.div variants={fadeUp} className="aspect-[4/3] overflow-hidden">
+      <motion.div
+        variants={fadeUp}
+        className="aspect-[4/3] overflow-hidden"
+      >
         <ImageWithFallback
           src={src1}
           alt={alt1}
           className="w-full h-full object-cover"
         />
       </motion.div>
-      <motion.div variants={fadeUp} className="aspect-[4/3] overflow-hidden">
+      <motion.div
+        variants={fadeUp}
+        className="aspect-[4/3] overflow-hidden"
+      >
         <ImageWithFallback
           src={src2}
           alt={alt2}
@@ -295,6 +387,10 @@ function TwoImageGrid({
   );
 }
 
+// ============================================================
+// HorizontalGallery Component
+// ============================================================
+
 function HorizontalGallery() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -303,7 +399,10 @@ function HorizontalGallery() {
       <div
         ref={scrollRef}
         className="flex gap-4 md:gap-6 overflow-x-auto pb-6 scrollbar-hide"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
       >
         {galleryImages.map((img, i) => (
           <motion.div
@@ -330,12 +429,28 @@ function HorizontalGallery() {
   );
 }
 
+// ============================================================
+// StatsRow Component
+// ============================================================
+
 function StatsRow() {
   const stats = [
-    { value: '3.2x', label: 'Faster dataset-to-experiment workflow' },
-    { value: '-62%', label: 'Reduction in tool-switching during projects' },
-    { value: '+74%', label: 'Increase in marketplace contributions' },
-    { value: '200+', label: 'Beta users onboarded in first month' },
+    {
+      value: "3.2x",
+      label: "Faster dataset-to-experiment workflow",
+    },
+    {
+      value: "-62%",
+      label: "Reduction in tool-switching during projects",
+    },
+    {
+      value: "+74%",
+      label: "Increase in marketplace contributions",
+    },
+    {
+      value: "200+",
+      label: "Beta users onboarded in first month",
+    },
   ];
 
   return (
@@ -347,7 +462,11 @@ function StatsRow() {
       className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 py-16 md:py-24 border-y border-gray-200 dark:border-gray-800"
     >
       {stats.map((stat) => (
-        <motion.div key={stat.value} variants={fadeUp} className="text-center">
+        <motion.div
+          key={stat.value}
+          variants={fadeUp}
+          className="text-center"
+        >
           <p className="text-3xl sm:text-4xl md:text-5xl text-vc-primary mb-3 tracking-tight">
             {stat.value}
           </p>
@@ -359,6 +478,10 @@ function StatsRow() {
     </motion.div>
   );
 }
+
+// ============================================================
+// NextProject Component
+// ============================================================
 
 function NextProject({ onClick }: { onClick: () => void }) {
   return (
@@ -403,35 +526,64 @@ function NextProject({ onClick }: { onClick: () => void }) {
   );
 }
 
+// ============================================================
+// ProjectOne — Main Page Component
+// ============================================================
+
 export function ProjectOne() {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () =>
+      setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+    return () =>
+      window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleBackToHome = useCallback(() => navigate('/'), [navigate]);
+  const handleBackToHome = useCallback(
+    () => navigate("/"),
+    [navigate],
+  );
+
+  // Problem section sticky fade-out
+  const problemRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: problemProgress } = useScroll({
+    target: problemRef,
+    offset: ["start start", "end start"],
+  });
+  const problemStickyOpacity = useTransform(problemProgress, [0.25, 0.60], [1, 0]);
+
+  // Solution section scroll-linked opacity
+  const solutionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: solutionProgress } = useScroll({
+    target: solutionRef,
+    offset: ["start end", "start center"],
+  });
+  const solutionOpacity = useTransform(solutionProgress, [0, 1], [0, 1]);
 
   return (
     <div className="relative bg-vc-light-bg dark:bg-vc-dark-bg min-h-screen -mt-16">
-      {/* Back Button */}
+      {/* ============================== */}
+      {/* Back Button                    */}
+      {/* ============================== */}
       <div className="fixed top-20 left-0 right-0 z-40 pointer-events-none">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.button
             animate={{
-              borderRadius: isScrolled ? '9999px' : '0px',
-              paddingTop: isScrolled ? '10px' : '8px',
-              paddingBottom: isScrolled ? '10px' : '8px',
-              paddingLeft: isScrolled ? '10px' : '16px',
-              paddingRight: isScrolled ? '10px' : '16px',
-              gap: isScrolled ? '0px' : '8px',
+              borderRadius: isScrolled ? "9999px" : "0px",
+              paddingTop: isScrolled ? "10px" : "8px",
+              paddingBottom: isScrolled ? "10px" : "8px",
+              paddingLeft: isScrolled ? "10px" : "16px",
+              paddingRight: isScrolled ? "10px" : "16px",
+              gap: isScrolled ? "0px" : "8px",
             }}
             transition={{ duration: 0.3, ease: EASE_OUT_EXPO }}
             onClick={handleBackToHome}
@@ -444,9 +596,12 @@ export function ProjectOne() {
                 <motion.span
                   key="back-text"
                   initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: 'auto' }}
+                  animate={{ opacity: 1, width: "auto" }}
                   exit={{ opacity: 0, width: 0 }}
-                  transition={{ duration: 0.2, ease: EASE_OUT_EXPO }}
+                  transition={{
+                    duration: 0.2,
+                    ease: EASE_OUT_EXPO,
+                  }}
                   className="text-sm overflow-hidden whitespace-nowrap"
                 >
                   Back
@@ -457,81 +612,124 @@ export function ProjectOne() {
         </div>
       </div>
 
-      {/* Hero */}
+      {/* ============================== */}
+      {/* Hero Section                   */}
+      {/* ============================== */}
       <HeroSection />
 
-      {/* Content */}
+      {/* ============================== */}
+      {/* Section 01 — Overview          */}
+      {/* ============================== */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Meta Strip */}
         <MetaStrip />
 
-        {/* Overview */}
+        {/* Overview Content */}
         <div className="py-20 md:py-32">
           <SectionLabel number="01" label="Overview" />
           <TwoColumnText
             heading="Building a unified AI platform where data meets collaboration"
             leftHeading="Case Study Module Overview"
             rightHeading="Platform Overview"
-            leftText={<>The <span className="font-semibold">Models & Datasets</span> module is a centralized space for discovering, organizing, and managing AI assets. It brings together asset discovery, personal management, experimentation, and deployment — streamlining the workflow of building AI solutions.</>}
+            leftText={
+              <>
+                The{" "}
+                <span className="font-semibold">
+                  Models & Datasets
+                </span>{" "}
+                module is a centralized space for discovering,
+                organizing, and managing AI assets. It brings
+                together asset discovery, personal management,
+                experimentation, and deployment — streamlining
+                the workflow of building AI solutions.
+              </>
+            }
             rightText="This case study is part of a large-scale enterprise AI platform supporting the full lifecycle of AI development — from infrastructure and governance to development and deployment. Due to confidentiality, the platform name and organization cannot be disclosed."
           />
         </div>
       </div>
 
-      {/* Full Bleed Image */}
-      <FullBleedImage src={contentImages.research} alt="Research phase" />
+      {/* ============================== */}
+      {/* Full Bleed Image — Research    */}
+      {/* ============================== */}
+      <FullBleedImage
+        src={contentImages.research}
+        alt="Research phase"
+      />
 
+      {/* ============================== */}
+      {/* Section 02 — Problem           */}
+      {/* ============================== */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Problem & Context */}
-        <div className="py-20 md:py-32">
-          <SectionLabel number="02" label="Problem" />
+        <div ref={problemRef} className="pt-20 md:pt-32 pb-32 md:pb-48">
           <motion.div
             variants={staggerChildren}
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
+            className="flex flex-col md:flex-row gap-10 md:gap-16"
           >
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
-            >
-              No centralized home for models and datasets
-            </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mb-10"
-            >
-              As the platform scaled, models and datasets became core assets in the AI development process. However, there was no dedicated, centralized module focused specifically on managing and discovering these assets.
-            </motion.p>
+            {/* Left — Label + Heading (sticky together) */}
             <motion.div
-              variants={staggerChildren}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+              style={{ opacity: problemStickyOpacity }}
+              className="relative md:w-2/5 md:sticky md:top-32 md:self-start shrink-0"
             >
-              {[
-                'Users struggled to organize their own models and datasets, with no structured way to track experiments or versions',
-                'Discovering resources created by others was difficult, leading to duplication of work across teams',
-                'Limited visibility into available assets caused inefficiencies in collaboration and slowed development cycles',
-                'A clear need emerged for a structured, intuitive module to streamline discovery, management, experimentation, and deployment',
-              ].map((point, i) => (
-                <motion.div
-                  key={i}
-                  variants={fadeUp}
-                  className="flex items-start gap-4 p-5 border border-gray-200 dark:border-gray-800"
-                >
-                  <span className="text-xs text-vc-primary mt-1 shrink-0">
-                    0{i + 1}
-                  </span>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                    {point}
-                  </p>
-                </motion.div>
-              ))}
+              <SectionLabel number="02" label="Problem" />
+              <motion.h2
+                variants={fadeUp}
+                className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text tracking-tight"
+              >No centralized home for models and datasets</motion.h2>
             </motion.div>
+
+            {/* Right — Content */}
+            <div className="md:w-3/5">
+              <motion.p
+                variants={fadeUp}
+                className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mb-10"
+              >
+                As the platform scaled, models and datasets became
+                core assets in the AI development process.
+                However, there was no dedicated, centralized
+                module focused specifically on managing and
+                discovering these assets.
+              </motion.p>
+              <motion.div
+                variants={staggerChildren}
+                className="flex flex-col gap-6"
+              >
+                {[
+                  "Users struggled to organize their own models and datasets, with no structured way to track experiments or versions",
+                  "Discovering resources created by others was difficult, leading to duplication of work across teams",
+                  "Limited visibility into available assets caused inefficiencies in collaboration and slowed development cycles",
+                  "A clear need emerged for a structured, intuitive module to streamline discovery, management, experimentation, and deployment",
+                ].map((point, i) => (
+                  <motion.div
+                    key={i}
+                    variants={fadeUp}
+                    className="flex items-start gap-4 p-5 border border-gray-200 dark:border-gray-800"
+                  >
+                    <span className="text-xs text-vc-primary mt-1 shrink-0">
+                      0{i + 1}
+                    </span>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {point}
+                    </p>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
           </motion.div>
         </div>
 
-        {/* Solution */}
-        <div className="pb-20 md:pb-32">
+        {/* ============================== */}
+        {/* Section 03 — Solution          */}
+        {/* ============================== */}
+        <motion.div
+          ref={solutionRef}
+          style={{ opacity: solutionOpacity }}
+          className="pb-20 md:pb-32"
+        >
           <SectionLabel number="03" label="Solution" />
           <motion.div
             variants={staggerChildren}
@@ -541,7 +739,7 @@ export function ProjectOne() {
           >
             <motion.h2
               variants={fadeUp}
-              className="text-3xl sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
+              className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
             >
               Crafted Solution
             </motion.h2>
@@ -549,43 +747,80 @@ export function ProjectOne() {
               variants={fadeUp}
               className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mb-10"
             >
-              To address the fragmentation and inefficiencies in managing AI assets, we designed a dedicated Models & Datasets module within the enterprise AI platform. The solution centralizes asset discovery, personal management, experimentation, and deployment into a structured and intuitive experience.
+              To address the challenges of managing AI assets,
+              we designed a dedicated {" "} <span className="font-semibold">
+                  Models & Datasets
+                </span>{" "}
+              module within the platform. It brings together
+              asset discovery, personal management,
+              experimentation, and deployment in one place,
+              creating a more structured and easy-to-use
+              experience.
             </motion.p>
-            <motion.p
-              variants={fadeUp}
-              className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mb-10"
-            >
-              The module was designed around two core areas:
-            </motion.p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16 mb-10">
-              <motion.div variants={fadeUp}>
-                <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
-                  01 — Marketplace
-                </p>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  A collaborative space where users can explore and access shared models and datasets uploaded across the organization. This improves visibility, reduces duplication of effort, and encourages reuse of existing assets.
-                </p>
-              </motion.div>
-              <motion.div variants={fadeUp}>
-                <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
-                  02 — Personal Workspace
-                </p>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  A focused environment where users can manage their own models, datasets, experiments, and deployments. It provides clear organization, progress tracking, and a seamless path from experimentation to production.
-                </p>
-              </motion.div>
+            <div className="flex flex-col gap-4 mb-10">
+              <motion.p
+                variants={fadeUp}
+                className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl font-semibold"
+              >
+                The module was designed around two core areas:
+              </motion.p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16">
+                <motion.div
+                  variants={fadeUp}
+                  className="p-5 border border-gray-200 dark:border-gray-800"
+                >
+                  <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
+                    01 — Marketplace
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    A collaborative space where users can
+                    explore and access shared models and
+                    datasets uploaded across the organization.
+                    This improves visibility, reduces
+                    duplication of effort, and encourages reuse
+                    of existing assets.
+                  </p>
+                </motion.div>
+                <motion.div
+                  variants={fadeUp}
+                  className="p-5 border border-gray-200 dark:border-gray-800"
+                >
+                  <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
+                    02 — Personal Workspace
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    A focused environment where users can manage
+                    their own models, datasets, experiments, and
+                    deployments. It provides clear organization,
+                    progress tracking, and a seamless path from
+                    experimentation to production.
+                  </p>
+                </motion.div>
+              </div>
             </div>
             <motion.p
               variants={fadeUp}
               className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl"
             >
-              By separating shared resources from personal assets — while keeping them connected — the solution creates clarity, improves discoverability, and streamlines the AI development workflow within the broader platform.
+              One of the key considerations in this project was
+              ensuring the module could scale effectively as the
+              platform grows. Designed for enterprise use, it
+              needed to support a continuously expanding number
+              of models, datasets, and users without
+              compromising usability or performance. By
+              separating shared resources from personal assets
+              while keeping them connected, the solution
+              improves clarity, enhances discoverability, and
+              helps streamline the AI development workflow
+              within the broader platform.
             </motion.p>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Two Image Grid */}
+      {/* ============================== */}
+      {/* Two Image Grid                 */}
+      {/* ============================== */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <TwoImageGrid
           src1={contentImages.prototype}
@@ -595,8 +830,11 @@ export function ProjectOne() {
         />
       </div>
 
+      {/* ============================== */}
+      {/* Section 04 — Process           */}
+      {/* ============================== */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Process */}
+        {/* Process Content */}
         <div className="py-20 md:py-32">
           <SectionLabel number="04" label="Process" />
           <motion.div
@@ -607,7 +845,7 @@ export function ProjectOne() {
           >
             <motion.h2
               variants={fadeUp}
-              className="text-3xl sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
+              className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
             >
               From research to reality in 12 weeks
             </motion.h2>
@@ -616,24 +854,25 @@ export function ProjectOne() {
                 <div className="space-y-8">
                   {[
                     {
-                      week: 'Weeks 1–3',
-                      title: 'Research & Discovery',
-                      desc: 'Interviewed data scientists, ML engineers, and AI researchers to map their end-to-end workflows — from dataset sourcing through model deployment.',
+                      week: "Weeks 1–3",
+                      title: "Research & Discovery",
+                      desc: "Interviewed data scientists, ML engineers, and AI researchers to map their end-to-end workflows — from dataset sourcing through model deployment.",
                     },
                     {
-                      week: 'Weeks 4–6',
-                      title: 'Marketplace & My Space Architecture',
-                      desc: 'Designed the information architecture for the collaborative marketplace and My Space workspace, exploring 15+ navigation patterns for seamless transitions between discovery and execution.',
+                      week: "Weeks 4–6",
+                      title:
+                        "Marketplace & My Space Architecture",
+                      desc: "Designed the information architecture for the collaborative marketplace and My Space workspace, exploring 15+ navigation patterns for seamless transitions between discovery and execution.",
                     },
                     {
-                      week: 'Weeks 7–9',
-                      title: 'Prototyping & Iteration',
-                      desc: 'Built interactive prototypes of key flows — dataset forking, experiment tracking, and deployment pipelines — and tested with 5–8 participants per round.',
+                      week: "Weeks 7–9",
+                      title: "Prototyping & Iteration",
+                      desc: "Built interactive prototypes of key flows — dataset forking, experiment tracking, and deployment pipelines — and tested with 5–8 participants per round.",
                     },
                     {
-                      week: 'Weeks 10–12',
-                      title: 'Refinement & Beta Launch',
-                      desc: 'Polished the design system, finalized deployment workflows, and rolled out a beta to 200+ early adopters with real-time feedback tracking.',
+                      week: "Weeks 10–12",
+                      title: "Refinement & Beta Launch",
+                      desc: "Polished the design system, finalized deployment workflows, and rolled out a beta to 200+ early adopters with real-time feedback tracking.",
                     },
                   ].map((phase, i) => (
                     <div
@@ -668,7 +907,9 @@ export function ProjectOne() {
         </div>
       </div>
 
-      {/* Research */}
+      {/* ============================== */}
+      {/* Section 05 — Research          */}
+      {/* ============================== */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="pb-20 md:pb-32">
           <SectionLabel number="05" label="Research" />
@@ -680,38 +921,43 @@ export function ProjectOne() {
           >
             <motion.h2
               variants={fadeUp}
-              className="text-3xl sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
+              className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
             >
               Understanding the AI community's unmet needs
             </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
-              <motion.div variants={fadeUp} className="space-y-8">
+              <motion.div
+                variants={fadeUp}
+                className="space-y-8"
+              >
                 <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  We conducted 24 in-depth interviews across four distinct
-                  segments — data scientists, ML engineers, AI researchers, and
-                  team leads. Each session explored their end-to-end workflows
-                  from dataset sourcing through model deployment to uncover
-                  friction points and latent needs.
+                  We conducted 24 in-depth interviews across
+                  four distinct segments — data scientists, ML
+                  engineers, AI researchers, and team leads.
+                  Each session explored their end-to-end
+                  workflows from dataset sourcing through model
+                  deployment to uncover friction points and
+                  latent needs.
                 </p>
                 <div className="space-y-6">
                   {[
                     {
-                      metric: '24',
-                      label: 'User interviews conducted',
+                      metric: "24",
+                      label: "User interviews conducted",
                       detail:
-                        'Across four user segments with sessions averaging 45 minutes each.',
+                        "Across four user segments with sessions averaging 45 minutes each.",
                     },
                     {
-                      metric: '1,200+',
-                      label: 'Survey responses analyzed',
+                      metric: "1,200+",
+                      label: "Survey responses analyzed",
                       detail:
-                        'Quantitative data validated qualitative findings from interviews.',
+                        "Quantitative data validated qualitative findings from interviews.",
                     },
                     {
-                      metric: '8',
-                      label: 'Competitor platforms audited',
+                      metric: "8",
+                      label: "Competitor platforms audited",
                       detail:
-                        'Benchmarking against industry leaders to identify gaps and opportunities.',
+                        "Benchmarking against industry leaders to identify gaps and opportunities.",
                     },
                   ].map((item, i) => (
                     <div
@@ -731,7 +977,10 @@ export function ProjectOne() {
                   ))}
                 </div>
               </motion.div>
-              <motion.div variants={fadeUp} className="space-y-6">
+              <motion.div
+                variants={fadeUp}
+                className="space-y-6"
+              >
                 <div className="aspect-[4/3] overflow-hidden">
                   <ImageWithFallback
                     src="https://images.unsplash.com/photo-1674509036252-5a517959a3b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxVWCUyMHJlc2VhcmNoJTIwZGF0YSUyMGFuYWx5c2lzJTIwc3RpY2t5JTIwbm90ZXN8ZW58MXx8fHwxNzczMDYzMzUzfDA&ixlib=rb-4.1.0&q=80&w=1080"
@@ -756,105 +1005,157 @@ export function ProjectOne() {
                 Key Insight
               </p>
               <p className="text-xl sm:text-2xl text-vc-light-text dark:text-vc-dark-text tracking-tight max-w-3xl mb-4">
-                "People don't want another tool — they want one place that just works."
+                "People don't want another tool — they want one
+                place that just works."
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-2xl">
-                The most consistent finding was that AI practitioners didn't need
-                more features — they needed fewer platforms. The constant context-switching
-                between dataset repos, experiment trackers, and deployment tools was the
-                biggest source of friction. This insight became the north star for DataDock's
-                unified platform approach.
+                The most consistent finding was that AI
+                practitioners didn't need more features — they
+                needed fewer platforms. The constant
+                context-switching between dataset repos,
+                experiment trackers, and deployment tools was
+                the biggest source of friction. This insight
+                became the north star for DataDock's unified
+                platform approach.
               </p>
             </motion.div>
 
-            {/* Persona */}
-            <motion.div variants={fadeUp} className="mt-16 md:mt-24">
+            {/* Key Insight Card */}
+            {/* (above) */}
+
+            {/* Persona Cards */}
+            <motion.div
+              variants={fadeUp}
+              className="mt-16 md:mt-24"
+            >
               <p className="text-xs tracking-[0.15em] uppercase text-gray-400 dark:text-gray-500 mb-8">
                 Persona
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {
-                  [
-                    {
-                      name: 'Priya Sharma',
-                      role: 'Data Scientist',
-                      age: '29',
-                      bio: 'Works at a mid-size AI startup. Spends 60% of her time sourcing and cleaning datasets across multiple platforms before she can begin any modeling work.',
-                      goals: ['Discover high-quality datasets fast', 'Track experiments in one place', 'Share findings with her team'],
-                      frustrations: ['Scattered datasets across 4+ platforms', 'No version control for experiments', 'Manual export/import between tools'],
-                    },
-                    {
-                      name: 'Marcus Rivera',
-                      role: 'ML Engineer',
-                      age: '34',
-                      bio: 'Leads the ML infrastructure team at an enterprise company. Responsible for moving models from prototype to production deployment at scale.',
-                      goals: ['Streamlined model deployment', 'Reproducible training pipelines', 'Team-wide experiment visibility'],
-                      frustrations: ['Deployment requires rebuilding from scratch', 'No unified model registry', 'Collaboration gaps between research and engineering'],
-                    },
-                    {
-                      name: 'Emily Park',
-                      role: 'AI Research Lead',
-                      age: '38',
-                      bio: 'Manages a research team of 8. Needs to share models and datasets within the team and with external collaborators while maintaining proper versioning.',
-                      goals: ['Collaborative model sharing', 'Organized project workspace', 'Seamless publishing to community'],
-                      frustrations: ['No centralized workspace for team projects', 'Difficult to share work externally', 'Lost context between experiment iterations'],
-                    },
-                  ].map((persona, i) => (
-                    <motion.div
-                      key={persona.name}
-                      variants={fadeUp}
-                      className="p-6 md:p-8 border border-gray-200 dark:border-gray-800"
-                    >
-                      <div className="flex items-center gap-4 mb-5">
-                        <div className="w-12 h-12 rounded-full bg-vc-primary/10 flex items-center justify-center">
-                          <span className="text-vc-primary text-sm">
-                            {persona.name.split(' ').map(n => n[0]).join('')}
-                          </span>
-                        </div>
-                        <div>
-                          <p className="text-vc-light-text dark:text-vc-dark-text text-sm">
-                            {persona.name}
-                          </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-500">
-                            {persona.role} · Age {persona.age}
-                          </p>
-                        </div>
+                {[
+                  {
+                    name: "Priya Sharma",
+                    role: "Data Scientist",
+                    age: "29",
+                    bio: "Works at a mid-size AI startup. Spends 60% of her time sourcing and cleaning datasets across multiple platforms before she can begin any modeling work.",
+                    goals: [
+                      "Discover high-quality datasets fast",
+                      "Track experiments in one place",
+                      "Share findings with her team",
+                    ],
+                    frustrations: [
+                      "Scattered datasets across 4+ platforms",
+                      "No version control for experiments",
+                      "Manual export/import between tools",
+                    ],
+                  },
+                  {
+                    name: "Marcus Rivera",
+                    role: "ML Engineer",
+                    age: "34",
+                    bio: "Leads the ML infrastructure team at an enterprise company. Responsible for moving models from prototype to production deployment at scale.",
+                    goals: [
+                      "Streamlined model deployment",
+                      "Reproducible training pipelines",
+                      "Team-wide experiment visibility",
+                    ],
+                    frustrations: [
+                      "Deployment requires rebuilding from scratch",
+                      "No unified model registry",
+                      "Collaboration gaps between research and engineering",
+                    ],
+                  },
+                  {
+                    name: "Emily Park",
+                    role: "AI Research Lead",
+                    age: "38",
+                    bio: "Manages a research team of 8. Needs to share models and datasets within the team and with external collaborators while maintaining proper versioning.",
+                    goals: [
+                      "Collaborative model sharing",
+                      "Organized project workspace",
+                      "Seamless publishing to community",
+                    ],
+                    frustrations: [
+                      "No centralized workspace for team projects",
+                      "Difficult to share work externally",
+                      "Lost context between experiment iterations",
+                    ],
+                  },
+                ].map((persona, i) => (
+                  <motion.div
+                    key={persona.name}
+                    variants={fadeUp}
+                    className="p-6 md:p-8 border border-gray-200 dark:border-gray-800"
+                  >
+                    <div className="flex items-center gap-4 mb-5">
+                      <div className="w-12 h-12 rounded-full bg-vc-primary/10 flex items-center justify-center">
+                        <span className="text-vc-primary text-sm">
+                          {persona.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </span>
                       </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-5">
-                        {persona.bio}
-                      </p>
-                      <div className="space-y-4">
-                        <div>
-                          <p className="text-xs tracking-[0.1em] uppercase text-vc-primary mb-2">Goals</p>
-                          <ul className="space-y-1">
-                            {persona.goals.map((g, j) => (
-                              <li key={j} className="text-xs text-gray-500 dark:text-gray-400 flex items-start gap-2">
-                                <span className="text-vc-primary mt-0.5">+</span>
-                                {g}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <p className="text-xs tracking-[0.1em] uppercase text-gray-400 dark:text-gray-500 mb-2">Frustrations</p>
-                          <ul className="space-y-1">
-                            {persona.frustrations.map((f, j) => (
-                              <li key={j} className="text-xs text-gray-500 dark:text-gray-400 flex items-start gap-2">
-                                <span className="text-red-400 mt-0.5">-</span>
-                                {f}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                      <div>
+                        <p className="text-vc-light-text dark:text-vc-dark-text text-sm">
+                          {persona.name}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-500">
+                          {persona.role} · Age {persona.age}
+                        </p>
                       </div>
-                    </motion.div>
-                  ))
-                }
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-5">
+                      {persona.bio}
+                    </p>
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-xs tracking-[0.1em] uppercase text-vc-primary mb-2">
+                          Goals
+                        </p>
+                        <ul className="space-y-1">
+                          {persona.goals.map((g, j) => (
+                            <li
+                              key={j}
+                              className="text-xs text-gray-500 dark:text-gray-400 flex items-start gap-2"
+                            >
+                              <span className="text-vc-primary mt-0.5">
+                                +
+                              </span>
+                              {g}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <p className="text-xs tracking-[0.1em] uppercase text-gray-400 dark:text-gray-500 mb-2">
+                          Frustrations
+                        </p>
+                        <ul className="space-y-1">
+                          {persona.frustrations.map((f, j) => (
+                            <li
+                              key={j}
+                              className="text-xs text-gray-500 dark:text-gray-400 flex items-start gap-2"
+                            >
+                              <span className="text-red-400 mt-0.5">
+                                -
+                              </span>
+                              {f}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
 
-            {/* Target Audience */}
-            <motion.div variants={fadeUp} className="mt-16 md:mt-24">
+            {/* Target Audience Section */}
+            <motion.div
+              variants={fadeUp}
+              className="mt-16 md:mt-24"
+            >
               <p className="text-xs tracking-[0.15em] uppercase text-gray-400 dark:text-gray-500 mb-8">
                 Target Audience
               </p>
@@ -870,36 +1171,46 @@ export function ProjectOne() {
                     variants={fadeUp}
                     className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8"
                   >
-                    DataDock's target audience spans individual AI practitioners
-                    to enterprise ML teams. These users range from independent data
-                    scientists exploring public datasets to large organizations
-                    managing proprietary models and deployment pipelines at scale.
+                    DataDock's target audience spans individual
+                    AI practitioners to enterprise ML teams.
+                    These users range from independent data
+                    scientists exploring public datasets to
+                    large organizations managing proprietary
+                    models and deployment pipelines at scale.
                   </motion.p>
-                  <motion.div variants={staggerChildren} className="space-y-4">
+                  <motion.div
+                    variants={staggerChildren}
+                    className="space-y-4"
+                  >
                     {[
                       {
-                        segment: 'Primary',
-                        audience: 'Data Scientists & ML Engineers',
-                        percentage: '45%',
-                        detail: 'Core users who discover datasets, train models, and run experiments daily within My Space.',
+                        segment: "Primary",
+                        audience:
+                          "Data Scientists & ML Engineers",
+                        percentage: "45%",
+                        detail:
+                          "Core users who discover datasets, train models, and run experiments daily within My Space.",
                       },
                       {
-                        segment: 'Secondary',
-                        audience: 'AI Researchers & Academics',
-                        percentage: '28%',
-                        detail: 'Share models and datasets with the community, collaborate on open research, and publish findings.',
+                        segment: "Secondary",
+                        audience: "AI Researchers & Academics",
+                        percentage: "28%",
+                        detail:
+                          "Share models and datasets with the community, collaborate on open research, and publish findings.",
                       },
                       {
-                        segment: 'Tertiary',
-                        audience: 'ML Team Leads & Managers',
-                        percentage: '18%',
-                        detail: 'Oversee team projects in My Space, track experiment progress, and manage deployment pipelines.',
+                        segment: "Tertiary",
+                        audience: "ML Team Leads & Managers",
+                        percentage: "18%",
+                        detail:
+                          "Oversee team projects in My Space, track experiment progress, and manage deployment pipelines.",
                       },
                       {
-                        segment: 'Emerging',
-                        audience: 'AI Hobbyists & Students',
-                        percentage: '9%',
-                        detail: 'Explore the marketplace to learn, fork datasets for personal projects, and build their AI portfolios.',
+                        segment: "Emerging",
+                        audience: "AI Hobbyists & Students",
+                        percentage: "9%",
+                        detail:
+                          "Explore the marketplace to learn, fork datasets for personal projects, and build their AI portfolios.",
                       },
                     ].map((item) => (
                       <motion.div
@@ -937,8 +1248,11 @@ export function ProjectOne() {
               </div>
             </motion.div>
 
-            {/* Analysis */}
-            <motion.div variants={fadeUp} className="mt-16 md:mt-24">
+            {/* Analysis Section */}
+            <motion.div
+              variants={fadeUp}
+              className="mt-16 md:mt-24"
+            >
               <p className="text-xs tracking-[0.15em] uppercase text-gray-400 dark:text-gray-500 mb-8">
                 Analysis
               </p>
@@ -951,24 +1265,24 @@ export function ProjectOne() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
                 {[
                   {
-                    title: 'Workflow Fragmentation',
-                    desc: 'Session recordings revealed users averaged 4.3 tool switches per AI project. 73% of time was spent on data prep and tool navigation rather than actual modeling work.',
-                    tag: 'Quantitative',
+                    title: "Workflow Fragmentation",
+                    desc: "Session recordings revealed users averaged 4.3 tool switches per AI project. 73% of time was spent on data prep and tool navigation rather than actual modeling work.",
+                    tag: "Quantitative",
                   },
                   {
-                    title: 'Discovery-to-Deploy Gap',
-                    desc: 'Journey mapping identified a critical handoff gap: 52% of users abandoned projects when transitioning from marketplace discovery to personal workspace experimentation.',
-                    tag: 'Qualitative',
+                    title: "Discovery-to-Deploy Gap",
+                    desc: "Journey mapping identified a critical handoff gap: 52% of users abandoned projects when transitioning from marketplace discovery to personal workspace experimentation.",
+                    tag: "Qualitative",
                   },
                   {
-                    title: 'Competitive Landscape',
-                    desc: 'Auditing 8 AI platforms (Hugging Face, Kaggle, W&B, etc.) revealed none offered end-to-end coverage — validating DataDock\'s unified marketplace + workspace approach.',
-                    tag: 'Competitive',
+                    title: "Competitive Landscape",
+                    desc: "Auditing 8 AI platforms (Hugging Face, Kaggle, W&B, etc.) revealed none offered end-to-end coverage — validating DataDock's unified marketplace + workspace approach.",
+                    tag: "Competitive",
                   },
                   {
-                    title: 'Collaboration Patterns',
-                    desc: 'Team-based users shared datasets and models via email 67% of the time. Only 12% used built-in sharing features, indicating a massive opportunity for native collaboration.',
-                    tag: 'Behavioral',
+                    title: "Collaboration Patterns",
+                    desc: "Team-based users shared datasets and models via email 67% of the time. Only 12% used built-in sharing features, indicating a massive opportunity for native collaboration.",
+                    tag: "Behavioral",
                   },
                 ].map((item, i) => (
                   <motion.div
@@ -998,11 +1312,16 @@ export function ProjectOne() {
                   Research Synthesis
                 </p>
                 <p className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
-                  Triangulating usage analytics, user interviews, and competitive analysis,
-                  we identified three strategic pillars for DataDock: a unified marketplace for
-                  frictionless discovery, My Space as a personal command center for experiments
-                  and projects, and a seamless bridge from experimentation to deployment. These
-                  pillars shaped every design decision from information architecture to micro-interactions.
+                  Triangulating usage analytics, user
+                  interviews, and competitive analysis, we
+                  identified three strategic pillars for
+                  DataDock: a unified marketplace for
+                  frictionless discovery, My Space as a personal
+                  command center for experiments and projects,
+                  and a seamless bridge from experimentation to
+                  deployment. These pillars shaped every design
+                  decision from information architecture to
+                  micro-interactions.
                 </p>
               </motion.div>
             </motion.div>
@@ -1010,7 +1329,9 @@ export function ProjectOne() {
         </div>
       </div>
 
-      {/* Gallery */}
+      {/* ============================== */}
+      {/* Section 06 — Gallery           */}
+      {/* ============================== */}
       <div className="py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 md:mb-14">
           <SectionLabel number="06" label="Gallery" />
@@ -1020,9 +1341,19 @@ export function ProjectOne() {
         </div>
       </div>
 
-      {/* Full Bleed Image */}
-      <FullBleedImage src={contentImages.testing} alt="User testing" />
+      {/* ============================== */}
+      {/* Full Bleed Image — Testing     */}
+      {/* ============================== */}
+      <FullBleedImage
+        src={contentImages.testing}
+        alt="User testing"
+      />
 
+      {/* ============================== */}
+      {/* Section 07 — Validation        */}
+      {/* Section 08 — Reflection        */}
+      {/* Stats Row & Next Project       */}
+      {/* ============================== */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Testing & Validation */}
         <div className="py-20 md:py-32">
@@ -1034,7 +1365,7 @@ export function ProjectOne() {
           />
         </div>
 
-        {/* Stats */}
+        {/* Stats Row */}
         <StatsRow />
 
         {/* Reflection */}
@@ -1048,22 +1379,27 @@ export function ProjectOne() {
           >
             <motion.h2
               variants={fadeUp}
-              className="text-3xl sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
+              className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
             >
               What I learned along the way
             </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16">
-              <motion.div variants={fadeUp} className="space-y-6">
+              <motion.div
+                variants={fadeUp}
+                className="space-y-6"
+              >
                 <div>
                   <p className="text-vc-light-text dark:text-vc-dark-text mb-2">
                     What went well
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    The unified marketplace + workspace model resonated strongly
-                    with every user segment. DataDock's "fork and experiment"
-                    flow became the most-used feature in beta, validating our
-                    core design hypothesis that reducing tool-switching matters
-                    more than adding features.
+                    The unified marketplace + workspace model
+                    resonated strongly with every user segment.
+                    DataDock's "fork and experiment" flow became
+                    the most-used feature in beta, validating
+                    our core design hypothesis that reducing
+                    tool-switching matters more than adding
+                    features.
                   </p>
                 </div>
                 <div>
@@ -1071,23 +1407,30 @@ export function ProjectOne() {
                     Scope of impact
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    The design spanned the entire platform — marketplace
-                    discovery, My Space project management, experiment tracking,
-                    collaborative sharing, and the deployment pipeline — all
-                    built on a cohesive design system with 120+ components.
+                    The design spanned the entire platform —
+                    marketplace discovery, My Space project
+                    management, experiment tracking,
+                    collaborative sharing, and the deployment
+                    pipeline — all built on a cohesive design
+                    system with 120+ components.
                   </p>
                 </div>
               </motion.div>
-              <motion.div variants={fadeUp} className="space-y-6">
+              <motion.div
+                variants={fadeUp}
+                className="space-y-6"
+              >
                 <div>
                   <p className="text-vc-light-text dark:text-vc-dark-text mb-2">
                     What could improve
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    We underestimated the complexity of enterprise permissions
-                    for shared datasets. Earlier involvement of IT admins and
-                    compliance teams would have streamlined the governance
-                    features and reduced late-stage scope changes.
+                    We underestimated the complexity of
+                    enterprise permissions for shared datasets.
+                    Earlier involvement of IT admins and
+                    compliance teams would have streamlined the
+                    governance features and reduced late-stage
+                    scope changes.
                   </p>
                 </div>
                 <div>
@@ -1095,10 +1438,12 @@ export function ProjectOne() {
                     Looking ahead
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    Future iterations will expand collaborative features — real-time
-                    co-editing of notebooks, automated model benchmarking, and
-                    deeper integrations with popular ML frameworks like PyTorch
-                    and TensorFlow directly within My Space.
+                    Future iterations will expand collaborative
+                    features — real-time co-editing of
+                    notebooks, automated model benchmarking, and
+                    deeper integrations with popular ML
+                    frameworks like PyTorch and TensorFlow
+                    directly within My Space.
                   </p>
                 </div>
               </motion.div>
@@ -1106,7 +1451,7 @@ export function ProjectOne() {
           </motion.div>
         </div>
 
-        {/* Next Project */}
+        {/* Next Project Teaser */}
         <NextProject onClick={handleBackToHome} />
       </div>
     </div>

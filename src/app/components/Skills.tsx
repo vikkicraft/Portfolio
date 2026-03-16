@@ -58,7 +58,7 @@ export function Skills() {
     <section id="skills" className="py-20 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-1 mb-12" ref={headingRef}>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text">
+          <h2 className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text">
             Skills and Expertise
           </h2>
         </div>
@@ -74,7 +74,7 @@ export function Skills() {
                 opacity: visibleCards[index] ? opacities[index] : 0,
               }}
             >
-              <h3 className="font-sans text-xl sm:text-2xl text-vc-light-text dark:text-vc-dark-text">
+              <h3 className="font-sans font-medium text-xl sm:text-2xl text-vc-light-text dark:text-vc-dark-text">
                 {category.title}
               </h3>
             </div>

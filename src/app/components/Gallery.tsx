@@ -73,7 +73,7 @@ export function Gallery() {
   return (
     <section className="py-20 bg-vc-light-bg dark:bg-vc-dark-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text">
+        <h2 className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text">
           Gallery
         </h2>
       </div>

@@ -97,7 +97,7 @@ export function About() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           {/* Left section - Title */}
           <div className="md:sticky md:top-20 md:self-start flex flex-col items-center md:items-start">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl mb-8 text-vc-light-text dark:text-vc-dark-text self-start">
+            <h2 className="text-3xl font-medium sm:text-4xl md:text-5xl mb-8 text-vc-light-text dark:text-vc-dark-text self-start">
               About
             </h2>
             <img
@@ -158,7 +158,7 @@ export function About() {
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
-                          <h4 className="text-2xl sm:text-3xl text-vc-light-text dark:text-vc-dark-text mb-2">
+                          <h4 className="text-2xl font-medium sm:text-3xl text-vc-light-text dark:text-vc-dark-text mb-2">
                             {exp.company}
                           </h4>
                           <p className="text-lg text-gray-600 dark:text-gray-400 mb-1">

@@ -37,7 +37,7 @@ export function Hero() {
       <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col justify-between px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex-1 flex items-center">
           <div className="text-center md:text-left max-w-4xl">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 text-vc-light-text dark:text-vc-dark-text">
+            <h1 className="text-4xl font-medium sm:text-5xl md:text-6xl lg:text-7xl mb-6 text-vc-light-text dark:text-vc-dark-text">
               I design products built for{" "}
               <span className="text-vc-secondary">impact</span>, designed to{" "}
               <span className="text-vc-primary">scale</span>.
@@ -76,7 +76,7 @@ export function Hero() {
               TETRIS: <span className="hidden sm:inline">move your cursor to guide blocks • Click to rotate</span><span className="sm:hidden">drag to move • tap to rotate</span>
             </p>
             <a 
-              href="https://linkedin.com" 
+              href="https://www.linkedin.com/in/vikkicraft/" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-[12px] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors tracking-wide flex items-center gap-1"

@@ -38,58 +38,91 @@ function rotateShape(shape: number[][]): number[][] {
   return rotated;
 }
 
+/** Draw a single 3D beveled cell */
+function draw3DCell(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  size: number,
+  isDark: boolean
+) {
+  const bevel = Math.max(2, size * 0.15); // bevel thickness
+  const inset = 1; // tiny gap inside
+
+  // Base fill
+  ctx.fillStyle = isDark ? 'rgba(255,255,255,0.10)' : 'rgba(0,0,0,0.07)';
+  ctx.fillRect(x, y, size, size);
+
+  // Top bevel (highlight)
+  ctx.fillStyle = isDark ? 'rgba(255,255,255,0.18)' : 'rgba(255,255,255,0.5)';
+  ctx.beginPath();
+  ctx.moveTo(x + inset, y + inset);
+  ctx.lineTo(x + size - inset, y + inset);
+  ctx.lineTo(x + size - bevel, y + bevel);
+  ctx.lineTo(x + bevel, y + bevel);
+  ctx.closePath();
+  ctx.fill();
+
+  // Left bevel (highlight)
+  ctx.fillStyle = isDark ? 'rgba(255,255,255,0.13)' : 'rgba(255,255,255,0.35)';
+  ctx.beginPath();
+  ctx.moveTo(x + inset, y + inset);
+  ctx.lineTo(x + bevel, y + bevel);
+  ctx.lineTo(x + bevel, y + size - bevel);
+  ctx.lineTo(x + inset, y + size - inset);
+  ctx.closePath();
+  ctx.fill();
+
+  // Bottom bevel (shadow)
+  ctx.fillStyle = isDark ? 'rgba(0,0,0,0.25)' : 'rgba(0,0,0,0.12)';
+  ctx.beginPath();
+  ctx.moveTo(x + inset, y + size - inset);
+  ctx.lineTo(x + bevel, y + size - bevel);
+  ctx.lineTo(x + size - bevel, y + size - bevel);
+  ctx.lineTo(x + size - inset, y + size - inset);
+  ctx.closePath();
+  ctx.fill();
+
+  // Right bevel (shadow)
+  ctx.fillStyle = isDark ? 'rgba(0,0,0,0.20)' : 'rgba(0,0,0,0.08)';
+  ctx.beginPath();
+  ctx.moveTo(x + size - inset, y + inset);
+  ctx.lineTo(x + size - inset, y + size - inset);
+  ctx.lineTo(x + size - bevel, y + size - bevel);
+  ctx.lineTo(x + size - bevel, y + bevel);
+  ctx.closePath();
+  ctx.fill();
+
+  // Inner face (slightly brighter center)
+  ctx.fillStyle = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)';
+  ctx.fillRect(x + bevel, y + bevel, size - bevel * 2, size - bevel * 2);
+
+  // Outer border
+  ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.20)' : 'rgba(0,0,0,0.12)';
+  ctx.lineWidth = 0.5;
+  ctx.strokeRect(x + 0.25, y + 0.25, size - 0.5, size - 0.5);
+}
+
 function drawShapeOutline(
   ctx: CanvasRenderingContext2D,
   shape: number[][],
   ox: number,
   oy: number,
   size: number,
-  fillColor: string,
-  strokeColor: string
+  _fillColor: string,
+  _strokeColor: string,
+  isDark: boolean
 ) {
   const sRows = shape.length;
   const sCols = shape[0].length;
-  const has = (r: number, c: number) =>
-    r >= 0 && r < sRows && c >= 0 && c < sCols && shape[r][c] === 1;
 
-  // Fill cells
-  ctx.fillStyle = fillColor;
   for (let r = 0; r < sRows; r++) {
     for (let c = 0; c < sCols; c++) {
       if (shape[r][c]) {
-        ctx.fillRect(ox + c * size, oy + r * size, size, size);
+        draw3DCell(ctx, ox + c * size, oy + r * size, size, isDark);
       }
     }
   }
-
-  // Stroke all edges exactly once: always draw top & left; draw right/bottom only if no neighbor
-  ctx.strokeStyle = strokeColor;
-  ctx.lineWidth = 0.5;
-  ctx.beginPath();
-  for (let r = 0; r < sRows; r++) {
-    for (let c = 0; c < sCols; c++) {
-      if (!shape[r][c]) continue;
-      const x = ox + c * size;
-      const y = oy + r * size;
-      // Always draw top edge
-      ctx.moveTo(x, y);
-      ctx.lineTo(x + size, y);
-      // Always draw left edge
-      ctx.moveTo(x, y);
-      ctx.lineTo(x, y + size);
-      // Right edge only if no right neighbor
-      if (!has(r, c + 1)) {
-        ctx.moveTo(x + size, y);
-        ctx.lineTo(x + size, y + size);
-      }
-      // Bottom edge only if no bottom neighbor
-      if (!has(r + 1, c)) {
-        ctx.moveTo(x, y + size);
-        ctx.lineTo(x + size, y + size);
-      }
-    }
-  }
-  ctx.stroke();
 }
 
 function drawPlacedCells(
@@ -98,46 +131,15 @@ function drawPlacedCells(
   maxCols: number,
   maxRows: number,
   size: number,
-  fillColor: string,
-  strokeColor: string
+  _fillColor: string,
+  _strokeColor: string,
+  isDark: boolean
 ) {
-  const set = new Set<string>();
-  placed.forEach((c) => set.add(`${c.col},${c.row}`));
-
-  // Fill cells
-  ctx.fillStyle = fillColor;
   placed.forEach((cell) => {
     if (cell.row < maxRows && cell.col < maxCols) {
-      ctx.fillRect(cell.col * size, cell.row * size, size, size);
+      draw3DCell(ctx, cell.col * size, cell.row * size, size, isDark);
     }
   });
-
-  // Stroke all edges exactly once: always draw top & left; draw right/bottom only if no neighbor
-  ctx.strokeStyle = strokeColor;
-  ctx.lineWidth = 0.5;
-  ctx.beginPath();
-  placed.forEach((cell) => {
-    if (cell.row >= maxRows || cell.col >= maxCols) return;
-    const x = cell.col * size;
-    const y = cell.row * size;
-    // Always draw top edge
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + size, y);
-    // Always draw left edge
-    ctx.moveTo(x, y);
-    ctx.lineTo(x, y + size);
-    // Right edge only if no right neighbor
-    if (!set.has(`${cell.col + 1},${cell.row}`)) {
-      ctx.moveTo(x + size, y);
-      ctx.lineTo(x + size, y + size);
-    }
-    // Bottom edge only if no bottom neighbor
-    if (!set.has(`${cell.col},${cell.row + 1}`)) {
-      ctx.moveTo(x, y + size);
-      ctx.lineTo(x + size, y + size);
-    }
-  });
-  ctx.stroke();
 }
 
 export function TetrisGrid({ paused = false }: { paused?: boolean }) {
@@ -150,6 +152,11 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
   const lastTimeRef = useRef<number>(0);
   const isVisibleRef = useRef<boolean>(true);
   const pausedRef = useRef<boolean>(paused);
+  const gameOverRef = useRef<boolean>(false);
+  const gameOverTimerRef = useRef<number>(0);
+
+  const NAVBAR_ROWS = 4; // ~64px navbar / 20px grid size
+  const GAME_OVER_DELAY = 0.6; // seconds before clearing
 
   // Keep pausedRef in sync with prop
   useEffect(() => {
@@ -233,6 +240,13 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
     }
 
     placedRef.current = placed;
+
+    // Game over check: if any placed cell is in the navbar zone
+    const touchesNavbar = placed.some((cell) => cell.row < NAVBAR_ROWS);
+    if (touchesNavbar && !gameOverRef.current) {
+      gameOverRef.current = true;
+      gameOverTimerRef.current = GAME_OVER_DELAY;
+    }
   }, []);
 
   const spawnBlock = useCallback(() => {
@@ -281,8 +295,36 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Handle game over state
+    if (gameOverRef.current) {
+      gameOverTimerRef.current -= dt;
+
+      // Flash effect: alternate between red-tinted and normal
+      const flashPhase = Math.floor(gameOverTimerRef.current * 8) % 2 === 0;
+      const goFill = flashPhase
+        ? (isDark ? 'rgba(239,68,68,0.15)' : 'rgba(239,68,68,0.12)')
+        : blockFill;
+      const goStroke = flashPhase
+        ? (isDark ? 'rgba(239,68,68,0.5)' : 'rgba(239,68,68,0.4)')
+        : blockColor;
+
+      drawPlacedCells(ctx, placedRef.current, cols, rows, GRID_SIZE, goFill, goStroke, isDark);
+
+      if (gameOverTimerRef.current <= 0) {
+        // Clear everything and restart
+        placedRef.current = [];
+        blockRef.current = null;
+        gameOverRef.current = false;
+        gameOverTimerRef.current = 0;
+        spawnBlock();
+      }
+
+      animFrameRef.current = requestAnimationFrame(render);
+      return;
+    }
+
     // Draw placed cells
-    drawPlacedCells(ctx, placedRef.current, cols, rows, GRID_SIZE, blockFill, blockColor);
+    drawPlacedCells(ctx, placedRef.current, cols, rows, GRID_SIZE, blockFill, blockColor, isDark);
 
     // Update and draw falling block
     const block = blockRef.current;
@@ -316,7 +358,7 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
 
       // Draw at current position (col is instant, row is smooth)
       if (blockRef.current) {
-        drawShapeOutline(ctx, block.shape, block.col * GRID_SIZE, block.row * GRID_SIZE, GRID_SIZE, blockFill, blockColor);
+        drawShapeOutline(ctx, block.shape, block.col * GRID_SIZE, block.row * GRID_SIZE, GRID_SIZE, blockFill, blockColor, isDark);
       }
     } else {
       spawnBlock();
