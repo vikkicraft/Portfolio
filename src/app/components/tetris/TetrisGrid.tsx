@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback } from 'react';
 
 const GRID_SIZE = 20;
 const FALL_SPEED = 1 / 0.3; // rows per second (equivalent to 1 row every 300ms)
+const LOCK_DELAY = 0.5; // seconds the player can still slide after landing
 
 const TETROMINOS = [
   { shape: [[1, 1, 1, 1]] },
@@ -17,6 +18,8 @@ interface FallingBlock {
   col: number;
   row: number; // fractional for smooth vertical motion
   shape: number[][];
+  lockTimer?: number; // countdown before block is permanently placed
+  landed?: boolean; // true when block has touched down but not yet locked
 }
 
 interface PlacedCell {
@@ -111,7 +114,8 @@ function drawShapeOutline(
   size: number,
   _fillColor: string,
   _strokeColor: string,
-  isDark: boolean
+  isDark: boolean,
+  yOffset: number = 0
 ) {
   const sRows = shape.length;
   const sCols = shape[0].length;
@@ -119,7 +123,7 @@ function drawShapeOutline(
   for (let r = 0; r < sRows; r++) {
     for (let c = 0; c < sCols; c++) {
       if (shape[r][c]) {
-        draw3DCell(ctx, ox + c * size, oy + r * size, size, isDark);
+        draw3DCell(ctx, ox + c * size, oy + r * size + yOffset, size, isDark);
       }
     }
   }
@@ -133,11 +137,12 @@ function drawPlacedCells(
   size: number,
   _fillColor: string,
   _strokeColor: string,
-  isDark: boolean
+  isDark: boolean,
+  yOffset: number = 0
 ) {
   placed.forEach((cell) => {
     if (cell.row < maxRows && cell.col < maxCols) {
-      draw3DCell(ctx, cell.col * size, cell.row * size, size, isDark);
+      draw3DCell(ctx, cell.col * size, cell.row * size + yOffset, size, isDark);
     }
   });
 }
@@ -154,8 +159,10 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
   const pausedRef = useRef<boolean>(paused);
   const gameOverRef = useRef<boolean>(false);
   const gameOverTimerRef = useRef<number>(0);
+  const prevRowsRef = useRef<number>(0);
 
-  const NAVBAR_ROWS = 4; // ~64px navbar / 20px grid size
+  const NAVBAR_ROWS = 4;
+  const BOTTOM_OFFSET = 30; // pixels reserved at bottom for controls/divider
   const GAME_OVER_DELAY = 0.6; // seconds before clearing
 
   // Keep pausedRef in sync with prop
@@ -170,7 +177,7 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
 
   const getGridDims = useCallback(() => {
     const cols = Math.ceil(window.innerWidth / GRID_SIZE);
-    const rows = Math.ceil(window.innerHeight / GRID_SIZE) - 2;
+    const rows = Math.ceil((window.innerHeight - BOTTOM_OFFSET) / GRID_SIZE) - 2;
     return { cols, rows };
   }, []);
 
@@ -215,7 +222,7 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
     let placed = [...placedRef.current, ...newCells];
 
     // Line clear: find full rows and remove them
-    const { cols } = gridDimsRef.current;
+    const { cols, rows } = gridDimsRef.current;
     const rowCounts = new Map<number, number>();
     placed.forEach((cell) => {
       rowCounts.set(cell.row, (rowCounts.get(cell.row) || 0) + 1);
@@ -283,11 +290,33 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
     }
 
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.height = window.innerHeight - BOTTOM_OFFSET;
 
     const dims = getGridDims();
-    gridDimsRef.current = dims;
     const { cols, rows } = dims;
+
+    // Anchor floor to bottom: shift placed cells & falling block when rows change
+    const oldRows = prevRowsRef.current;
+    if (oldRows > 0 && rows !== oldRows) {
+      const shift = rows - oldRows;
+      placedRef.current.forEach((cell) => {
+        cell.row += shift;
+      });
+      // Remove cells that shifted above the grid
+      placedRef.current = placedRef.current.filter((cell) => cell.row >= 0);
+      const block = blockRef.current;
+      if (block) {
+        block.row += shift;
+        if (block.row < 0) {
+          blockRef.current = null;
+        }
+      }
+    }
+    prevRowsRef.current = rows;
+    gridDimsRef.current = dims;
+
+    // Calculate yOffset to anchor the grid floor to the bottom of the canvas
+    const yOffset = canvas.height - rows * GRID_SIZE;
 
     const isDark = document.documentElement.classList.contains('dark');
     const blockColor = isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.25)';
@@ -308,7 +337,7 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
         ? (isDark ? 'rgba(239,68,68,0.5)' : 'rgba(239,68,68,0.4)')
         : blockColor;
 
-      drawPlacedCells(ctx, placedRef.current, cols, rows, GRID_SIZE, goFill, goStroke, isDark);
+      drawPlacedCells(ctx, placedRef.current, cols, rows, GRID_SIZE, goFill, goStroke, isDark, yOffset);
 
       if (gameOverTimerRef.current <= 0) {
         // Clear everything and restart
@@ -324,41 +353,59 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
     }
 
     // Draw placed cells
-    drawPlacedCells(ctx, placedRef.current, cols, rows, GRID_SIZE, blockFill, blockColor, isDark);
+    drawPlacedCells(ctx, placedRef.current, cols, rows, GRID_SIZE, blockFill, blockColor, isDark, yOffset);
 
     // Update and draw falling block
     const block = blockRef.current;
     if (block) {
-      // Continuous smooth vertical falling
-      const prevGridRow = Math.floor(block.row);
-      const nextRow = block.row + FALL_SPEED * dt;
-      const newGridRow = Math.floor(nextRow);
+      if (block.landed) {
+        // Block has touched down — count down lock timer while player can still slide
+        block.lockTimer = (block.lockTimer ?? 0) - dt;
 
-      if (newGridRow > prevGridRow) {
-        // We just crossed into a new integer row — check collision
-        if (checkCollisionAt(block.shape, block.col, newGridRow)) {
-          // Can't enter this row — snap to previous and place
-          block.row = prevGridRow;
+        // Check if block can still fall (e.g. player slid it over a gap)
+        const gridRow = Math.floor(block.row);
+        if (!checkCollisionAt(block.shape, block.col, gridRow + 1)) {
+          // Gap below — resume falling, cancel lock
+          block.landed = false;
+          block.lockTimer = undefined;
+          block.row = gridRow + 0.01; // nudge past integer to resume smooth fall
+        } else if (block.lockTimer! <= 0) {
+          // Timer expired — permanently place the block
           placeBlock(block);
           blockRef.current = null;
           spawnBlock();
-        } else if (checkCollisionAt(block.shape, block.col, newGridRow + 1)) {
-          // Next row below collides — this is the landing row
-          block.row = newGridRow;
-          placeBlock(block);
-          blockRef.current = null;
-          spawnBlock();
+        }
+        // Otherwise keep drawing at current position (player can still slide)
+      } else {
+        // Continuous smooth vertical falling
+        const prevGridRow = Math.floor(block.row);
+        const nextRow = block.row + FALL_SPEED * dt;
+        const newGridRow = Math.floor(nextRow);
+
+        if (newGridRow > prevGridRow) {
+          // We just crossed into a new integer row — check collision
+          if (checkCollisionAt(block.shape, block.col, newGridRow)) {
+            // Can't enter this row — snap to previous and start lock delay
+            block.row = prevGridRow;
+            block.landed = true;
+            block.lockTimer = LOCK_DELAY;
+          } else if (checkCollisionAt(block.shape, block.col, newGridRow + 1)) {
+            // Next row below collides — this is the landing row, start lock delay
+            block.row = newGridRow;
+            block.landed = true;
+            block.lockTimer = LOCK_DELAY;
+          } else {
+            block.row = nextRow;
+          }
         } else {
+          // Still within the same grid row — just advance smoothly
           block.row = nextRow;
         }
-      } else {
-        // Still within the same grid row — just advance smoothly
-        block.row = nextRow;
       }
 
       // Draw at current position (col is instant, row is smooth)
       if (blockRef.current) {
-        drawShapeOutline(ctx, block.shape, block.col * GRID_SIZE, block.row * GRID_SIZE, GRID_SIZE, blockFill, blockColor, isDark);
+        drawShapeOutline(ctx, block.shape, block.col * GRID_SIZE, block.row * GRID_SIZE, GRID_SIZE, blockFill, blockColor, isDark, yOffset);
       }
     } else {
       spawnBlock();
@@ -369,6 +416,7 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
 
   useEffect(() => {
     gridDimsRef.current = getGridDims();
+    prevRowsRef.current = gridDimsRef.current.rows;
     spawnBlock();
 
     // Start render loop (no setInterval — all motion is frame-driven)

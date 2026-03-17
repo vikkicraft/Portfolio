@@ -1,20 +1,39 @@
-import { Menu, X, Sun, Moon } from "lucide-react";
-import { useState, useCallback } from "react";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { useState, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
+import logoImg from "figma:asset/33f095ca7b1c9e3c098376cfa60d9d0e80268110.png";
+import { Menu, X, Sun, Moon } from "lucide-react";
 
 const NAV_LINKS = ["My Work", "About", "Skills", "Contact"] as const;
 
+/* ──────────────────────────────────────────────
+   THEME CONFIG — Change default theme here:
+   "dark"  → dark mode by default
+   "light" → light mode by default
+   ────────────────────────────────────────────── */
+const DEFAULT_THEME: "dark" | "light" = "dark";
+
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDark, setIsDark] = useState(
-    () => document.documentElement.classList.contains("dark")
-  );
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem("theme");
+    return saved ? saved === "dark" : DEFAULT_THEME === "dark";
+  });
   const navigate = useNavigate();
   const location = useLocation();
 
   const toggleTheme = useCallback(() => {
-    setIsDark((prev) => !prev);
-    document.documentElement.classList.toggle("dark");
+    setIsDark((prev) => {
+      const next = !prev;
+      localStorage.setItem("theme", next ? "dark" : "light");
+      document.documentElement.classList.toggle("dark", next);
+      return next;
+    });
+  }, []);
+
+  // Sync <html> class on mount
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", isDark);
   }, []);
 
   const handleNavClick = useCallback(
@@ -54,9 +73,13 @@ export function Navbar() {
           <div className="flex-shrink-0">
             <button
               onClick={handleLogoClick}
-              className="text-xl text-vc-light-text dark:text-vc-dark-text cursor-pointer"
+              className="cursor-pointer flex items-center"
             >
-              Portfolio
+              <ImageWithFallback
+                src={logoImg}
+                alt="Portfolio"
+                className="h-6 w-auto dark:invert"
+              />
             </button>
           </div>
 

@@ -54,11 +54,17 @@ export function TetrisTouchOverlay({ heroRef }: { heroRef: React.RefObject<HTMLE
     // Also suppress the browser-synthesized click that fires ~300ms after
     // a tap. Without this, TetrisGrid receives two clicks (ours + synthetic)
     // causing a double rotation that appears to do nothing.
+    // Only suppress if the click target is NOT an interactive element (button, link, etc.)
     const suppressSyntheticClick = (e: MouseEvent) => {
       if (
         Date.now() < suppressUntilRef.current &&
         !(e as any).__synthetic
       ) {
+        // Don't suppress clicks on interactive elements (buttons, links, inputs)
+        const target = e.target as HTMLElement | null;
+        if (target && target.closest('a, button, [role="button"], input, textarea, select, label')) {
+          return; // Let the click through
+        }
         e.stopImmediatePropagation();
         e.preventDefault();
       }

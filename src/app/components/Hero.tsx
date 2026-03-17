@@ -21,23 +21,11 @@ export function Hero() {
       {/* Tetris Grid Background */}
       <TetrisGrid key={tetrisKey} paused={isPaused} />
       <TetrisTouchOverlay heroRef={heroRef} />
-
-      {/* Grid lines overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-0"
-        style={{
-          zIndex: 0,
-          bottom: '40px',
-          backgroundImage:
-            'linear-gradient(to right, var(--grid-line) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px)',
-          backgroundSize: '20px 20px',
-        }}
-      />
       
       <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col justify-between px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center md:text-left max-w-4xl">
-            <h1 className="text-3xl font-medium sm:text-4xl md:text-5xl lg:text-6xl mb-6 text-vc-light-text dark:text-vc-dark-text leading-snug sm:leading-snug md:leading-snug lg:leading-snug text-center">
+            <h1 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold sm:font-medium md:font-medium lg:font-medium mb-6 text-vc-light-text dark:text-vc-dark-text leading-snug sm:leading-snug md:leading-snug lg:leading-snug text-center">
               Solving UX like{" "}
               <span className="text-vc-secondary">Tetris</span>,{" "} Placing every piece with{" "}
               <span className="text-vc-primary">Purpose</span>.
@@ -51,8 +39,8 @@ export function Hero() {
         {/* Divider and bottom text */}
         <div className="w-full">
           {/* Text content */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-            <p className="text-[12px] text-gray-600 dark:text-gray-400 tracking-wide flex items-center gap-1.5">
+          <div className="flex flex-row justify-between items-center gap-4 mb-4">
+            <p className="text-[12px] text-gray-600 dark:text-gray-400 tracking-wide flex items-center gap-1.5 min-w-0">
               <button
                 onClick={handleTogglePause}
                 className="cursor-pointer hover:text-gray-900 dark:hover:text-gray-200 transition-colors bg-gray-200/50 dark:bg-gray-800/50 rounded p-1"
@@ -79,10 +67,10 @@ export function Hero() {
               href="https://www.linkedin.com/in/vikkicraft/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-[12px] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors tracking-wide flex items-center gap-1"
+              className="text-[12px] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors tracking-wide flex items-center gap-1 shrink-0"
             >
               LINKEDIN
-              <span className="text-base">↗</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
             </a>
           </div>
 
