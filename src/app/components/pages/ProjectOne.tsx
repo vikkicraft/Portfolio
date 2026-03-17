@@ -483,7 +483,13 @@ function StatsRow() {
 // NextProject Component
 // ============================================================
 
-function NextProject({ onClick }: { onClick: () => void }) {
+function NextProject({
+  onNextClick,
+  onAllClick,
+}: {
+  onNextClick: () => void;
+  onAllClick: () => void;
+}) {
   return (
     <motion.div
       variants={fadeUp}
@@ -497,7 +503,7 @@ function NextProject({ onClick }: { onClick: () => void }) {
           Next Project
         </p>
         <button
-          onClick={onClick}
+          onClick={onAllClick}
           className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-vc-light-text dark:hover:text-vc-dark-text transition-colors cursor-pointer"
           data-hover
         >
@@ -506,7 +512,7 @@ function NextProject({ onClick }: { onClick: () => void }) {
         </button>
       </div>
       <button
-        onClick={onClick}
+        onClick={onNextClick}
         className="w-full text-left group cursor-pointer"
         data-hover
       >
@@ -547,6 +553,11 @@ export function ProjectOne() {
     return () =>
       window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleNextProject = useCallback(
+    () => navigate("/project/2"),
+    [navigate],
+  );
 
   const handleBackToHome = useCallback(
     () => navigate("/"),
@@ -662,7 +673,7 @@ export function ProjectOne() {
       {/* ============================== */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Problem & Context */}
-        <div ref={problemRef} className="pt-20 md:pt-32 pb-32 md:pb-48">
+        <div ref={problemRef} className="relative pt-20 md:pt-32 pb-32 md:pb-48">
           <motion.div
             variants={staggerChildren}
             initial="hidden"
@@ -728,7 +739,7 @@ export function ProjectOne() {
         <motion.div
           ref={solutionRef}
           style={{ opacity: solutionOpacity }}
-          className="pb-20 md:pb-32"
+          className="relative pb-20 md:pb-32"
         >
           <SectionLabel number="03" label="Solution" />
           <motion.div
@@ -1452,7 +1463,7 @@ export function ProjectOne() {
         </div>
 
         {/* Next Project Teaser */}
-        <NextProject onClick={handleBackToHome} />
+        <NextProject onNextClick={handleNextProject} onAllClick={handleBackToHome} />
       </div>
     </div>
   );

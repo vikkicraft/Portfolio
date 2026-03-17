@@ -16,21 +16,21 @@ const projects = [
   },
   {
     id: 2,
-    title: 'Project Title 2',
-    description: 'Project description goes here',
+    title: 'Dashboard Redesign',
+    description: 'Transforming a cluttered analytics interface into a focused, role-based experience',
     image:
-      'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1641567535859-c58187ac4954?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBkYXNoYm9hcmQlMjBkYXJrJTIwaW50ZXJmYWNlJTIwZGVzaWdufGVufDF8fHx8MTc3Mzc0OTE3N3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
     locked: false,
-    route: null,
+    route: '/project/2',
   },
   {
     id: 3,
-    title: 'Project Title 3',
-    description: 'Project description goes here',
+    title: 'Design System',
+    description: 'Building a scalable design language with 240+ components for healthcare',
     image:
-      'https://images.unsplash.com/photo-1764588037085-a78240016f8b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwZGVzaWduJTIwd29ya3NwYWNlfGVufDF8fHx8MTc3MjAwMjI5NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    locked: true,
-    route: null,
+      'https://images.unsplash.com/photo-1730206562928-0efd62560435?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcmVhdGl2ZSUyMHN0dWRpbyUyMGRlc2lnbiUyMHRvb2xzJTIwZGVza3xlbnwxfHx8fDE3NzM3NDkxODJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    locked: false,
+    route: '/project/3',
   },
 ];
 
