@@ -43,7 +43,6 @@ export function useScrollScale(
         rafRef.current = 0;
         const newScales: number[] = [];
         const newOpacities: number[] = [];
-        let changed = false;
 
         cardRefs.current.forEach((card, i) => {
           if (!card) {
@@ -58,7 +57,6 @@ export function useScrollScale(
             const distance = navbarHeight - cardTop;
             newScales.push(Math.max(minScale, 1 - distance / scaleRange));
             newOpacities.push(Math.max(0, 1 - distance / opacityRange));
-            changed = true;
           } else {
             newScales.push(1);
             newOpacities.push(1);

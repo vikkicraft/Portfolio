@@ -15,7 +15,7 @@ export function Skills() {
     new Array(skillCategories.length).fill(false)
   );
 
-  const { cardRefs, scales, opacities, setCardRef } = useScrollScale(skillCategories.length);
+  const { scales, opacities, setCardRef } = useScrollScale(skillCategories.length);
   const headingRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
 

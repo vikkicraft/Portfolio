@@ -43,7 +43,7 @@ export function Hero() {
             <p className="text-[12px] text-gray-600 dark:text-gray-400 tracking-wide flex items-center gap-1.5 min-w-0">
               <button
                 onClick={handleTogglePause}
-                className="cursor-pointer hover:text-gray-900 dark:hover:text-gray-200 transition-colors bg-gray-200/50 dark:bg-gray-800/50 rounded p-1"
+                className="cursor-pointer hover:text-vc-primary dark:hover:text-vc-primary transition-colors bg-gray-200/50 dark:bg-gray-800/50 rounded p-1"
                 aria-label={isPaused ? "Resume Tetris" : "Pause Tetris"}
                 data-hover
               >
@@ -55,7 +55,7 @@ export function Hero() {
               </button>
               <button
                 onClick={handleReset}
-                className="cursor-pointer hover:text-gray-900 dark:hover:text-gray-200 transition-colors bg-gray-200/50 dark:bg-gray-800/50 rounded p-1"
+                className="cursor-pointer hover:text-vc-primary dark:hover:text-vc-primary transition-colors bg-gray-200/50 dark:bg-gray-800/50 rounded p-1"
                 aria-label="Reset Tetris"
                 data-hover
               >
@@ -67,10 +67,10 @@ export function Hero() {
               href="https://www.linkedin.com/in/vikkicraft/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-[12px] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors tracking-wide flex items-center gap-1 shrink-0"
+              className="group text-[12px] text-gray-600 dark:text-gray-400 hover:text-vc-primary dark:hover:text-vc-primary transition-colors tracking-wide flex items-center gap-1 shrink-0"
             >
               LINKEDIN
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block opacity-0 -translate-x-1 translate-y-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-200"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
             </a>
           </div>
 
