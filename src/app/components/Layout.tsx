@@ -7,9 +7,9 @@ export function Layout() {
   return (
     <div className="relative min-h-screen bg-vc-light-bg dark:bg-vc-dark-bg">
       
-      // uncomment for unable cursor
-      
-      {/* <CustomCursor /> */}
+    
+       {/* uncomment for unable cursor */}
+      <CustomCursor />
       <Navbar />
       <main>
         <Outlet />
