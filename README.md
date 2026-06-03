@@ -1,7 +1,7 @@
 
-  # Website Design
+  # Website Design Tetris
 
-  This is a code bundle for Website Design. The original project is available at https://www.figma.com/design/dSwI3VJy5PjYaVqJsWiusB/Website-Design.
+  This is a code bundle for Website Design Tetris. The original project is available at https://www.figma.com/design/dSwI3VJy5PjYaVqJsWiusB/Website-Design-Tetris.
 
   ## Running the code
 
