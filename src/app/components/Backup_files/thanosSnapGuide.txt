@@ -21,5 +21,6 @@ Step 3 — Install the dependency
 Run this in your terminal:
 
 pnpm add simplex-noise
+
 That's it. The snap icon will appear next to "Skills and Expertise" —
 click it once to disintegrate cards 2, 5, and 6, and click again to restore them.
