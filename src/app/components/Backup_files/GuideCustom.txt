@@ -1,3 +1,11 @@
+
+<custom corsor enable disable>
+Disable CustomCursor (simplest)
+In src/app/components/Layout.tsx, remove or comment out the <CustomCursor />
+<custom corsor enable disable/>
+
+
+<Thanos snap enable>
 Here's what you need to do:
 
 Step 1 — Create ParticleCanvas.tsx
@@ -24,3 +32,5 @@ pnpm add simplex-noise
 
 That's it. The snap icon will appear next to "Skills and Expertise" —
 click it once to disintegrate cards 2, 5, and 6, and click again to restore them.
+
+<Thanos snap enable/>
