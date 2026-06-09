@@ -1,0 +1,25 @@
+Here's what you need to do:
+
+Step 1 — Create ParticleCanvas.tsx
+Create a new file at src/app/components/ParticleCanvas.tsx and
+paste the full contents from src/app/components/Backup_files/ParticleCanvas.tsx
+into it (copy it exactly as-is).
+
+Step 2 — Replace Skills.tsx
+Replace the entire contents of src/app/components/Skills.tsx
+with the full contents from src/app/components/Backup_files/Skills.tsx.
+
+The only change to make after pasting: on line 147, change:
+
+h3 className="font-sans text-xl sm:text-2xl ...
+to:
+h3 className="font-sans font-medium text-xl sm:text-2xl ...
+  
+(add font-medium to match the rest of the site's heading style)
+
+Step 3 — Install the dependency
+Run this in your terminal:
+
+pnpm add simplex-noise
+That's it. The snap icon will appear next to "Skills and Expertise" —
+click it once to disintegrate cards 2, 5, and 6, and click again to restore them.
