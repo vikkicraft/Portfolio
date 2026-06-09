@@ -11,7 +11,7 @@ export function Layout() {
        {/* uncomment for unable cursor */}
       <CustomCursor />
       <Navbar />
-      <main>
+      <main className="relative">
         <Outlet />
       </main>
       <Footer />

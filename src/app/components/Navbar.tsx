@@ -4,7 +4,14 @@ import { useNavigate, useLocation } from "react-router";
 import logoImg from "figma:asset/33f095ca7b1c9e3c098376cfa60d9d0e80268110.png";
 import { Menu, X, Sun, Moon } from "lucide-react";
 
-const NAV_LINKS = ["My Work", "About", "Skills", "Contact"] as const;
+const HOME_NAV_LINKS = ["My Work", "About", "Skills", "Contact"] as const;
+
+// Project routing: prev/next per project (circular)
+const PROJECT_NAV: Record<string, { prev: string; next: string }> = {
+  "/project/1": { prev: "/project/3", next: "/project/2" },
+  "/project/2": { prev: "/project/1", next: "/project/3" },
+  "/project/3": { prev: "/project/2", next: "/project/1" },
+};
 
 /* ──────────────────────────────────────────────
    THEME CONFIG — Change default theme here:
@@ -21,6 +28,9 @@ export function Navbar() {
   });
   const navigate = useNavigate();
   const location = useLocation();
+
+  const isProjectPage = location.pathname in PROJECT_NAV;
+  const projectNav = PROJECT_NAV[location.pathname];
 
   const toggleTheme = useCallback(() => {
     setIsDark((prev) => {
@@ -65,6 +75,15 @@ export function Navbar() {
     [handleNavClick]
   );
 
+  const handleContactClick = useCallback(() => {
+    const el = document.querySelector("#contact");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+    setIsMenuOpen(false);
+  }, []);
+
+  const btnClass =
+    "text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-all hover:-translate-y-0.5 cursor-pointer";
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/30 dark:bg-[#131313]/30 backdrop-blur-md border-b border-gray-200/10 dark:border-gray-700/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -85,15 +104,24 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {NAV_LINKS.map((link) => (
-              <button
-                key={link}
-                onClick={() => handleNavClick(link)}
-                className="text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-all hover:-translate-y-0.5 cursor-pointer"
-              >
-                {link}
-              </button>
-            ))}
+            {isProjectPage ? (
+              <>
+                <button className={btnClass} onClick={() => navigate("/")}>Home</button>
+                <button className={btnClass} onClick={() => navigate(projectNav.prev)}>Previous</button>
+                <button className={btnClass} onClick={() => navigate(projectNav.next)}>Next</button>
+                <button className={btnClass} onClick={handleContactClick}>Contact</button>
+              </>
+            ) : (
+              HOME_NAV_LINKS.map((link) => (
+                <button
+                  key={link}
+                  onClick={() => handleNavClick(link)}
+                  className={btnClass}
+                >
+                  {link}
+                </button>
+              ))
+            )}
 
             {/* Theme Toggle Button */}
             <button
@@ -127,15 +155,24 @@ export function Navbar() {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-700">
-            {NAV_LINKS.map((link) => (
-              <button
-                key={link}
-                onClick={() => handleMobileNavClick(link)}
-                className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
-              >
-                {link}
-              </button>
-            ))}
+            {isProjectPage ? (
+              <>
+                <button className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left" onClick={() => { navigate("/"); setIsMenuOpen(false); }}>Home</button>
+                <button className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left" onClick={() => { navigate(projectNav.prev); setIsMenuOpen(false); }}>Previous</button>
+                <button className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left" onClick={() => { navigate(projectNav.next); setIsMenuOpen(false); }}>Next</button>
+                <button className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left" onClick={handleContactClick}>Contact</button>
+              </>
+            ) : (
+              HOME_NAV_LINKS.map((link) => (
+                <button
+                  key={link}
+                  onClick={() => handleMobileNavClick(link)}
+                  className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
+                >
+                  {link}
+                </button>
+              ))
+            )}
           </div>
         )}
       </div>

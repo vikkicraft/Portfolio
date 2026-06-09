@@ -5,7 +5,7 @@ import {
   useRef,
 } from "react";
 import { useNavigate } from "react-router";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowUp, ArrowUpRight } from "lucide-react";
 import {
   motion,
   useTransform,
@@ -456,16 +456,10 @@ function NextProject({
 
 export function ProjectTwo() {
   const navigate = useNavigate();
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleBackToHome = useCallback(() => navigate("/"), [navigate]);
@@ -485,49 +479,42 @@ export function ProjectTwo() {
   });
   const solutionOpacity = useTransform(solutionProgress, [0, 1], [0, 1]);
 
+  useEffect(() => {
+    const el = solutionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowScrollTop(entry.boundingClientRect.top < window.innerHeight),
+      { threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="relative bg-vc-light-bg dark:bg-vc-dark-bg min-h-screen -mt-16">
-      {/* Back Button */}
-      <div className="fixed top-20 left-0 right-0 z-40 pointer-events-none">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Scroll-to-top Button */}
+      <AnimatePresence>
+        {showScrollTop && (
           <motion.button
-            animate={{
-              borderRadius: isScrolled ? "9999px" : "0px",
-              paddingTop: isScrolled ? "10px" : "8px",
-              paddingBottom: isScrolled ? "10px" : "8px",
-              paddingLeft: isScrolled ? "10px" : "16px",
-              paddingRight: isScrolled ? "10px" : "16px",
-              gap: isScrolled ? "0px" : "8px",
-            }}
-            transition={{ duration: 0.3, ease: EASE_OUT_EXPO }}
-            onClick={handleBackToHome}
-            className="pointer-events-auto flex items-center h-9 text-white/80 hover:text-white cursor-pointer border border-white/20 bg-black/30 backdrop-blur-md"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.2, ease: EASE_OUT_EXPO }}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="fixed bottom-8 right-8 z-40 w-11 h-11 flex items-center justify-center rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-white/80 hover:text-white hover:bg-black/60 cursor-pointer transition-colors"
             data-hover
+            aria-label="Scroll to top"
           >
-            <ArrowLeft className="w-4 h-4 shrink-0" />
-            <AnimatePresence mode="wait">
-              {!isScrolled && (
-                <motion.span
-                  key="back-text"
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: "auto" }}
-                  exit={{ opacity: 0, width: 0 }}
-                  transition={{ duration: 0.2, ease: EASE_OUT_EXPO }}
-                  className="text-sm overflow-hidden whitespace-nowrap"
-                >
-                  Back
-                </motion.span>
-              )}
-            </AnimatePresence>
+            <ArrowUp className="w-4 h-4" />
           </motion.button>
-        </div>
-      </div>
+        )}
+      </AnimatePresence>
 
       {/* Hero Section */}
       <HeroSection />
 
       {/* Section 01 — Overview */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <MetaStrip />
 
         <div className="py-20 md:py-32">

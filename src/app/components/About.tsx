@@ -8,23 +8,23 @@ const FADE_RANGE = 200;
 
 const experiences = [
   {
-    company: "Google",
-    role: "Interaction Designer",
-    period: "Aug 2022-Today",
+    company: "Vision Waves",
+    role: "UX Designer",
+    period: "Jun 2024-Today",
     details:
       "Led cross-platform AI experiences and high-profile features such as Satellite SOS on Pixel 9 and Android Private Space, shaping long-term Android strategies, enhancing user engagement for billions globally, and fostering cross-functional collaboration and design community initiatives.",
   },
   {
-    company: "McKinsey & Company",
-    role: "Product Design Lead",
-    period: "2022",
+    company: "Cyber infrastructure CIS",
+    role: "UI/UX Designer",
+    period: "2022-2024",
     details:
       "Led design initiatives for major clients across multiple industries, driving digital transformation through user-centered design strategies and building high-performing design teams.",
   },
   {
-    company: "McKinsey & Company",
-    role: "Senior UX Designer",
-    period: "2018-2022",
+    company: "Customize softech solution",
+    role: "UI/UX Designer",
+    period: "2011-2022",
     details:
       "Worked with clients from banking, non-profit, retail, energy, and telecommunications sectors to bring disruptive digital products and services to market, while helping grow clients' own design capabilities and teams.",
   },
@@ -119,14 +119,18 @@ export function About() {
           <div className="md:pt-[4.5rem]">
             <div className="space-y-4 text-gray-700 dark:text-gray-300 text-lg mb-16">
               <p>
-                I'm Dousan, a multi-disciplinary product designer with over 7
-                years of experience based in London. Currently at Google leading
-                several high-priority privacy and safety features on Android –
-                the world's most widely used operating system.
+                I'm Vikas, a UX Designer with 5+ years of experience designing
+                enterprise SaaS, AI-powered platforms, and data-driven
+                applications. Currently, I work on complex enterprise and AI
+                products, building scalable design systems and crafting user
+                experiences for ML, data operations, and workflow-driven
+                platforms.
               </p>
               <p>
-                I take pride in creating thoughtful, user-centered products that
-                deliver meaningful business results.
+                I enjoy solving complex problems through thoughtful,
+                user-centered design and collaborating closely with product,
+                engineering, and development teams to bring impactful digital
+                experiences to life.
               </p>
               <p>
                 Before Google, I worked as a Senior UX Designer at McKinsey &
@@ -135,8 +139,9 @@ export function About() {
                 services to market, and help grow clients' own design teams.
               </p>
               <p>
-                In my downtime, I enjoy exploring new destinations with my
-                trusty camera.
+                Outside of work, I enjoy painting, gaming, DIY projects,
+                and exploring new technologies that inspire creativity and
+                continuous learning.
               </p>
             </div>
 
