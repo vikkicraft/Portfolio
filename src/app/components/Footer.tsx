@@ -52,7 +52,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-8 border-t border-gray-300 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-500">
           <p>&copy; {currentYear} Portfolio. All rights reserved.</p>
-          <p>Designed & built by Dousan</p>
+          <p>Designed & built by Vikki</p>
         </div>
       </div>
     </footer>
