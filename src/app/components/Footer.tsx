@@ -1,10 +1,10 @@
 import { ArrowUpRight } from "lucide-react";
 
 const contactLinks = [
-  { label: "LinkedIn", href: "#" },
-  { label: "Twitter", href: "#" },
-  { label: "Email", href: "mailto:hello@example.com" },
-  { label: "Resume", href: "#" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/vikkicraft/" },
+  { label: "Behance", href: "https://www.behance.net/vikkicraft" },
+  { label: "Email", href: "mailto:iamvikki0@gmail.com" },
+  { label: "Resume", href: "https://drive.google.com/file/d/1TqaB6mJC7tqo2n0h58dg5WJHY0QQKYJg/view" },
 ] as const;
 
 export function Footer() {
