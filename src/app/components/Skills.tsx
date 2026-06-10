@@ -3,7 +3,7 @@ import { ParticleCanvas, ParticleCanvasHandle } from './ParticleCanvas';
 import { useScrollScale } from './hooks/useScrollScale';
 import exampleImage from 'figma:asset/5bb6a0cebc40881a5efc2e1db8d3c119e825c8ea.png';
 import alternateImage from 'figma:asset/a385169d7c0760f2b5a68061f10df6f93458fd52.png';
-import snapImage from 'figma:asset/2f626f2e7e176e7c3b4d0f5362652e624f109789.png';
+import snapImage from '../../imports/2f626f2e7e176e7c3b4d0f5362652e624f109789.png';
 
 const skillCategories = [
   { title: 'User Research' },
