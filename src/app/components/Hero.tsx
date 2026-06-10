@@ -26,7 +26,7 @@ export function Hero() {
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center md:text-left max-w-4xl">
             <h1 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold sm:font-medium md:font-medium lg:font-medium mb-6 text-vc-light-text dark:text-vc-dark-text leading-snug sm:leading-snug md:leading-snug lg:leading-snug text-center">
-              Testing UX like{" "}
+              Solving UX like{" "}
               <span className="text-vc-secondary">Tetris</span>,{" "} Placing every piece with{" "}
               <span className="text-vc-primary">Purpose</span>.
             </h1>
