@@ -196,10 +196,26 @@ function HeroSection() {
 
 function MetaStrip() {
   const items = [
-    { label: "Client", value: "NDA" },
-    { label: "Role", value: "Product Designer" },
-    { label: "Year", value: "2025" },
-    { label: "Duration", value: "12 Weeks" },
+    {
+      label: "Company",
+      value: "Humain",
+    },
+    {
+      label: "Product",
+      value: "AION (Nawat)",
+    },
+    {
+      label: "Scope",
+      value: "Model & Datasets",
+    },
+    {
+      label: "Role",
+      value: "Product Designer",
+    },
+    {
+      label: "Duration",
+      value: "6 Weeks",
+    },
   ];
 
   return (
@@ -208,7 +224,7 @@ function MetaStrip() {
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
-      className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 py-12 md:py-16 border-b border-gray-200 dark:border-gray-800"
+      className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8 py-12 md:py-16 border-b border-gray-200 dark:border-gray-800"
     >
       {items.map((item) => (
         <motion.div key={item.label} variants={fadeUp}>
@@ -267,7 +283,7 @@ function TwoColumnText({
 }: {
   heading?: string;
   leftText: React.ReactNode;
-  rightText: string;
+  rightText: React.ReactNode;
   leftHeading?: string;
   rightHeading?: string;
 }) {
@@ -560,7 +576,11 @@ export function ProjectOne() {
     target: problemRef,
     offset: ["start start", "end start"],
   });
-  const problemStickyOpacity = useTransform(problemProgress, [0.25, 0.60], [1, 0]);
+  const problemStickyOpacity = useTransform(
+    problemProgress,
+    [0.25, 0.6],
+    [1, 0],
+  );
 
   // Solution section scroll-linked opacity
   const solutionRef = useRef<HTMLDivElement>(null);
@@ -568,14 +588,21 @@ export function ProjectOne() {
     target: solutionRef,
     offset: ["start end", "start center"],
   });
-  const solutionOpacity = useTransform(solutionProgress, [0, 1], [0, 1]);
+  const solutionOpacity = useTransform(
+    solutionProgress,
+    [0, 1],
+    [0, 1],
+  );
 
   useEffect(() => {
     const el = solutionRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => setShowScrollTop(entry.boundingClientRect.top < window.innerHeight),
-      { threshold: 0 }
+      ([entry]) =>
+        setShowScrollTop(
+          entry.boundingClientRect.top < window.innerHeight,
+        ),
+      { threshold: 0 },
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -593,7 +620,9 @@ export function ProjectOne() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.2, ease: EASE_OUT_EXPO }}
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() =>
+              window.scrollTo({ top: 0, behavior: "smooth" })
+            }
             className="fixed bottom-8 right-8 z-40 w-11 h-11 flex items-center justify-center rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-white/80 hover:text-white hover:bg-black/60 cursor-pointer transition-colors"
             data-hover
             aria-label="Scroll to top"
@@ -611,7 +640,10 @@ export function ProjectOne() {
       {/* ============================== */}
       {/* Section 01 — Overview          */}
       {/* ============================== */}
-      <div id="content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div
+        id="content"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+      >
         {/* Meta Strip */}
         <MetaStrip />
 
@@ -619,23 +651,41 @@ export function ProjectOne() {
         <div className="py-20 md:py-32">
           <SectionLabel number="01" label="Overview" />
           <TwoColumnText
-            heading="Building a unified AI platform where data meets collaboration"
-            leftHeading="Case Study Module Overview"
-            rightHeading="Platform Overview"
+            heading="Building a centralized AI ecosystem for models and datasets"
+            leftHeading="Platform Overview"
+            rightHeading="Case Study Module Overview"
             leftText={
+              <>
+                <span className="font-semibold">
+                  AION (Nawat)
+                </span>{" "}
+                is an enterprise AI platform developed by HUMAIN
+                to support the complete AI lifecycle—from
+                infrastructure and governance to
+                experimentation, deployment, and monitoring.
+                <div className="mt-4">
+                  This case study focuses on the Models &
+                  Datasets module, designed to streamline how
+                  enterprise teams discover, manage, and
+                  operationalize AI assets at scale.
+                </div>
+              </>
+            }
+            rightText={
               <>
                 The{" "}
                 <span className="font-semibold">
                   Models & Datasets
                 </span>{" "}
-                module is a centralized space for discovering,
-                organizing, and managing AI assets. It brings
-                together asset discovery, personal management,
-                experimentation, and deployment — streamlining
-                the workflow of building AI solutions.
+                module serves as the central hub for
+                discovering, organizing, and managing AI assets
+                within AION (Nawat). It brings together asset
+                discovery, personal workspace management,
+                experimentation, and deployment into a unified
+                experience—helping teams collaborate more
+                effectively and accelerate AI development.
               </>
             }
-            rightText="This case study is part of a large-scale enterprise AI platform supporting the full lifecycle of AI development — from infrastructure and governance to development and deployment. Due to confidentiality, the platform name and organization cannot be disclosed."
           />
         </div>
       </div>
@@ -653,7 +703,10 @@ export function ProjectOne() {
       {/* ============================== */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Problem & Context */}
-        <div ref={problemRef} className="relative pt-20 md:pt-32 pb-32 md:pb-48">
+        <div
+          ref={problemRef}
+          className="relative pt-20 md:pt-32 pb-32 md:pb-48"
+        >
           <motion.div
             variants={staggerChildren}
             initial="hidden"
@@ -670,7 +723,9 @@ export function ProjectOne() {
               <motion.h2
                 variants={fadeUp}
                 className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text tracking-tight"
-              >No centralized home for models and datasets</motion.h2>
+              >
+                No centralized home for models and datasets
+              </motion.h2>
             </motion.div>
 
             {/* Right — Content */}
@@ -679,11 +734,11 @@ export function ProjectOne() {
                 variants={fadeUp}
                 className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mb-10"
               >
-                As the platform scaled, models and datasets became
-                core assets in the AI development process.
-                However, there was no dedicated, centralized
-                module focused specifically on managing and
-                discovering these assets.
+                As the platform scaled, models and datasets
+                became core assets in the AI development
+                process. However, there was no dedicated,
+                centralized module focused specifically on
+                managing and discovering these assets.
               </motion.p>
               <motion.div
                 variants={staggerChildren}
@@ -739,9 +794,10 @@ export function ProjectOne() {
               className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mb-10"
             >
               To address the challenges of managing AI assets,
-              we designed a dedicated {" "} <span className="font-semibold">
-                  Models & Datasets
-                </span>{" "}
+              we designed a dedicated{" "}
+              <span className="font-semibold">
+                Models & Datasets
+              </span>{" "}
               module within the platform. It brings together
               asset discovery, personal management,
               experimentation, and deployment in one place,
@@ -1443,7 +1499,10 @@ export function ProjectOne() {
         </div>
 
         {/* Next Project Teaser */}
-        <NextProject onNextClick={handleNextProject} onAllClick={handleBackToHome} />
+        <NextProject
+          onNextClick={handleNextProject}
+          onAllClick={handleBackToHome}
+        />
       </div>
     </div>
   );
