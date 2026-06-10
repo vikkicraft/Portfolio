@@ -1,4 +1,5 @@
 import { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
+import { createNoise2D } from 'simplex-noise';
 
 interface ParticleData {
   x: number;
@@ -29,10 +30,7 @@ export const ParticleCanvas = forwardRef<ParticleCanvasHandle>((_, ref) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>();
   const particlesRef = useRef<ParticleData[]>([]);
-  const noise2D = useRef((x: number, y: number) => {
-    const value = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
-    return (value - Math.floor(value)) * 2 - 1;
-  });
+  const noise2D = useRef(createNoise2D());
   const systemIdCounterRef = useRef(0);
   const completionCallbacksRef = useRef<Map<number, () => void>>(new Map());
 
