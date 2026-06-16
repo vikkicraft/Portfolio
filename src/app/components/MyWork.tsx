@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router';
 import { useCallback } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useScrollScale } from './hooks/useScrollScale';
+import casestudyOne from "../../asset/images/case-one-banner.jpg";
+import casestudyTwo from "../../asset/images/case-two-banner.jpg";
+import casestudyThree from "../../asset/images/case-three-banner.jpg";
 
 const projects = [
   {
@@ -10,7 +13,7 @@ const projects = [
     title: 'Model & Datasets',
     description: 'An all-in-one AI platform to explore, share, and discover datasets & models',
     image:
-      'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      casestudyOne,
     locked: false,
     route: '/project/1',
   },
@@ -19,7 +22,7 @@ const projects = [
     title: 'Dashboard Redesign',
     description: 'Transforming a cluttered analytics interface into a focused, role-based experience',
     image:
-      'https://images.unsplash.com/photo-1641567535859-c58187ac4954?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBkYXNoYm9hcmQlMjBkYXJrJTIwaW50ZXJmYWNlJTIwZGVzaWdufGVufDF8fHx8MTc3Mzc0OTE3N3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+      casestudyTwo,
     locked: false,
     route: '/project/2',
   },
@@ -28,7 +31,7 @@ const projects = [
     title: 'Design System',
     description: 'Building a scalable design language with 240+ components for healthcare',
     image:
-      'https://images.unsplash.com/photo-1730206562928-0efd62560435?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcmVhdGl2ZSUyMHN0dWRpbyUyMGRlc2lnbiUyMHRvb2xzJTIwZGVza3xlbnwxfHx8fDE3NzM3NDkxODJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+      casestudyThree,
     locked: false,
     route: '/project/3',
   },

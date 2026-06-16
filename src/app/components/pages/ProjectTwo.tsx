@@ -8,12 +8,26 @@ import { useNavigate } from "react-router";
 import { ArrowUp, ArrowUpRight } from "lucide-react";
 import {
   motion,
-  useTransform,
   useMotionValue,
-  useScroll,
+  useTransform,
+  useInView,
   AnimatePresence,
 } from "motion/react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
+import banner from "../../../asset/images/case-three-banner.jpg";
+import imgPhoto1651342489820 from "../../../asset/images/case-three-banner.jpg";
+import imgPhoto1639493115941 from "../../../asset/images/case-three-banner.jpg";
+import imgPhoto1581682101370 from "../../../asset/images/case-three-banner.jpg";
+import imgPhoto1622814859704 from "../../../asset/images/case-three-banner.jpg";
+import imgPhoto1691525891769 from "../../../asset/images/case-three-banner.jpg";
+import imgPhoto1653548410454 from "../../../asset/images/case-three-banner.jpg";
+import imgPhoto1730818027653 from "../../../asset/images/case-three-banner.jpg";
+import imgPhoto1580894894513 from "../../../asset/images/case-three-banner.jpg";
+import imgPhoto1770507423228 from "../../../asset/images/case-three-banner.jpg";
+import imgPhoto1759661966728 from "../../../asset/images/case-three-banner.jpg";
+import imgPhoto1662469567531 from "../../../asset/images/case-three-banner.jpg";
+import imgPhoto1759884247160 from "../../../asset/images/case-three-banner.jpg";
+import imgPhoto1716703742354 from "../../../asset/images/case-three-banner.jpg";
 
 // ============================================================
 // Animation Constants
@@ -52,44 +66,44 @@ const viewportOnce = { once: true, margin: "-80px" } as const;
 // ============================================================
 
 const HERO_IMG =
-  "https://images.unsplash.com/photo-1641567535859-c58187ac4954?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBkYXNoYm9hcmQlMjBkYXJrJTIwaW50ZXJmYWNlJTIwZGVzaWdufGVufDF8fHx8MTc3Mzc0OTE3N3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral";
+  banner;
 
 const galleryImages = [
   {
-    src: "https://images.unsplash.com/photo-1651342489820-7d824299445e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBhcmNoaXRlY3R1cmUlMjBpbnRlcmlvciUyMGNvbmNyZXRlfGVufDF8fHx8MTc3Mzc0OTE4M3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    src: imgPhoto1651342489820,
     alt: "Architecture detail",
   },
   {
-    src: "https://images.unsplash.com/photo-1639493115941-a70fcef4f715?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGdyYWRpZW50JTIwY29sb3JmdWwlMjBiYWNrZ3JvdW5kfGVufDF8fHx8MTc3MzY4MjY4NXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    src: imgPhoto1639493115941,
     alt: "Abstract gradient",
   },
   {
-    src: "https://images.unsplash.com/photo-1581682101370-fafc58e0f387?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsJTIwZ2VvbWV0cmljJTIwYWJzdHJhY3QlMjBhcnR8ZW58MXx8fHwxNzczNzQ5MTgwfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    src: imgPhoto1581682101370,
     alt: "Geometric abstract",
   },
   {
-    src: "https://images.unsplash.com/photo-1622814859704-c6cd5ae75dd0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjbGVhbiUyMG1vZGVybiUyMG9mZmljZSUyMHdvcmtzcGFjZXxlbnwxfHx8fDE3NzM3NDkxODF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    src: imgPhoto1622814859704,
     alt: "Modern workspace",
   },
   {
-    src: "https://images.unsplash.com/photo-1691525891769-832890088df4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxuaWdodCUyMGNpdHklMjBza3lsaW5lJTIwZGFyayUyMG1vb2R5fGVufDF8fHx8MTc3Mzc0OTE4NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    src: imgPhoto1691525891769,
     alt: "City skyline",
   },
 ];
 
 const contentImages = {
   research:
-    "https://images.unsplash.com/photo-1653548410454-0d2b4098c4da?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsYXB0b3AlMjB3aXJlZnJhbWUlMjBza2V0Y2glMjBwcm90b3R5cGV8ZW58MXx8fHwxNzczNzQ5MTc5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    imgPhoto1653548410454,
   prototype:
-    "https://images.unsplash.com/photo-1730818027653-bcd322447bfc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW50ZWNoJTIwYmFua2luZyUyMGFwcCUyMG1vYmlsZSUyMHNjcmVlbnxlbnwxfHx8fDE3NzM3NDkxODF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    imgPhoto1730818027653,
   testing:
-    "https://images.unsplash.com/photo-1580894894513-541e068a3e2b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1c2VyJTIwdGVzdGluZyUyMHVzYWJpbGl0eSUyMGxhYnxlbnwxfHx8fDE3NzM3NDAwMTZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    imgPhoto1580894894513,
   system:
-    "https://images.unsplash.com/photo-1770507423228-85dd82d418da?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZXNpZ24lMjBzeXN0ZW0lMjBjb2xvciUyMHBhbGV0dGUlMjB0eXBvZ3JhcGh5fGVufDF8fHx8MTc3Mzc0OTE3OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    imgPhoto1770507423228,
   dashboard:
-    "https://images.unsplash.com/photo-1759661966728-4a02e3c6ed91?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXRhJTIwdmlzdWFsaXphdGlvbiUyMGFuYWx5dGljcyUyMGNoYXJ0fGVufDF8fHx8MTc3Mzc0OTE4Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    imgPhoto1759661966728,
   collab:
-    "https://images.unsplash.com/photo-1662469567531-9ae8356d3788?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdGFydHVwJTIwdGVhbSUyMGNvbGxhYm9yYXRpb24lMjB3b3JraW5nfGVufDF8fHx8MTc3Mzc0OTE4NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    imgPhoto1662469567531,
 };
 
 // ============================================================
@@ -466,18 +480,25 @@ export function ProjectTwo() {
   const handleNextProject = useCallback(() => navigate("/project/3"), [navigate]);
 
   const problemRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: problemProgress } = useScroll({
-    target: problemRef,
-    offset: ["start start", "end start"],
-  });
-  const problemStickyOpacity = useTransform(problemProgress, [0.25, 0.6], [1, 0]);
+  const problemStickyOpacity = useMotionValue(1);
+  useEffect(() => {
+    const update = () => {
+      const el = problemRef.current;
+      if (!el) return;
+      const progress = Math.min(Math.max(-el.getBoundingClientRect().top / el.offsetHeight, 0), 1);
+      const opacity = progress < 0.25 ? 1 : progress > 0.6 ? 0 : 1 - (progress - 0.25) / 0.35;
+      problemStickyOpacity.set(opacity);
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, [problemStickyOpacity]);
 
   const solutionRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: solutionProgress } = useScroll({
-    target: solutionRef,
-    offset: ["start end", "start center"],
-  });
-  const solutionOpacity = useTransform(solutionProgress, [0, 1], [0, 1]);
+  const solutionInView = useInView(solutionRef, { once: true, margin: "-10%" });
+  const solutionOpacity = useMotionValue(0);
+  useEffect(() => {
+    solutionOpacity.set(solutionInView ? 1 : 0);
+  }, [solutionInView, solutionOpacity]);
 
   useEffect(() => {
     const el = solutionRef.current;
@@ -541,7 +562,7 @@ export function ProjectTwo() {
       <FullBleedImage src={contentImages.research} alt="Research phase" />
 
       {/* Section 02 — Problem */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={problemRef} className="relative pt-20 md:pt-32 pb-32 md:pb-48">
           <motion.div
             variants={staggerChildren}
@@ -817,14 +838,14 @@ export function ProjectTwo() {
               <motion.div variants={fadeUp} className="space-y-6">
                 <div className="aspect-[4/3] overflow-hidden">
                   <ImageWithFallback
-                    src="https://images.unsplash.com/photo-1759884247160-27b8465544b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3aGl0ZWJvYXJkJTIwYnJhaW5zdG9ybWluZyUyMHBsYW5uaW5nJTIwc2Vzc2lvbnxlbnwxfHx8fDE3NzM3NDkxNzl8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                    src={imgPhoto1759884247160}
                     alt="Research brainstorming session"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="aspect-[4/3] overflow-hidden">
                   <ImageWithFallback
-                    src="https://images.unsplash.com/photo-1716703742354-c3c45ecc3b27?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZWFtJTIwZGVzaWduJTIwcmV2aWV3JTIwbWVldGluZ3xlbnwxfHx8fDE3NzM3NDkxODB8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                    src={imgPhoto1716703742354}
                     alt="Design review meeting"
                     className="w-full h-full object-cover"
                   />

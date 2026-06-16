@@ -1,28 +1,28 @@
 import { Plus, Download } from "lucide-react";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import profileImage from "figma:asset/a45dc2be02a424be89e771c4f6eb545354981f30.png";
+import profileImage from "../../asset/images/profile.png";
 
 const NAVBAR_HEIGHT = 64;
 const FADE_RANGE = 200;
 
 const experiences = [
   {
-    company: "Vision Waves",
+    company: "Company-1",
     role: "UX Designer",
     period: "Jun 2024-Today",
     details:
       "Led cross-platform AI experiences and high-profile features such as Satellite SOS on Pixel 9 and Android Private Space, shaping long-term Android strategies, enhancing user engagement for billions globally, and fostering cross-functional collaboration and design community initiatives.",
   },
   {
-    company: "Cyber infrastructure CIS",
+    company: "Company-2",
     role: "UI/UX Designer",
     period: "2022-2024",
     details:
       "Led design initiatives for major clients across multiple industries, driving digital transformation through user-centered design strategies and building high-performing design teams.",
   },
   {
-    company: "Customize softech solution",
+    company: "Company-3",
     role: "UI/UX Designer",
     period: "2011-2022",
     details:

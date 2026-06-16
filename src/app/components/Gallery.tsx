@@ -1,29 +1,33 @@
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useEffect, useRef } from "react";
+import slideOne from "../../asset/images/dog.jpg";
+import slideTwo from "../../asset/images/bridge.jpg";
+import slideThree from "../../asset/images/mountains.jpg";
+import slideFour from "../../asset/images/tokoyo.jpg";
 
 const slides = [
   {
     id: 1,
     image:
-      "https://images.unsplash.com/photo-1734966213753-1b361564bab4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnb2xkZW4lMjByZXRyaWV2ZXIlMjBkb2d8ZW58MXx8fHwxNzcyMDk0MTU3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      slideOne,
     alt: "Golden Retriever",
   },
   {
     id: 2,
     image:
-      "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnb2xkZW4lMjBnYXRlJTIwYnJpZGdlfGVufDF8fHx8MTc3MjA0Nzc4NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      slideTwo,
     alt: "Golden Gate Bridge",
   },
   {
     id: 3,
     image:
-      "https://images.unsplash.com/photo-1610241211891-12adc05f5a47?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3NlbWl0ZSUyMG1vdW50YWlucyUyMGZvcmVzdHxlbnwxfHx8fDE3NzIxMTI4Mzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      slideThree,
     alt: "Yosemite Mountains",
   },
   {
     id: 4,
     image:
-      "https://images.unsplash.com/photo-1600137430184-21a17a68ace5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b2t5byUyMHN0cmVldCUyMHRheGl8ZW58MXx8fHwxNzcyMTEyODM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      slideFour,
     alt: "Tokyo Street",
   },
 ];

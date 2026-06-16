@@ -1,7 +1,7 @@
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
-import logoImg from "figma:asset/33f095ca7b1c9e3c098376cfa60d9d0e80268110.png";
+import logoImg from "../../asset/images/profile.png";
 import { Menu, X, Sun, Moon } from "lucide-react";
 
 const HOME_NAV_LINKS = ["My Work", "About", "Skills", "Contact"] as const;

@@ -8,12 +8,28 @@ import { useNavigate } from "react-router";
 import { ArrowUp, ArrowUpRight } from "lucide-react";
 import {
   motion,
-  useTransform,
   useMotionValue,
-  useScroll,
+  useTransform,
+  useInView,
   AnimatePresence,
 } from "motion/react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
+import banner from "../../../asset/images/case-one-banner.jpg";
+import imgPhoto1543067361 from "../../../asset/images/case-one-banner.jpg";
+import imgPhoto1633339257118 from "../../../asset/images/case-one-banner.jpg";
+import imgPhoto1742440710136 from "../../../asset/images/case-one-banner.jpg";
+import imgPhoto1632516643720 from "../../../asset/images/case-one-banner.jpg";
+import imgPhoto1760544139691 from "../../../asset/images/case-one-banner.jpg";
+import imgPhoto1511871893393 from "../../../asset/images/case-one-banner.jpg";
+import imgPhoto1694878981905 from "../../../asset/images/case-one-banner.jpg";
+import imgPhoto1621036579842 from "../../../asset/images/case-one-banner.jpg";
+import imgPhoto1565495296896 from "../../../asset/images/case-one-banner.jpg";
+import imgPhoto1602343457765 from "../../../asset/images/case-one-banner.jpg";
+import imgPhoto1759884247160 from "../../../asset/images/case-one-banner.jpg";
+import imgPhoto1674509036252 from "../../../asset/images/case-one-banner.jpg";
+import imgPhoto1769794370964 from "../../../asset/images/case-one-banner.jpg";
+import imgPhoto1666334111978 from "../../../asset/images/case-one-banner.jpg";
+
 
 // ============================================================
 // Animation Constants
@@ -52,44 +68,44 @@ const viewportOnce = { once: true, margin: "-80px" } as const;
 // ============================================================
 
 const HERO_IMG =
-  "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  banner;
 
 const galleryImages = [
   {
-    src: "https://images.unsplash.com/photo-1543067361-9bf996edf6ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsJTIwYXJjaGl0ZWN0dXJlJTIwd2hpdGUlMjBidWlsZGluZ3xlbnwxfHx8fDE3NzMwNTk3NjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    src: imgPhoto1543067361,
     alt: "Architecture exploration",
   },
   {
-    src: "https://images.unsplash.com/photo-1633339257118-28dd67299a4d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXJrJTIwbW9vZHklMjBwcm9kdWN0JTIwcGhvdG9ncmFwaHl8ZW58MXx8fHwxNzcyOTY4ODAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    src: imgPhoto1633339257118,
     alt: "Product details",
   },
   {
-    src: "https://images.unsplash.com/photo-1742440710136-1976b1cad864?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZXNpZ24lMjB3b3Jrc3BhY2UlMjBjcmVhdGl2ZSUyMHN0dWRpb3xlbnwxfHx8fDE3NzMwNTk3NjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    src: imgPhoto1742440710136,
     alt: "Creative workspace",
   },
   {
-    src: "https://images.unsplash.com/photo-1632516643720-e7f5d7d6ecc9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGdyYWRpZW50JTIwbWluaW1hbCUyMGFydHxlbnwxfHx8fDE3NzMwNTk3NjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    src: imgPhoto1632516643720,
     alt: "Abstract gradient",
   },
   {
-    src: "https://images.unsplash.com/photo-1760544139691-360b5e092e97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcmNoaXRlY3R1cmFsJTIwZGV0YWlsJTIwY29uY3JldGUlMjB0ZXh0dXJlfGVufDF8fHx8MTc3MzA1OTc2Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+    src: imgPhoto1760544139691,
     alt: "Concrete texture",
   },
 ];
 
 const contentImages = {
   research:
-    "https://images.unsplash.com/photo-1511871893393-82e9c16b81e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3aXJlZnJhbWUlMjBza2V0Y2glMjBub3RlYm9vayUyMGRlc2lnbnxlbnwxfHx8fDE3NzMwNTk3NjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    imgPhoto1511871893393,
   prototype:
-    "https://images.unsplash.com/photo-1694878981905-b742a32f8121?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2JpbGUlMjBhcHAlMjBpbnRlcmZhY2UlMjBtb2NrdXAlMjBzY3JlZW58ZW58MXx8fHwxNzczMDU5NzY1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    imgPhoto1694878981905,
   testing:
-    "https://images.unsplash.com/photo-1621036579842-9080c7119f67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1c2VyJTIwZXhwZXJpZW5jZSUyMHRlc3RpbmclMjBzZXNzaW9ufGVufDF8fHx8MTc3MzA1OTc2NXww&ixlib=rb-4.1.0&q=80&w=1080",
+    imgPhoto1621036579842,
   system:
-    "https://images.unsplash.com/photo-1565495296896-0a2b8081086e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0eXBvZ3JhcGh5JTIwZGVzaWduJTIwY2xlYW4lMjBsYXlvdXR8ZW58MXx8fHwxNzczMDU5NzY2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    imgPhoto1565495296896,
   dashboard:
-    "https://images.unsplash.com/photo-1602343457765-812c355ea50d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBkYXNoYm9hcmQlMjB1aSUyMGRlc2lnbiUyMGRhcmt8ZW58MXx8fHwxNzczMDU5NzY2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    imgPhoto1602343457765,
   collab:
-    "https://images.unsplash.com/photo-1759884247160-27b8465544b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZWFtJTIwY29sbGFib3JhdGlvbiUyMG1lZXRpbmclMjB3aGl0ZWJvYXJkfGVufDF8fHx8MTc3MzA1OTc2N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+    imgPhoto1759884247160,
 };
 
 // ============================================================
@@ -297,7 +313,7 @@ function TwoColumnText({
       {heading && (
         <motion.h2
           variants={fadeUp}
-          className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
+          className="text-3xl font-medium leading-tight sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
         >
           {heading}
         </motion.h2>
@@ -309,9 +325,9 @@ function TwoColumnText({
               {leftHeading}
             </p>
           )}
-          <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+          <div className="text-gray-600 dark:text-gray-400 leading-relaxed">
             {leftText}
-          </p>
+          </div>
         </motion.div>
         <motion.div variants={fadeUp}>
           {rightHeading && (
@@ -319,9 +335,9 @@ function TwoColumnText({
               {rightHeading}
             </p>
           )}
-          <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+          <div className="text-gray-600 dark:text-gray-400 leading-relaxed">
             {rightText}
-          </p>
+          </div>
         </motion.div>
       </div>
     </motion.div>
@@ -572,27 +588,27 @@ export function ProjectOne() {
 
   // Problem section sticky fade-out
   const problemRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: problemProgress } = useScroll({
-    target: problemRef,
-    offset: ["start start", "end start"],
-  });
-  const problemStickyOpacity = useTransform(
-    problemProgress,
-    [0.25, 0.6],
-    [1, 0],
-  );
+  const problemStickyOpacity = useMotionValue(1);
+  useEffect(() => {
+    const update = () => {
+      const el = problemRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const progress = Math.min(Math.max(-rect.top / el.offsetHeight, 0), 1);
+      const opacity = progress < 0.25 ? 1 : progress > 0.6 ? 0 : 1 - (progress - 0.25) / 0.35;
+      problemStickyOpacity.set(opacity);
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, [problemStickyOpacity]);
 
-  // Solution section scroll-linked opacity
+  // Solution section fade-in on entry
   const solutionRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: solutionProgress } = useScroll({
-    target: solutionRef,
-    offset: ["start end", "start center"],
-  });
-  const solutionOpacity = useTransform(
-    solutionProgress,
-    [0, 1],
-    [0, 1],
-  );
+  const solutionInView = useInView(solutionRef, { once: true, margin: "-10%" });
+  const solutionOpacity = useMotionValue(0);
+  useEffect(() => {
+    solutionOpacity.set(solutionInView ? 1 : 0);
+  }, [solutionInView, solutionOpacity]);
 
   useEffect(() => {
     const el = solutionRef.current;
@@ -701,7 +717,7 @@ export function ProjectOne() {
       {/* ============================== */}
       {/* Section 02 — Problem           */}
       {/* ============================== */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Problem & Context */}
         <div
           ref={problemRef}
@@ -722,9 +738,9 @@ export function ProjectOne() {
               <SectionLabel number="02" label="Problem" />
               <motion.h2
                 variants={fadeUp}
-                className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text tracking-tight"
+                className="text-3xl font-medium leading-tight sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text tracking-tight"
               >
-                No centralized home for models and datasets
+                No centralized hub for AI assets
               </motion.h2>
             </motion.div>
 
@@ -745,10 +761,10 @@ export function ProjectOne() {
                 className="flex flex-col gap-6"
               >
                 {[
-                  "Users struggled to organize their own models and datasets, with no structured way to track experiments or versions",
-                  "Discovering resources created by others was difficult, leading to duplication of work across teams",
-                  "Limited visibility into available assets caused inefficiencies in collaboration and slowed development cycles",
-                  "A clear need emerged for a structured, intuitive module to streamline discovery, management, experimentation, and deployment",
+                  "Users struggled to organize their own models and datasets, with no structured way to track experiments or versions.",
+                  "Discovering reusable assets created by other teams was difficult, leading to duplicated effort and inconsistent practices.",
+                  "Limited visibility into available assets caused inefficiencies in collaboration and slowed development cycles.",
+                  "A clear need emerged for a structured, intuitive module to streamline discovery, management, experimentation, and deployment.",
                 ].map((point, i) => (
                   <motion.div
                     key={i}
@@ -785,31 +801,32 @@ export function ProjectOne() {
           >
             <motion.h2
               variants={fadeUp}
-              className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
+              className="text-3xl font-medium leading-tight sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
             >
-              Crafted Solution
+              Crafting the Solution
             </motion.h2>
             <motion.p
               variants={fadeUp}
               className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mb-10"
             >
-              To address the challenges of managing AI assets,
-              we designed a dedicated{" "}
+              To address the fragmented AI asset workflow, we
+              designed the{" "}
               <span className="font-semibold">
                 Models & Datasets
               </span>{" "}
-              module within the platform. It brings together
-              asset discovery, personal management,
-              experimentation, and deployment in one place,
-              creating a more structured and easy-to-use
-              experience.
+              module within AION (Nawat) as a centralized
+              experience for asset discovery, management,
+              experimentation, and deployment. The solution
+              brings together shared organizational resources
+              and personal workflows into a structured and
+              scalable platform.
             </motion.p>
             <div className="flex flex-col gap-4 mb-10">
               <motion.p
                 variants={fadeUp}
                 className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl font-semibold"
               >
-                The module was designed around two core areas:
+                The solution was built around two core areas:
               </motion.p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16">
                 <motion.div
@@ -817,15 +834,14 @@ export function ProjectOne() {
                   className="p-5 border border-gray-200 dark:border-gray-800"
                 >
                   <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
-                    01 — Marketplace
+                    01 — Model hub
                   </p>
                   <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    A collaborative space where users can
-                    explore and access shared models and
-                    datasets uploaded across the organization.
-                    This improves visibility, reduces
-                    duplication of effort, and encourages reuse
-                    of existing assets.
+                    A collaborative space where teams can
+                    discover, access, and reuse shared models
+                    and datasets across the organization. This
+                    improves visibility, reduces duplicated
+                    effort, and promotes knowledge sharing.
                   </p>
                 </motion.div>
                 <motion.div
@@ -892,7 +908,7 @@ export function ProjectOne() {
           >
             <motion.h2
               variants={fadeUp}
-              className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
+              className="text-3xl font-medium leading-tight sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
             >
               From research to reality in 12 weeks
             </motion.h2>
@@ -968,7 +984,7 @@ export function ProjectOne() {
           >
             <motion.h2
               variants={fadeUp}
-              className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
+              className="text-3xl font-medium leading-tight sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
             >
               Understanding the AI community's unmet needs
             </motion.h2>
@@ -1030,14 +1046,14 @@ export function ProjectOne() {
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <ImageWithFallback
-                    src="https://images.unsplash.com/photo-1674509036252-5a517959a3b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxVWCUyMHJlc2VhcmNoJTIwZGF0YSUyMGFuYWx5c2lzJTIwc3RpY2t5JTIwbm90ZXN8ZW58MXx8fHwxNzczMDYzMzUzfDA&ixlib=rb-4.1.0&q=80&w=1080"
+                    src={imgPhoto1674509036252}
                     alt="Research synthesis with sticky notes"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="aspect-[4/3] overflow-hidden">
                   <ImageWithFallback
-                    src="https://images.unsplash.com/photo-1769794370964-78412732f1cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1c2VyJTIwaW50ZXJ2aWV3JTIwcmVzZWFyY2glMjBzZXNzaW9uJTIwbm90ZXN8ZW58MXx8fHwxNzczMDQ3Nzk0fDA&ixlib=rb-4.1.0&q=80&w=1080"
+                    src={imgPhoto1769794370964}
                     alt="User interview session"
                     className="w-full h-full object-cover"
                   />
@@ -1286,7 +1302,7 @@ export function ProjectOne() {
                 <motion.div variants={fadeUp}>
                   <div className="aspect-[4/5] overflow-hidden">
                     <ImageWithFallback
-                      src="https://images.unsplash.com/photo-1666334111978-614a8d680bbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1c2VyJTIwcGVyc29uYSUyMHByb2ZpbGUlMjBjYXJkJTIwZGVzaWdufGVufDF8fHx8MTc3MzA2MzU2M3ww&ixlib=rb-4.1.0&q=80&w=1080"
+                      src={imgPhoto1666334111978}
                       alt="Target audience analysis"
                       className="w-full h-full object-cover"
                     />
@@ -1426,7 +1442,7 @@ export function ProjectOne() {
           >
             <motion.h2
               variants={fadeUp}
-              className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
+              className="text-3xl font-medium leading-tight sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight"
             >
               What I learned along the way
             </motion.h2>
