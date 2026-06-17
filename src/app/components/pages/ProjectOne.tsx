@@ -15,21 +15,20 @@ import {
 } from "motion/react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 import banner from "../../../asset/images/case-one-banner.jpg";
-import imgPhoto1543067361 from "../../../asset/images/case-one-banner.jpg";
-import imgPhoto1633339257118 from "../../../asset/images/case-one-banner.jpg";
-import imgPhoto1742440710136 from "../../../asset/images/case-one-banner.jpg";
-import imgPhoto1632516643720 from "../../../asset/images/case-one-banner.jpg";
-import imgPhoto1760544139691 from "../../../asset/images/case-one-banner.jpg";
-import imgPhoto1511871893393 from "../../../asset/images/case-one-banner.jpg";
-import imgPhoto1694878981905 from "../../../asset/images/case-one-banner.jpg";
-import imgPhoto1621036579842 from "../../../asset/images/case-one-banner.jpg";
-import imgPhoto1565495296896 from "../../../asset/images/case-one-banner.jpg";
+import platformOvrview from "../../../asset/images/case-one-banner.jpg";
+import galleryOne from "../../../asset/images/case-one-banner.jpg";
+import galleryTwo from "../../../asset/images/case-one-banner.jpg";
+import galleryThree from "../../../asset/images/case-one-banner.jpg";
+import galleryFour from "../../../asset/images/case-one-banner.jpg";
+import galleryFive from "../../../asset/images/case-one-banner.jpg";
+import solutionOne from "../../../asset/images/case-one-banner.jpg";
+import solutionTwo from "../../../asset/images/case-one-banner.jpg";
 import imgPhoto1602343457765 from "../../../asset/images/case-one-banner.jpg";
 import imgPhoto1759884247160 from "../../../asset/images/case-one-banner.jpg";
 import imgPhoto1674509036252 from "../../../asset/images/case-one-banner.jpg";
 import imgPhoto1769794370964 from "../../../asset/images/case-one-banner.jpg";
 import imgPhoto1666334111978 from "../../../asset/images/case-one-banner.jpg";
-
+import closingImage from "../../../asset/images/case-one-banner.jpg";
 
 // ============================================================
 // Animation Constants
@@ -72,36 +71,36 @@ const HERO_IMG =
 
 const galleryImages = [
   {
-    src: imgPhoto1543067361,
+    src: galleryOne,
     alt: "Architecture exploration",
   },
   {
-    src: imgPhoto1633339257118,
+    src: galleryTwo,
     alt: "Product details",
   },
   {
-    src: imgPhoto1742440710136,
+    src: galleryThree,
     alt: "Creative workspace",
   },
   {
-    src: imgPhoto1632516643720,
+    src: galleryFour,
     alt: "Abstract gradient",
   },
   {
-    src: imgPhoto1760544139691,
+    src: galleryFive,
     alt: "Concrete texture",
   },
 ];
 
 const contentImages = {
   research:
-    imgPhoto1511871893393,
+    platformOvrview,
   prototype:
-    imgPhoto1694878981905,
+    solutionOne,
   testing:
-    imgPhoto1621036579842,
+    closingImage,
   system:
-    imgPhoto1565495296896,
+    solutionTwo,
   dashboard:
     imgPhoto1602343457765,
   collab:

@@ -89,7 +89,8 @@
 }
 
 @theme inline {
-  --font-heading: 'Lora', serif;
+  /* font Lora, Whyte Inktrap */
+  --font-heading: 'Whyte Inktrap', sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
