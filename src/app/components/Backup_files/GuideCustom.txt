@@ -4,6 +4,13 @@ Disable CustomCursor (simplest)
 In src/app/components/Layout.tsx, remove or comment out the <CustomCursor />
 <custom corsor enable disable/>
 
+<Theme change>
+To change the default theme manually, edit line 21 in /src/app/components/Navbar.tsx
+Change "dark" to "light" or vice-versa
+example
+Dark: const DEFAULT_THEME: "dark" | "light" = "dark";
+Light:const DEFAULT_THEME: "dark" | "light" = "light";
+<Theme change/>
 
 <Thanos snap enable>
 Here's what you need to do:

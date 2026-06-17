@@ -18,7 +18,7 @@ const PROJECT_NAV: Record<string, { prev: string; next: string }> = {
    "dark"  → dark mode by default
    "light" → light mode by default
    ────────────────────────────────────────────── */
-const DEFAULT_THEME: "dark" | "light" = "dark";
+const DEFAULT_THEME: "dark" | "light" = "light";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
