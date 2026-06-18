@@ -14,15 +14,14 @@ import {
   AnimatePresence,
 } from "motion/react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
-import banner from "../../../asset/images/case-one-banner.jpg";
+import banner from "../../../asset/images/bannerStudyOne.png";
+import solutionImage from "../../../asset/images/solution.png";
 import platformOvrview from "../../../asset/images/case-one-banner.jpg";
 import galleryOne from "../../../asset/images/case-one-banner.jpg";
 import galleryTwo from "../../../asset/images/case-one-banner.jpg";
 import galleryThree from "../../../asset/images/case-one-banner.jpg";
 import galleryFour from "../../../asset/images/case-one-banner.jpg";
 import galleryFive from "../../../asset/images/case-one-banner.jpg";
-import solutionOne from "../../../asset/images/case-one-banner.jpg";
-import solutionTwo from "../../../asset/images/case-one-banner.jpg";
 import imgPhoto1602343457765 from "../../../asset/images/case-one-banner.jpg";
 import imgPhoto1759884247160 from "../../../asset/images/case-one-banner.jpg";
 import imgPhoto1674509036252 from "../../../asset/images/case-one-banner.jpg";
@@ -66,8 +65,7 @@ const viewportOnce = { once: true, margin: "-80px" } as const;
 // Image Assets
 // ============================================================
 
-const HERO_IMG =
-  banner;
+const HERO_IMG = banner;
 
 const galleryImages = [
   {
@@ -93,18 +91,11 @@ const galleryImages = [
 ];
 
 const contentImages = {
-  research:
-    platformOvrview,
-  prototype:
-    solutionOne,
-  testing:
-    closingImage,
-  system:
-    solutionTwo,
-  dashboard:
-    imgPhoto1602343457765,
-  collab:
-    imgPhoto1759884247160,
+  research: platformOvrview,
+  solutionImage: solutionImage,
+  testing: closingImage,
+  dashboard: imgPhoto1602343457765,
+  collab: imgPhoto1759884247160,
 };
 
 // ============================================================
@@ -360,7 +351,7 @@ function FullBleedImage({
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
-      className="w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden"
+      className="w-full rounded-xl border border-gray-200 dark:border-gray-800"
     >
       <ImageWithFallback
         src={src}
@@ -372,48 +363,29 @@ function FullBleedImage({
 }
 
 // ============================================================
-// TwoImageGrid Component
+// LargeImage Component
 // ============================================================
 
-function TwoImageGrid({
-  src1,
-  alt1,
-  src2,
-  alt2,
+function LargeImage({
+  src,
+  alt,
 }: {
-  src1: string;
-  alt1: string;
-  src2: string;
-  alt2: string;
+  src: string;
+  alt: string;
 }) {
   return (
     <motion.div
-      variants={staggerChildren}
+      variants={fadeIn}
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
-      className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
+      className="w-full"
     >
-      <motion.div
-        variants={fadeUp}
-        className="aspect-[4/3] overflow-hidden"
-      >
-        <ImageWithFallback
-          src={src1}
-          alt={alt1}
-          className="w-full h-full object-cover"
-        />
-      </motion.div>
-      <motion.div
-        variants={fadeUp}
-        className="aspect-[4/3] overflow-hidden"
-      >
-        <ImageWithFallback
-          src={src2}
-          alt={alt2}
-          className="w-full h-full object-cover"
-        />
-      </motion.div>
+      <ImageWithFallback
+        src={src}
+        alt={alt}
+        className="w-full h-full object-cover"
+      />
     </motion.div>
   );
 }
@@ -593,17 +565,30 @@ export function ProjectOne() {
       const el = problemRef.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
-      const progress = Math.min(Math.max(-rect.top / el.offsetHeight, 0), 1);
-      const opacity = progress < 0.25 ? 1 : progress > 0.6 ? 0 : 1 - (progress - 0.25) / 0.35;
+      const progress = Math.min(
+        Math.max(-rect.top / el.offsetHeight, 0),
+        1,
+      );
+      const opacity =
+        progress < 0.25
+          ? 1
+          : progress > 0.6
+            ? 0
+            : 1 - (progress - 0.25) / 0.35;
       problemStickyOpacity.set(opacity);
     };
-    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("scroll", update, {
+      passive: true,
+    });
     return () => window.removeEventListener("scroll", update);
   }, [problemStickyOpacity]);
 
   // Solution section fade-in on entry
   const solutionRef = useRef<HTMLDivElement>(null);
-  const solutionInView = useInView(solutionRef, { once: true, margin: "-10%" });
+  const solutionInView = useInView(solutionRef, {
+    once: true,
+    margin: "-10%",
+  });
   const solutionOpacity = useMotionValue(0);
   useEffect(() => {
     solutionOpacity.set(solutionInView ? 1 : 0);
@@ -884,11 +869,9 @@ export function ProjectOne() {
       {/* Two Image Grid                 */}
       {/* ============================== */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <TwoImageGrid
-          src1={contentImages.prototype}
-          alt1="Interface prototype"
-          src2={contentImages.system}
-          alt2="Design system"
+        <LargeImage
+          src={contentImages.solutionImage}
+          alt="Interface prototype"
         />
       </div>
 

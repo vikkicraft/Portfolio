@@ -1,7 +1,7 @@
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
-import logoImg from "../../asset/images/profile.png";
+import logoImg from "../../asset/images/logo.png";
 import { Menu, X, Sun, Moon } from "lucide-react";
 
 const HOME_NAV_LINKS = ["My Work", "About", "Skills", "Contact"] as const;
@@ -97,7 +97,7 @@ export function Navbar() {
               <ImageWithFallback
                 src={logoImg}
                 alt="Portfolio"
-                className="h-6 w-auto dark:invert"
+                className="h-6 w-auto"
               />
             </button>
           </div>
