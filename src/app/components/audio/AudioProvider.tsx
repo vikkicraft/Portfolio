@@ -2,6 +2,7 @@ import { TapeController } from "./TapeController";
 import { ScrollController } from "./ScrollController";
 import { ClickPlayer } from "./ClickPlayer";
 import { easeOutCubic } from "./ResponseCurve";
+import { engine } from "../../core/Engine";
 import {
   createContext,
   useContext,
@@ -73,7 +74,22 @@ export function AudioProvider({
       tape.setStretch(easeOutCubic(stretch));
     });
 
+    const removeScroll = engine.add(() => {
+      controller.update();
+    });
+
+    const removeTape = engine.add(() => {
+      tape.update();
+    });
+
+    engine.start();
+
     return () => {
+      removeScroll();
+      removeTape();
+
+      engine.stop();
+
       controller.destroy();
       tape.destroy();
 

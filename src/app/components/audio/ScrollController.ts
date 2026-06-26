@@ -4,16 +4,12 @@ import { interaction } from "./InteractionState";
 export class ScrollController {
   private spring = new Spring();
 
-  private animationFrame = 0;
-
   private gestureVelocity = 0;
 
   constructor(private onUpdate: (stretch: number) => void) {
     window.addEventListener("wheel", this.handleWheel, {
       passive: true,
     });
-
-    this.animate();
   }
 
   private handleWheel = (event: WheelEvent) => {
@@ -30,10 +26,8 @@ export class ScrollController {
     this.gestureVelocity = Math.min(this.gestureVelocity, 1);
   };
 
-  private animate = () => {
+  update = () => {
     const stretch = this.spring.value;
-
-    console.log(stretch);
 
     this.spring.push(this.gestureVelocity);
 
@@ -49,12 +43,12 @@ export class ScrollController {
       this.gestureVelocity = 0;
     }
 
-    this.animationFrame = requestAnimationFrame(this.animate);
+    this.onUpdate(this.spring.value);
   };
 
   destroy() {
-    window.removeEventListener("wheel", this.handleWheel);
-
-    cancelAnimationFrame(this.animationFrame);
-  }
-}
+  window.removeEventListener(
+    "wheel",
+    this.handleWheel
+  );
+}}
