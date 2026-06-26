@@ -12,6 +12,11 @@ Dark: const DEFAULT_THEME: "dark" | "light" = "dark";
 Light:const DEFAULT_THEME: "dark" | "light" = "light";
 <Theme change/>
 
+  <background volume control>
+Inside TapeController.ts
+// Gain
+this.gain.gain.value = 0.15;
+
 <Thanos snap enable>
 Here's what you need to do:
 

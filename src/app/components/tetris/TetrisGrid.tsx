@@ -162,6 +162,7 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
   const prevRowsRef = useRef<number>(0);
 
   const NAVBAR_ROWS = 4;
+  const NAVBAR_HEIGHT = 64; // pixels to ignore at top
   const BOTTOM_OFFSET = 30; // pixels reserved at bottom for controls/divider
   const GAME_OVER_DELAY = 0.6; // seconds before clearing
 
@@ -234,6 +235,7 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
       .sort((a, b) => a - b);
 
     if (fullRows.length > 0) {
+      // Line cleared
       // Remove cells in full rows
       placed = placed.filter((cell) => !fullRows.includes(cell.row));
       // Shift cells above each cleared row down
@@ -466,8 +468,15 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
       }
     };
 
-    // Click — rotate block (only within hero section)
+    // Click — rotate block (only within hero section and outside navbar)
     const handleClick = (e: MouseEvent) => {
+      // Ignore clicks on or inside the navbar
+      const target = e.target as HTMLElement;
+      if (target?.closest('nav')) return;
+      
+      // Also ignore clicks in the navbar area by coordinates (fallback)
+      if (e.clientY < NAVBAR_HEIGHT) return;
+
       const canvas = canvasRef.current;
       if (!canvas) return;
       const rect = canvas.getBoundingClientRect();

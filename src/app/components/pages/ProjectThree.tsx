@@ -333,10 +333,10 @@ function TwoImageGrid({
       className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
     >
       <motion.div variants={fadeUp} className="aspect-[4/3] overflow-hidden">
-        <ImageWithFallback src={src1} alt={alt1} className="w-full h-full object-cover" />
+        <ImageWithFallback src={src1} alt={alt1} className="w-full h-full object-contain" />
       </motion.div>
       <motion.div variants={fadeUp} className="aspect-[4/3] overflow-hidden">
-        <ImageWithFallback src={src2} alt={alt2} className="w-full h-full object-cover" />
+        <ImageWithFallback src={src2} alt={alt2} className="w-full h-full object-contain" />
       </motion.div>
     </motion.div>
   );

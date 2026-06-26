@@ -19,6 +19,9 @@ export function TetrisTouchOverlay({ heroRef }: { heroRef: React.RefObject<HTMLE
 
   const isInsideHero = useCallback(
     (clientX: number, clientY: number) => {
+      // Ignore clicks/taps in the navbar area (top 64px of screen)
+      if (clientY < 64) return false;
+
       const hero = heroRef.current;
       if (!hero) return false;
       const rect = hero.getBoundingClientRect();
@@ -79,6 +82,11 @@ export function TetrisTouchOverlay({ heroRef }: { heroRef: React.RefObject<HTMLE
 
     const handleTouchStart = (e: TouchEvent) => {
       const touch = e.touches[0];
+      const target = e.target as HTMLElement;
+
+      // Ignore if tapping on or inside the navbar
+      if (target?.closest('nav')) return;
+      
       if (!isInsideHero(touch.clientX, touch.clientY)) return;
       if (isInteractiveElement(e.target)) return;
 
