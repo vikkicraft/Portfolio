@@ -26,7 +26,6 @@ export class TapeController {
     // Halo
     this.filter.frequency.rampTo(20000 - stretch * 14000, 0.08);
     // Tape
-    this.player.playbackRate = 1.0 - stretch * 0.18;
     this.player.playbackRate = 1.0 - stretch * 0.04;
   };
 

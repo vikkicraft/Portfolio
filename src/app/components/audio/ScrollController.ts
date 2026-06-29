@@ -42,8 +42,6 @@ export class ScrollController {
     if (this.gestureVelocity < 0.0005) {
       this.gestureVelocity = 0;
     }
-
-    this.onUpdate(this.spring.value);
   };
 
   destroy() {
