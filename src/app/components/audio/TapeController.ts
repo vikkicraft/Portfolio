@@ -21,7 +21,7 @@ export class TapeController {
     const stretch = this.spring.value;
 
     // Gain
-    this.gain.gain.value = 0.5;
+    this.gain.gain.value = 1;
 
     // Halo
     this.filter.frequency.rampTo(20000 - stretch * 14000, 0.08);
