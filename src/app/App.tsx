@@ -1,12 +1,6 @@
-import { RouterProvider } from "react-router";
-import { router } from "./routes";
-
-import { AudioProvider } from "./components/audio/AudioProvider";
+import { RouterProvider } from 'react-router';
+import { router } from './routes';
 
 export default function App() {
-  return (
-    <AudioProvider>
-      <RouterProvider router={router} />
-    </AudioProvider>
-  );
+  return <RouterProvider router={router} />;
 }

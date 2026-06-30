@@ -2,28 +2,12 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
 import logoImg from "../../asset/images/logo.png";
-import { useAudio } from "./audio/AudioProvider";
-import {
-  Menu,
-  X,
-  Sun,
-  Moon,
-  Volume2,
-  VolumeX,
-} from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 
-const HOME_NAV_LINKS = [
-  "My Work",
-  "About",
-  "Skills",
-  "Contact",
-] as const;
+const HOME_NAV_LINKS = ["My Work", "About", "Skills", "Contact"] as const;
 
 // Project routing: prev/next per project (circular)
-const PROJECT_NAV: Record<
-  string,
-  { prev: string; next: string }
-> = {
+const PROJECT_NAV: Record<string, { prev: string; next: string }> = {
   "/project/1": { prev: "/project/3", next: "/project/2" },
   "/project/2": { prev: "/project/1", next: "/project/3" },
   "/project/3": { prev: "/project/2", next: "/project/1" },
@@ -44,7 +28,6 @@ export function Navbar() {
   });
   const navigate = useNavigate();
   const location = useLocation();
-  const { playClick, isPlaying, play, pause } = useAudio();
 
   const isProjectPage = location.pathname in PROJECT_NAV;
   const projectNav = PROJECT_NAV[location.pathname];
@@ -64,69 +47,39 @@ export function Navbar() {
   }, []);
 
   const handleNavClick = useCallback(
-    async (link: string) => {
-      await playClick();
-
+    (link: string) => {
       const hash = `#${link.toLowerCase().replace(" ", "-")}`;
-
       if (location.pathname !== "/") {
         navigate("/" + hash);
       } else {
         const el = document.querySelector(hash);
-
-        if (el) {
-          el.scrollIntoView({
-            behavior: "smooth",
-          });
-        }
+        if (el) el.scrollIntoView({ behavior: "smooth" });
       }
     },
-    [location.pathname, navigate, playClick],
+    [location.pathname, navigate]
   );
 
-  const handleLogoClick = useCallback(async () => {
-    await playClick();
-
+  const handleLogoClick = useCallback(() => {
     if (location.pathname !== "/") {
       navigate("/");
     } else {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }, [location.pathname, navigate, playClick]);
-
-  const handleRouteNavigation = useCallback(
-    async (path: string) => {
-      await playClick();
-      navigate(path);
-
-      if (isMenuOpen) {
-        setIsMenuOpen(false);
-      }
-    },
-    [navigate, playClick, isMenuOpen],
-  );
+  }, [location.pathname, navigate]);
 
   const handleMobileNavClick = useCallback(
-    async (link: string) => {
-      await handleNavClick(link);
+    (link: string) => {
+      handleNavClick(link);
       setIsMenuOpen(false);
     },
-    [handleNavClick],
+    [handleNavClick]
   );
 
-  const handleContactClick = useCallback(async () => {
-    await playClick();
-
-    if (location.pathname !== "/") {
-      navigate("/#contact");
-    } else {
-      document.querySelector("#contact")?.scrollIntoView({
-        behavior: "smooth",
-      });
-    }
-
+  const handleContactClick = useCallback(() => {
+    const el = document.querySelector("#contact");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
     setIsMenuOpen(false);
-  }, [playClick, navigate, location.pathname]);
+  }, []);
 
   const btnClass =
     "text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-all hover:-translate-y-0.5 cursor-pointer";
@@ -153,34 +106,10 @@ export function Navbar() {
           <div className="hidden md:flex items-center space-x-8">
             {isProjectPage ? (
               <>
-                <button
-                  className={btnClass}
-                  onClick={() => handleRouteNavigation("/")}
-                >
-                  Home
-                </button>
-                <button
-                  className={btnClass}
-                  onClick={() =>
-                    handleRouteNavigation(projectNav.prev)
-                  }
-                >
-                  Previous
-                </button>
-                <button
-                  className={btnClass}
-                  onClick={() =>
-                    handleRouteNavigation(projectNav.next)
-                  }
-                >
-                  Next
-                </button>
-                <button
-                  className={btnClass}
-                  onClick={handleContactClick}
-                >
-                  Contact
-                </button>
+                <button className={btnClass} onClick={() => navigate("/")}>Home</button>
+                <button className={btnClass} onClick={() => navigate(projectNav.prev)}>Previous</button>
+                <button className={btnClass} onClick={() => navigate(projectNav.next)}>Next</button>
+                <button className={btnClass} onClick={handleContactClick}>Contact</button>
               </>
             ) : (
               HOME_NAV_LINKS.map((link) => (
@@ -194,60 +123,18 @@ export function Navbar() {
               ))
             )}
 
-            <div className="flex items-center gap-2">
-              {/* Sound Toggle Button */}
-              <button
-                onClick={() => {
-                  if (isPlaying) {
-                    pause();
-                  } else {
-                    play();
-                  }
-                }}
-                className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary dark:hover:text-vc-primary"
-                aria-label="Toggle soundtrack"
-              >
-                {isPlaying ? (
-                  <Volume2 size={20} />
-                ) : (
-                  <VolumeX size={20} />
-                )}
-              </button>
-
-              {/* Theme Toggle Button */}
-              <button
-                onClick={toggleTheme}
-                className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary dark:hover:text-vc-primary"
-                aria-label="Toggle theme"
-              >
-                {isDark ? (
-                  <Sun size={20} />
-                ) : (
-                  <Moon size={20} />
-                )}
-              </button>
-            </div>
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary dark:hover:text-vc-primary"
+              aria-label="Toggle theme"
+            >
+              {isDark ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-2">
-            <button
-              onClick={() => {
-                if (isPlaying) {
-                  pause();
-                } else {
-                  play();
-                }
-              }}
-              className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text"
-              aria-label="Toggle soundtrack"
-            >
-              {isPlaying ? (
-                <Volume2 size={20} />
-              ) : (
-                <VolumeX size={20} />
-              )}
-            </button>
             <button
               onClick={toggleTheme}
               className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text"
@@ -260,11 +147,7 @@ export function Navbar() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? (
-                <X size={24} />
-              ) : (
-                <Menu size={24} />
-              )}
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
@@ -274,34 +157,10 @@ export function Navbar() {
           <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-700">
             {isProjectPage ? (
               <>
-                <button
-                  className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
-                  onClick={() => handleRouteNavigation("/")}
-                >
-                  Home
-                </button>
-                <button
-                  className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
-                  onClick={() =>
-                    handleRouteNavigation(projectNav.prev)
-                  }
-                >
-                  Previous
-                </button>
-                <button
-                  className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
-                  onClick={() =>
-                    handleRouteNavigation(projectNav.next)
-                  }
-                >
-                  Next
-                </button>
-                <button
-                  className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
-                  onClick={handleContactClick}
-                >
-                  Contact
-                </button>
+                <button className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left" onClick={() => { navigate("/"); setIsMenuOpen(false); }}>Home</button>
+                <button className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left" onClick={() => { navigate(projectNav.prev); setIsMenuOpen(false); }}>Previous</button>
+                <button className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left" onClick={() => { navigate(projectNav.next); setIsMenuOpen(false); }}>Next</button>
+                <button className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left" onClick={handleContactClick}>Contact</button>
               </>
             ) : (
               HOME_NAV_LINKS.map((link) => (
