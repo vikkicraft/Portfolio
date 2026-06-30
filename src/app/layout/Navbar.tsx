@@ -1,4 +1,4 @@
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
 import logoImg from "../../asset/images/logo.png";

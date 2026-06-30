@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useScrollScale } from './hooks/useScrollScale';
+import { useScrollScale } from '../hooks/useScrollScale';
 
 const skillCategories = [
   { title: 'User Research' },

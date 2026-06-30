@@ -1,8 +1,8 @@
 import { LockOpen, Lock } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { useCallback } from 'react';
-import { ImageWithFallback } from './figma/ImageWithFallback';
-import { useScrollScale } from './hooks/useScrollScale';
+import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { useScrollScale } from '../hooks/useScrollScale';
 import casestudyOne from "../../asset/images/case-one-banner.jpg";
 import casestudyTwo from "../../asset/images/case-two-banner.jpg";
 import casestudyThree from "../../asset/images/case-three-banner.jpg";

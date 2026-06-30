@@ -1,4 +1,4 @@
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useEffect, useRef } from "react";
 import slideOne from "../../asset/images/dog.jpg";
 import slideTwo from "../../asset/images/bridge.jpg";

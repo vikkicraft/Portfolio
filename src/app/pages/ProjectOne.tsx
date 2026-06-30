@@ -13,21 +13,26 @@ import {
   useInView,
   AnimatePresence,
 } from "motion/react";
-import { ImageWithFallback } from "../figma/ImageWithFallback";
-import banner from "../../../asset/images/bannerStudyOne.png";
-import solutionImage from "../../../asset/images/solution.png";
-import platformOvrview from "../../../asset/images/case-one-banner.jpg";
-import galleryOne from "../../../asset/images/case-one-banner.jpg";
-import galleryTwo from "../../../asset/images/case-one-banner.jpg";
-import galleryThree from "../../../asset/images/case-one-banner.jpg";
-import galleryFour from "../../../asset/images/case-one-banner.jpg";
-import galleryFive from "../../../asset/images/case-one-banner.jpg";
-import imgPhoto1602343457765 from "../../../asset/images/case-one-banner.jpg";
-import imgPhoto1759884247160 from "../../../asset/images/case-one-banner.jpg";
-import imgPhoto1674509036252 from "../../../asset/images/case-one-banner.jpg";
-import imgPhoto1769794370964 from "../../../asset/images/case-one-banner.jpg";
-import imgPhoto1666334111978 from "../../../asset/images/case-one-banner.jpg";
-import closingImage from "../../../asset/images/case-one-banner.jpg";
+import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+
+import banner from "../../asset/images/bannerStudyOne.png";
+import solutionImage from "../../asset/images/solution.png";
+
+import platformOvrview from "../../asset/images/case-one-banner.jpg";
+
+import galleryOne from "../../asset/images/case-one-banner.jpg";
+import galleryTwo from "../../asset/images/case-one-banner.jpg";
+import galleryThree from "../../asset/images/case-one-banner.jpg";
+import galleryFour from "../../asset/images/case-one-banner.jpg";
+import galleryFive from "../../asset/images/case-one-banner.jpg";
+
+import imgPhoto1602343457765 from "../../asset/images/case-one-banner.jpg";
+import imgPhoto1759884247160 from "../../asset/images/case-one-banner.jpg";
+import imgPhoto1674509036252 from "../../asset/images/case-one-banner.jpg";
+import imgPhoto1769794370964 from "../../asset/images/case-one-banner.jpg";
+import imgPhoto1666334111978 from "../../asset/images/case-one-banner.jpg";
+
+import closingImage from "../../asset/images/case-one-banner.jpg";
 
 // ============================================================
 // Animation Constants

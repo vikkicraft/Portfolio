@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
-import { TetrisGrid } from './tetris/TetrisGrid';
-import { TetrisTouchOverlay } from './tetris/TetrisTouchOverlay';
+import { TetrisGrid } from '../tetris/TetrisGrid';
+import { TetrisTouchOverlay } from '../tetris/TetrisTouchOverlay';
 
 export function Hero() {
   const [tetrisKey, setTetrisKey] = useState(0);
