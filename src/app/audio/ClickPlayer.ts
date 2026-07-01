@@ -1,4 +1,5 @@
 import * as Tone from "tone";
+import { AUDIO } from "./config";
 
 export class ClickPlayer {
   private player: Tone.Player;
@@ -10,7 +11,7 @@ export class ClickPlayer {
     }).toDestination();
 
     // Slightly reduce click volume
-    this.player.volume.value = -8;
+    this.player.volume.value = AUDIO.clickVolume;
   }
 
   async play() {

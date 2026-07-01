@@ -6,6 +6,8 @@
 export const AUDIO = {
   volume: 0.18,
 
+  clickVolume: -14,
+
   gainDip: 0.04,
 
   playbackDepth: 0.08,
