@@ -2,12 +2,29 @@ import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
 import logoImg from "../../asset/images/logo.png";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import {
+  Menu,
+  X,
+  Sun,
+  Moon,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 
-const HOME_NAV_LINKS = ["My Work", "About", "Skills", "Contact"] as const;
+import { useAudio } from "../audio/AudioProvider";
+
+const HOME_NAV_LINKS = [
+  "My Work",
+  "About",
+  "Skills",
+  "Contact",
+] as const;
 
 // Project routing: prev/next per project (circular)
-const PROJECT_NAV: Record<string, { prev: string; next: string }> = {
+const PROJECT_NAV: Record<
+  string,
+  { prev: string; next: string }
+> = {
   "/project/1": { prev: "/project/3", next: "/project/2" },
   "/project/2": { prev: "/project/1", next: "/project/3" },
   "/project/3": { prev: "/project/2", next: "/project/1" },
@@ -21,6 +38,7 @@ const PROJECT_NAV: Record<string, { prev: string; next: string }> = {
 const DEFAULT_THEME: "dark" | "light" = "light";
 
 export function Navbar() {
+  const { isPlaying, play, pause, playClick } = useAudio();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem("theme");
@@ -48,38 +66,49 @@ export function Navbar() {
 
   const handleNavClick = useCallback(
     (link: string) => {
+      playClick();
+
       const hash = `#${link.toLowerCase().replace(" ", "-")}`;
+
       if (location.pathname !== "/") {
         navigate("/" + hash);
       } else {
         const el = document.querySelector(hash);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
+
+        if (el) {
+          el.scrollIntoView({
+            behavior: "smooth",
+          });
+        }
       }
     },
-    [location.pathname, navigate]
+    [location.pathname, navigate, playClick],
   );
 
   const handleLogoClick = useCallback(() => {
-    if (location.pathname !== "/") {
-      navigate("/");
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [location.pathname, navigate]);
-
-  const handleMobileNavClick = useCallback(
-    (link: string) => {
-      handleNavClick(link);
-      setIsMenuOpen(false);
-    },
-    [handleNavClick]
-  );
+  if (location.pathname !== "/") {
+    navigate("/");
+  } else {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+}, [location.pathname, navigate]);
 
   const handleContactClick = useCallback(() => {
+    playClick();
+
     const el = document.querySelector("#contact");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+
+    if (el) {
+      el.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+
     setIsMenuOpen(false);
-  }, []);
+  }, [playClick]);
 
   const btnClass =
     "text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-all hover:-translate-y-0.5 cursor-pointer";
@@ -106,10 +135,39 @@ export function Navbar() {
           <div className="hidden md:flex items-center space-x-8">
             {isProjectPage ? (
               <>
-                <button className={btnClass} onClick={() => navigate("/")}>Home</button>
-                <button className={btnClass} onClick={() => navigate(projectNav.prev)}>Previous</button>
-                <button className={btnClass} onClick={() => navigate(projectNav.next)}>Next</button>
-                <button className={btnClass} onClick={handleContactClick}>Contact</button>
+                <button
+                  className={btnClass}
+                  onClick={async () => {
+                    await playClick();
+                    navigate("/");
+                  }}
+                >
+                  Home
+                </button>
+                <button
+                  className={btnClass}
+                  onClick={() => {
+                    playClick();
+                    navigate(projectNav.prev);
+                  }}
+                >
+                  Previous
+                </button>
+                <button
+                  className={btnClass}
+                  onClick={() => {
+                    playClick();
+                    navigate(projectNav.next);
+                  }}
+                >
+                  Next
+                </button>
+                <button
+                  className={btnClass}
+                  onClick={handleContactClick}
+                >
+                  Contact
+                </button>
               </>
             ) : (
               HOME_NAV_LINKS.map((link) => (
@@ -123,18 +181,63 @@ export function Navbar() {
               ))
             )}
 
-            {/* Theme Toggle Button */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary dark:hover:text-vc-primary"
-              aria-label="Toggle theme"
-            >
-              {isDark ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
+            <div className="flex items-center gap-2">
+              {/* Sound Toggle Button */}
+
+              <button
+                onClick={() => {
+                  if (isPlaying) {
+                    pause();
+                  } else {
+                    play();
+                  }
+                }}
+                className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary"
+                aria-label="Toggle soundtrack"
+              >
+                {isPlaying ? (
+                  <Volume2 size={20} />
+                ) : (
+                  <VolumeX size={20} />
+                )}
+              </button>
+
+              {/* Theme Toggle Button */}
+
+              <button
+                onClick={toggleTheme}
+                className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary dark:hover:text-vc-primary"
+                aria-label="Toggle theme"
+              >
+                {isDark ? (
+                  <Sun size={20} />
+                ) : (
+                  <Moon size={20} />
+                )}
+              </button>
+            </div>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-2">
+            <button
+              onClick={() => {
+                if (isPlaying) {
+                  pause();
+                } else {
+                  play();
+                }
+              }}
+              className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary"
+              aria-label="Toggle soundtrack"
+            >
+              {isPlaying ? (
+                <Volume2 size={20} />
+              ) : (
+                <VolumeX size={20} />
+              )}
+            </button>
+
             <button
               onClick={toggleTheme}
               className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text"
@@ -147,7 +250,11 @@ export function Navbar() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMenuOpen ? (
+                <X size={24} />
+              ) : (
+                <Menu size={24} />
+              )}
             </button>
           </div>
         </div>
@@ -157,10 +264,40 @@ export function Navbar() {
           <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-700">
             {isProjectPage ? (
               <>
-                <button className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left" onClick={() => { navigate("/"); setIsMenuOpen(false); }}>Home</button>
-                <button className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left" onClick={() => { navigate(projectNav.prev); setIsMenuOpen(false); }}>Previous</button>
-                <button className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left" onClick={() => { navigate(projectNav.next); setIsMenuOpen(false); }}>Next</button>
-                <button className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left" onClick={handleContactClick}>Contact</button>
+                <button
+                  className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
+                  onClick={async () => {
+                    await playClick();
+                    navigate("/");
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  Home
+                </button>
+                <button
+                  className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
+                  onClick={() => {
+                    navigate(projectNav.prev);
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  Previous
+                </button>
+                <button
+                  className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
+                  onClick={() => {
+                    navigate(projectNav.next);
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  Next
+                </button>
+                <button
+                  className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
+                  onClick={handleContactClick}
+                >
+                  Contact
+                </button>
               </>
             ) : (
               HOME_NAV_LINKS.map((link) => (
