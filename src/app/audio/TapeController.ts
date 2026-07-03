@@ -48,12 +48,10 @@ export class TapeController {
     this.gain.gain.value =
       AUDIO.volume - stretch * AUDIO.gainDip;
 
-    // Once we've almost reached the target,
-    // let the tape relax back to normal.
-    if (
-      Math.abs(this.targetStretch - stretch) <
-      AUDIO.settleThreshold
-    ) {
+    // Let the target slowly lose energy
+    this.targetStretch *= 0.9;
+
+    if (this.targetStretch < 0.001) {
       this.targetStretch = 0;
     }
 

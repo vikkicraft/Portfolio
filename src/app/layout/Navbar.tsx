@@ -67,6 +67,7 @@ export function Navbar() {
   const handleNavClick = useCallback(
     (link: string) => {
       playClick();
+      setIsMenuOpen(false);
 
       const hash = `#${link.toLowerCase().replace(" ", "-")}`;
 
@@ -303,7 +304,7 @@ export function Navbar() {
               HOME_NAV_LINKS.map((link) => (
                 <button
                   key={link}
-                  onClick={() => handleMobileNavClick(link)}
+                  onClick={() => handleNavClick(link)}
                   className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
                 >
                   {link}

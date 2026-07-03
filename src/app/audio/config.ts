@@ -22,4 +22,7 @@ export const AUDIO = {
   settleThreshold: 0.01,
 
   stretchImpulse: 0.7,
+
+  // New lines of code after audio implement
+
 };
