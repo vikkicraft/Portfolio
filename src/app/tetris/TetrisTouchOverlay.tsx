@@ -170,16 +170,20 @@ export function TetrisTouchOverlay({ heroRef }: { heroRef: React.RefObject<HTMLE
       // Suppress browser-synthesized mousemove after any hero touch
       suppressUntilRef.current = Date.now() + SYNTHETIC_SUPPRESS_MS;
 
-      // If it was a horizontal drag, it was a move, not a rotate/tap
-      if (directionRef.current === 'horizontal') {
+      // If it was a significant horizontal drag, it was a move, not a rotate/tap
+      if (directionRef.current === 'horizontal' && dx > TAP_THRESHOLD_PX) {
         touchStartRef.current = null;
         prevTouchXRef.current = null;
         directionRef.current = 'none';
         return;
       }
 
-      // Short, stationary touch → tap → rotate only
-      if (dx < TAP_THRESHOLD_PX && dy < TAP_THRESHOLD_PX && dt < TAP_THRESHOLD_MS) {
+      // Short, stationary touch → tap → rotate
+      // Increase threshold slightly for real devices and ensure it's not a vertical scroll
+      if (dx < TAP_THRESHOLD_PX * 1.5 && dy < TAP_THRESHOLD_PX * 1.5 && dt < TAP_THRESHOLD_MS) {
+        // Prevent default to stop browser zoom/scroll interference
+        if (e.cancelable) e.preventDefault();
+        
         const syntheticClick = new MouseEvent('click', {
           clientX: touch.clientX,
           clientY: touch.clientY,

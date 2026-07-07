@@ -86,6 +86,16 @@ export function Navbar() {
     [location.pathname, navigate, playClick],
   );
 
+  const handleMobileNavClick = useCallback(
+    (link: string) => {
+      // Use short timeout to ensure the menu state change doesn't block the click
+      setTimeout(() => {
+        handleNavClick(link);
+      }, 50);
+    },
+    [handleNavClick]
+  );
+
   const handleLogoClick = useCallback(() => {
   if (location.pathname !== "/") {
     navigate("/");
@@ -304,7 +314,7 @@ export function Navbar() {
               HOME_NAV_LINKS.map((link) => (
                 <button
                   key={link}
-                  onClick={() => handleNavClick(link)}
+                  onClick={() => handleMobileNavClick(link)}
                   className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
                 >
                   {link}
