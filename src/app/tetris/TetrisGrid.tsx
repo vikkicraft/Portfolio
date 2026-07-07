@@ -468,27 +468,32 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
       }
     };
 
-    // Click — rotate block (only within hero section and outside navbar)
-    const handleClick = (e: MouseEvent) => {
-      // Ignore clicks on or inside the navbar
+    // Click/Touch — rotate block (only within hero section and outside navbar)
+    const handleClick = (e: MouseEvent | TouchEvent) => {
+      // Determine coordinates regardless of event type
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+
+      // Ignore if on or inside the navbar
       const target = e.target as HTMLElement;
       if (target?.closest('nav')) return;
       
-      // Also ignore clicks in the navbar area by coordinates (fallback)
-      if (e.clientY < NAVBAR_HEIGHT) return;
+      if (clientY < NAVBAR_HEIGHT) return;
 
       const canvas = canvasRef.current;
       if (!canvas) return;
       const rect = canvas.getBoundingClientRect();
       if (
-        e.clientX < rect.left ||
-        e.clientX > rect.right ||
-        e.clientY < rect.top ||
-        e.clientY > rect.bottom
+        clientX < rect.left ||
+        clientX > rect.right ||
+        clientY < rect.top ||
+        clientY > rect.bottom
       ) {
         return;
       }
 
+      // If it's a touch start, we don't want to preventDefault always (might be start of a scroll)
+      // but for rotation we need to ensure the block handles it.
       const block = blockRef.current;
       if (!block) return;
 
@@ -499,6 +504,10 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
       if (!checkCollisionAt(rotated, newCol, gridRow)) {
         block.shape = rotated;
         block.col = newCol;
+        // If we successfully rotated on touch, prevent other behaviors
+        if ('touches' in e && e.cancelable) {
+          // e.preventDefault(); 
+        }
       }
     };
 
@@ -508,6 +517,7 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('click', handleClick);
+    window.addEventListener('touchstart', handleClick as any, { passive: false });
     window.addEventListener('resize', handleResize);
 
     return () => {
@@ -515,6 +525,7 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
       if (observer) observer.disconnect();
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('click', handleClick);
+      window.removeEventListener('touchstart', handleClick as any);
       window.removeEventListener('resize', handleResize);
     };
   }, [render, getGridDims, spawnBlock, checkCollisionAt, placeBlock, clampCol]);
