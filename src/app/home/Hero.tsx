@@ -17,7 +17,7 @@ export function Hero() {
   };
 
   return (
-    <section ref={heroRef} id="hero" className="min-h-screen md:min-h-screen flex flex-col pt-16 pb-8 bg-vc-light-bg dark:bg-vc-dark-bg relative overflow-hidden md:h-auto h-screen">
+    <section ref={heroRef} id="hero" className="min-h-screen md:min-h-screen flex flex-col pt-16 pb-8 bg-vc-light-bg dark:bg-vc-dark-bg relative overflow-hidden md:h-auto h-[100svh]">
       {/* Tetris Grid Background */}
       <TetrisGrid key={tetrisKey} paused={isPaused} />
       <TetrisTouchOverlay heroRef={heroRef} />
