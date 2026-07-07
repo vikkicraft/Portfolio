@@ -178,9 +178,7 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
 
   const getGridDims = useCallback(() => {
     const cols = Math.ceil(window.innerWidth / GRID_SIZE);
-    const hero = document.getElementById('hero');
-    const h = hero ? hero.offsetHeight : window.innerHeight;
-    const rows = Math.ceil(h / GRID_SIZE);
+    const rows = Math.ceil((window.innerHeight - BOTTOM_OFFSET) / GRID_SIZE) - 2;
     return { cols, rows };
   }, []);
 
@@ -293,10 +291,8 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
       return;
     }
 
-    const hero = document.getElementById('hero');
-    const h = hero ? hero.offsetHeight : window.innerHeight;
     canvas.width = window.innerWidth;
-    canvas.height = h;
+    canvas.height = window.innerHeight - BOTTOM_OFFSET;
 
     const dims = getGridDims();
     const { cols, rows } = dims;
