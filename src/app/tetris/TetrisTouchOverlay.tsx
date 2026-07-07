@@ -179,10 +179,10 @@ export function TetrisTouchOverlay({ heroRef }: { heroRef: React.RefObject<HTMLE
       }
 
       // Short, stationary touch → tap → rotate
-      if (dx < TAP_THRESHOLD_PX * 1.5 && dy < TAP_THRESHOLD_PX * 1.5 && dt < TAP_THRESHOLD_MS) {
-        // We already added a direct touchstart listener in TetrisGrid.tsx
-        // to handle the immediate rotation. This synthetic click is now
-        // a secondary fallback or for other UI elements.
+      if (dx < TAP_THRESHOLD_PX && dy < TAP_THRESHOLD_PX && dt < TAP_THRESHOLD_MS) {
+        // Ensure tap isn't on navbar area (top 64px)
+        if (touch.clientY < 64) return;
+
         const syntheticClick = new MouseEvent('click', {
           clientX: touch.clientX,
           clientY: touch.clientY,
