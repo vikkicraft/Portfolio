@@ -177,7 +177,16 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
   }, [paused]);
 
   const getGridDims = useCallback(() => {
+    const isMobile = window.innerWidth < 768;
     const cols = Math.ceil(window.innerWidth / GRID_SIZE);
+    
+    if (isMobile) {
+      const hero = document.getElementById('hero');
+      const h = (hero ? hero.offsetHeight : window.innerHeight) - 40; 
+      const rows = Math.floor(h / GRID_SIZE);
+      return { cols, rows };
+    }
+    
     const rows = Math.ceil((window.innerHeight - BOTTOM_OFFSET) / GRID_SIZE) - 2;
     return { cols, rows };
   }, []);
@@ -291,8 +300,16 @@ export function TetrisGrid({ paused = false }: { paused?: boolean }) {
       return;
     }
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight - BOTTOM_OFFSET;
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      const hero = document.getElementById('hero');
+      const h = (hero ? hero.offsetHeight : window.innerHeight) - 40;
+      canvas.width = window.innerWidth;
+      canvas.height = h;
+    } else {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight - BOTTOM_OFFSET;
+    }
 
     const dims = getGridDims();
     const { cols, rows } = dims;

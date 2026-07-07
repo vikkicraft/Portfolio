@@ -88,12 +88,24 @@ export function Navbar() {
 
   const handleMobileNavClick = useCallback(
     (link: string) => {
-      // Use short timeout to ensure the menu state change doesn't block the click
+      playClick();
+      setIsMenuOpen(false);
+      
+      const hash = `#${link.toLowerCase().replace(" ", "-")}`;
+      
+      // Navigate or scroll with a slight delay to allow menu to close smoothly on mobile
       setTimeout(() => {
-        handleNavClick(link);
-      }, 50);
+        if (location.pathname !== "/") {
+          navigate("/" + hash);
+        } else {
+          const el = document.querySelector(hash);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+          }
+        }
+      }, 100);
     },
-    [handleNavClick]
+    [location.pathname, navigate, playClick]
   );
 
   const handleLogoClick = useCallback(() => {

@@ -17,7 +17,7 @@ export function Hero() {
   };
 
   return (
-    <section ref={heroRef} className="min-h-screen flex flex-col pt-16 pb-8 bg-vc-light-bg dark:bg-vc-dark-bg relative overflow-hidden">
+    <section ref={heroRef} id="hero" className="min-h-screen md:min-h-screen flex flex-col pt-16 pb-8 bg-vc-light-bg dark:bg-vc-dark-bg relative overflow-hidden md:h-auto h-screen">
       {/* Tetris Grid Background */}
       <TetrisGrid key={tetrisKey} paused={isPaused} />
       <TetrisTouchOverlay heroRef={heroRef} />
@@ -25,7 +25,7 @@ export function Hero() {
       <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col justify-between px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center md:text-left max-w-4xl">
-            <h1 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold sm:font-medium md:font-medium lg:font-medium mb-6 text-vc-light-text dark:text-vc-dark-text leading-snug sm:leading-snug md:leading-snug lg:leading-snug text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold sm:font-medium md:font-medium lg:font-medium mb-4 sm:mb-6 text-vc-light-text dark:text-vc-dark-text leading-tight sm:leading-snug md:leading-snug lg:leading-snug text-center">
               Solving UX like{" "}
               <span className="text-vc-secondary">Tetris</span>,{" "} Placing every piece with{" "}
               <span className="text-vc-primary">Purpose</span>.
