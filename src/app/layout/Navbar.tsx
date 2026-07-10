@@ -284,18 +284,18 @@ export function Navbar() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="fixed inset-0 z-[60] bg-white dark:bg-[#131313] flex flex-col items-center justify-center space-y-8 animate-in fade-in zoom-in duration-200">
+          <div className="fixed inset-0 z-[60] bg-white dark:bg-[#131313] flex flex-col items-center justify-center animate-in fade-in zoom-in duration-200">
             <button 
               onClick={() => setIsMenuOpen(false)}
               className="absolute top-5 right-4 p-2 text-vc-light-text dark:text-vc-dark-text"
             >
               <X size={24} />
             </button>
-            <div className="flex flex-col items-center justify-center space-y-8 w-full">
+            <div className="flex flex-col items-center justify-center space-y-10">
               {isProjectPage ? (
                 <>
                   <button
-                    className="text-2xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer text-center"
+                    className="text-3xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
                     onClick={async () => {
                       await playClick();
                       navigate("/");
@@ -305,7 +305,7 @@ export function Navbar() {
                     Home
                   </button>
                   <button
-                    className="text-2xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer text-center"
+                    className="text-3xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
                     onClick={() => {
                       navigate(projectNav.prev);
                       setIsMenuOpen(false);
@@ -314,7 +314,7 @@ export function Navbar() {
                     Previous
                   </button>
                   <button
-                    className="text-2xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer text-center"
+                    className="text-3xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
                     onClick={() => {
                       navigate(projectNav.next);
                       setIsMenuOpen(false);
@@ -323,7 +323,7 @@ export function Navbar() {
                     Next
                   </button>
                   <button
-                    className="text-2xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer text-center"
+                    className="text-3xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
                     onClick={handleContactClick}
                   >
                     Contact
@@ -334,7 +334,7 @@ export function Navbar() {
                   <button
                     key={link}
                     onClick={() => handleMobileNavClick(link)}
-                    className="text-3xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer text-center w-full px-4"
+                    className="text-4xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
                   >
                     {link}
                   </button>
