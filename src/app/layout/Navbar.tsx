@@ -1,5 +1,6 @@
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useState, useCallback, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate, useLocation } from "react-router";
 import logoImg from "../../asset/images/logo.png";
 import {
@@ -61,8 +62,16 @@ export function Navbar() {
 
   // Sync <html> class on mount
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", isDark);
-  }, []);
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
 
   const handleNavClick = useCallback(
     (link: string) => {
@@ -109,15 +118,15 @@ export function Navbar() {
   );
 
   const handleLogoClick = useCallback(() => {
-  if (location.pathname !== "/") {
-    navigate("/");
-  } else {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }
-}, [location.pathname, navigate]);
+    if (location.pathname !== "/") {
+      navigate("/");
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  }, [location.pathname, navigate]);
 
   const handleContactClick = useCallback(() => {
     playClick();
@@ -137,76 +146,113 @@ export function Navbar() {
     "text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-all hover:-translate-y-0.5 cursor-pointer";
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/30 dark:bg-[#131313]/30 backdrop-blur-md border-b border-gray-200/10 dark:border-gray-700/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <button
-              onClick={handleLogoClick}
-              className="cursor-pointer flex items-center"
-            >
-              <ImageWithFallback
-                src={logoImg}
-                alt="Portfolio"
-                className="h-6 w-auto"
-              />
-            </button>
-          </div>
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/30 dark:bg-[#131313]/30 backdrop-blur-md border-b border-gray-200/10 dark:border-gray-700/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <button
+                onClick={handleLogoClick}
+                className="cursor-pointer flex items-center"
+              >
+                <ImageWithFallback
+                  src={logoImg}
+                  alt="Portfolio"
+                  className="h-6 w-auto"
+                />
+              </button>
+            </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {isProjectPage ? (
-              <>
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-8">
+              {isProjectPage ? (
+                <>
+                  <button
+                    className={btnClass}
+                    onClick={async () => {
+                      await playClick();
+                      navigate("/");
+                    }}
+                  >
+                    Home
+                  </button>
+                  <button
+                    className={btnClass}
+                    onClick={() => {
+                      playClick();
+                      navigate(projectNav.prev);
+                    }}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    className={btnClass}
+                    onClick={() => {
+                      playClick();
+                      navigate(projectNav.next);
+                    }}
+                  >
+                    Next
+                  </button>
+                  <button
+                    className={btnClass}
+                    onClick={handleContactClick}
+                  >
+                    Contact
+                  </button>
+                </>
+              ) : (
+                HOME_NAV_LINKS.map((link) => (
+                  <button
+                    key={link}
+                    onClick={() => handleNavClick(link)}
+                    className={btnClass}
+                  >
+                    {link}
+                  </button>
+                ))
+              )}
+
+              <div className="flex items-center gap-2">
+                {/* Sound Toggle Button */}
+
                 <button
-                  className={btnClass}
-                  onClick={async () => {
-                    await playClick();
-                    navigate("/");
-                  }}
-                >
-                  Home
-                </button>
-                <button
-                  className={btnClass}
                   onClick={() => {
-                    playClick();
-                    navigate(projectNav.prev);
+                    if (isPlaying) {
+                      pause();
+                    } else {
+                      play();
+                    }
                   }}
+                  className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary"
+                  aria-label="Toggle soundtrack"
                 >
-                  Previous
+                  {isPlaying ? (
+                    <Volume2 size={20} />
+                  ) : (
+                    <VolumeX size={20} />
+                  )}
                 </button>
-                <button
-                  className={btnClass}
-                  onClick={() => {
-                    playClick();
-                    navigate(projectNav.next);
-                  }}
-                >
-                  Next
-                </button>
-                <button
-                  className={btnClass}
-                  onClick={handleContactClick}
-                >
-                  Contact
-                </button>
-              </>
-            ) : (
-              HOME_NAV_LINKS.map((link) => (
-                <button
-                  key={link}
-                  onClick={() => handleNavClick(link)}
-                  className={btnClass}
-                >
-                  {link}
-                </button>
-              ))
-            )}
 
-            <div className="flex items-center gap-2">
-              {/* Sound Toggle Button */}
+                {/* Theme Toggle Button */}
 
+                <button
+                  onClick={toggleTheme}
+                  className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary dark:hover:text-vc-primary"
+                  aria-label="Toggle theme"
+                >
+                  {isDark ? (
+                    <Sun size={20} />
+                  ) : (
+                    <Moon size={20} />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="md:hidden flex items-center gap-2">
               <button
                 onClick={() => {
                   if (isPlaying) {
@@ -225,125 +271,95 @@ export function Navbar() {
                 )}
               </button>
 
-              {/* Theme Toggle Button */}
-
               <button
                 onClick={toggleTheme}
-                className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary dark:hover:text-vc-primary"
+                className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text"
                 aria-label="Toggle theme"
               >
-                {isDark ? (
-                  <Sun size={20} />
+                {isDark ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+              <button
+                className="p-2 text-vc-light-text dark:text-vc-dark-text"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? (
+                  <X size={24} />
                 ) : (
-                  <Moon size={20} />
+                  <Menu size={24} />
                 )}
               </button>
             </div>
           </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center gap-2">
-            <button
-              onClick={() => {
-                if (isPlaying) {
-                  pause();
-                } else {
-                  play();
-                }
-              }}
-              className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary"
-              aria-label="Toggle soundtrack"
-            >
-              {isPlaying ? (
-                <Volume2 size={20} />
-              ) : (
-                <VolumeX size={20} />
-              )}
-            </button>
-
-            <button
-              onClick={toggleTheme}
-              className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text"
-              aria-label="Toggle theme"
-            >
-              {isDark ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-            <button
-              className="p-2 text-vc-light-text dark:text-vc-dark-text"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? (
-                <X size={24} />
-              ) : (
-                <Menu size={24} />
-              )}
-            </button>
-          </div>
         </div>
+      </nav>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="fixed inset-0 z-[60] bg-white dark:bg-[#131313] flex flex-col items-center justify-center animate-in fade-in zoom-in duration-200">
-            <button 
-              onClick={() => setIsMenuOpen(false)}
-              className="absolute top-5 right-4 p-2 text-vc-light-text dark:text-vc-dark-text"
-            >
-              <X size={24} />
-            </button>
-            <div className="flex flex-col items-center justify-center space-y-10">
-              {isProjectPage ? (
-                <>
-                  <button
-                    className="text-3xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
-                    onClick={async () => {
-                      await playClick();
-                      navigate("/");
-                      setIsMenuOpen(false);
-                    }}
-                  >
-                    Home
-                  </button>
-                  <button
-                    className="text-3xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
-                    onClick={() => {
-                      navigate(projectNav.prev);
-                      setIsMenuOpen(false);
-                    }}
-                  >
-                    Previous
-                  </button>
-                  <button
-                    className="text-3xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
-                    onClick={() => {
-                      navigate(projectNav.next);
-                      setIsMenuOpen(false);
-                    }}
-                  >
-                    Next
-                  </button>
-                  <button
-                    className="text-3xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
-                    onClick={handleContactClick}
-                  >
-                    Contact
-                  </button>
-                </>
-              ) : (
-                HOME_NAV_LINKS.map((link) => (
-                  <button
-                    key={link}
-                    onClick={() => handleMobileNavClick(link)}
-                    className="text-4xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
-                  >
-                    {link}
-                  </button>
-                ))
-              )}
+      {/* Mobile Navigation Overlay */}
+      {isMenuOpen && createPortal(
+        <div className="fixed inset-0 z-[100] bg-white/30 dark:bg-[#131313]/30 backdrop-blur-3xl flex flex-col items-center justify-center">
+          <div className="absolute top-0 left-0 right-0 px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-end items-center h-16">
+              <button 
+                onClick={() => setIsMenuOpen(false)}
+                className="p-2 text-vc-light-text dark:text-vc-dark-text"
+              >
+                <X size={24} />
+              </button>
             </div>
           </div>
-        )}
-      </div>
-    </nav>
+          <div className="flex flex-col items-center justify-center space-y-10">
+            {isProjectPage ? (
+              <>
+                <button
+                  className="text-3xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
+                  onClick={async () => {
+                    await playClick();
+                    navigate("/");
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  Home
+                </button>
+                <button
+                  className="text-3xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
+                  onClick={() => {
+                    navigate(projectNav.prev);
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  Previous
+                </button>
+                <button
+                  className="text-3xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
+                  onClick={() => {
+                    navigate(projectNav.next);
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  Next
+                </button>
+                <button
+                  className="text-3xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
+                  onClick={handleContactClick}
+                >
+                  Contact
+                </button>
+              </>
+            ) : (
+              HOME_NAV_LINKS.map((link) => (
+                <button
+                  key={link}
+                  onClick={() => handleMobileNavClick(link)}
+                  className="text-4xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer"
+                >
+                  {link}
+                </button>
+              ))
+            )}
+          </div>
+        </div>,
+        document.body
+      )}
+    </>
   );
 }
