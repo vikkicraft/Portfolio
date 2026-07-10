@@ -284,55 +284,63 @@ export function Navbar() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-700">
-            {isProjectPage ? (
-              <>
-                <button
-                  className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
-                  onClick={async () => {
-                    await playClick();
-                    navigate("/");
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Home
-                </button>
-                <button
-                  className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
-                  onClick={() => {
-                    navigate(projectNav.prev);
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Previous
-                </button>
-                <button
-                  className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
-                  onClick={() => {
-                    navigate(projectNav.next);
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Next
-                </button>
-                <button
-                  className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
-                  onClick={handleContactClick}
-                >
-                  Contact
-                </button>
-              </>
-            ) : (
-              HOME_NAV_LINKS.map((link) => (
-                <button
-                  key={link}
-                  onClick={() => handleMobileNavClick(link)}
-                  className="block py-2 text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary transition-colors cursor-pointer w-full text-left"
-                >
-                  {link}
-                </button>
-              ))
-            )}
+          <div className="fixed inset-0 z-[60] bg-white dark:bg-[#131313] flex flex-col items-center justify-center space-y-8 animate-in fade-in zoom-in duration-200">
+            <button 
+              onClick={() => setIsMenuOpen(false)}
+              className="absolute top-5 right-4 p-2 text-vc-light-text dark:text-vc-dark-text"
+            >
+              <X size={24} />
+            </button>
+            <div className="flex flex-col items-center justify-center space-y-8 w-full">
+              {isProjectPage ? (
+                <>
+                  <button
+                    className="text-2xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer text-center"
+                    onClick={async () => {
+                      await playClick();
+                      navigate("/");
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Home
+                  </button>
+                  <button
+                    className="text-2xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer text-center"
+                    onClick={() => {
+                      navigate(projectNav.prev);
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    className="text-2xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer text-center"
+                    onClick={() => {
+                      navigate(projectNav.next);
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Next
+                  </button>
+                  <button
+                    className="text-2xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer text-center"
+                    onClick={handleContactClick}
+                  >
+                    Contact
+                  </button>
+                </>
+              ) : (
+                HOME_NAV_LINKS.map((link) => (
+                  <button
+                    key={link}
+                    onClick={() => handleMobileNavClick(link)}
+                    className="text-3xl font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary transition-colors cursor-pointer text-center w-full px-4"
+                  >
+                    {link}
+                  </button>
+                ))
+              )}
+            </div>
           </div>
         )}
       </div>

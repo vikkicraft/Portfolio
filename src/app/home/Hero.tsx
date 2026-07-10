@@ -25,10 +25,13 @@ export function Hero() {
       <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col justify-between px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center md:text-left max-w-4xl">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold sm:font-medium md:font-medium lg:font-medium mb-4 sm:mb-6 text-vc-light-text dark:text-vc-dark-text leading-tight sm:leading-snug md:leading-snug lg:leading-snug text-center">
+            {/* <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold sm:font-medium md:font-medium lg:font-medium mb-4 sm:mb-6 text-vc-light-text dark:text-vc-dark-text leading-tight sm:leading-snug md:leading-snug lg:leading-snug text-center">
               Solving UX like{" "}
               <span className="text-vc-secondary">Tetris</span>,{" "} Placing every piece with{" "}
               <span className="text-vc-primary">Purpose</span>.
+            </h1> */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold sm:font-medium md:font-medium lg:font-medium mb-4 sm:mb-6 text-vc-light-text dark:text-vc-dark-text leading-tight sm:leading-snug md:leading-snug lg:leading-snug text-center">
+            .
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-2xl">
               {/* Add your subtitle or description here */}
