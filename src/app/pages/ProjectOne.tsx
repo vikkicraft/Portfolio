@@ -423,7 +423,7 @@ function HorizontalGallery() {
               ease: EASE_OUT_EXPO,
               delay: i * 0.08,
             }}
-            className="flex-shrink-0 w-[75vw] sm:w-[55vw] md:w-[40vw] lg:w-[30vw] aspect-[3/4] overflow-hidden"
+            className="flex-shrink-0 w-[75vw] sm:w-[55vw] md:w-[40vw] lg:w-[30vw] aspect-[3/4] overflow-hidden rounded-xl"
           >
             <ImageWithFallback
               src={img.src}
@@ -524,7 +524,7 @@ function NextProject({
         className="w-full text-left group cursor-pointer"
         data-hover
       >
-        <div className="relative aspect-[21/9] overflow-hidden mb-6">
+        <div className="relative aspect-[21/9] overflow-hidden rounded-xl mb-6">
           <ImageWithFallback
             src={contentImages.dashboard}
             alt="Next project preview"
@@ -758,7 +758,7 @@ export function ProjectOne() {
                   <motion.div
                     key={i}
                     variants={fadeUp}
-                    className="flex items-start gap-4 p-5 border border-gray-200 dark:border-gray-800"
+                    className="flex items-start gap-4 p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
                   >
                     <span className="text-xs text-vc-primary mt-1 shrink-0">
                       0{i + 1}
@@ -820,7 +820,7 @@ export function ProjectOne() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16">
                 <motion.div
                   variants={fadeUp}
-                  className="p-5 border border-gray-200 dark:border-gray-800"
+                  className="p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
                 >
                   <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                     01 — Model hub
@@ -835,7 +835,7 @@ export function ProjectOne() {
                 </motion.div>
                 <motion.div
                   variants={fadeUp}
-                  className="p-5 border border-gray-200 dark:border-gray-800"
+                  className="p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
                 >
                   <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                     02 — Personal Workspace
@@ -854,17 +854,13 @@ export function ProjectOne() {
               variants={fadeUp}
               className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl"
             >
-              One of the key considerations in this project was
-              ensuring the module could scale effectively as the
-              platform grows. Designed for enterprise use, it
-              needed to support a continuously expanding number
-              of models, datasets, and users without
-              compromising usability or performance. By
-              separating shared resources from personal assets
-              while keeping them connected, the solution
-              improves clarity, enhances discoverability, and
-              helps streamline the AI development workflow
-              within the broader platform.
+              The solution was designed to scale with the
+              growing volume of AI assets and users across the
+              platform. By separating shared resources from
+              personal workspaces—while maintaining a connected
+              workflow—it improves discoverability, reduces
+              complexity, and streamlines AI development at
+              scale.
             </motion.p>
           </motion.div>
         </motion.div>
@@ -944,7 +940,7 @@ export function ProjectOne() {
               </motion.div>
               <motion.div
                 variants={fadeUp}
-                className="aspect-[3/4] overflow-hidden"
+                className="aspect-[3/4] overflow-hidden rounded-xl"
               >
                 <ImageWithFallback
                   src={contentImages.collab}
@@ -1031,14 +1027,14 @@ export function ProjectOne() {
                 variants={fadeUp}
                 className="space-y-6"
               >
-                <div className="aspect-[4/3] overflow-hidden">
+                <div className="aspect-[4/3] overflow-hidden rounded-xl">
                   <ImageWithFallback
                     src={imgPhoto1674509036252}
                     alt="Research synthesis with sticky notes"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="aspect-[4/3] overflow-hidden">
+                <div className="aspect-[4/3] overflow-hidden rounded-xl">
                   <ImageWithFallback
                     src={imgPhoto1769794370964}
                     alt="User interview session"
@@ -1049,7 +1045,7 @@ export function ProjectOne() {
             </div>
             <motion.div
               variants={fadeUp}
-              className="mt-12 md:mt-16 p-8 md:p-10 border border-gray-200 dark:border-gray-800"
+              className="mt-12 md:mt-16 p-8 md:p-10 border border-gray-200 dark:border-gray-800 rounded-xl"
             >
               <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                 Key Insight
@@ -1135,7 +1131,7 @@ export function ProjectOne() {
                   <motion.div
                     key={persona.name}
                     variants={fadeUp}
-                    className="p-6 md:p-8 border border-gray-200 dark:border-gray-800"
+                    className="p-6 md:p-8 border border-gray-200 dark:border-gray-800 rounded-xl"
                   >
                     <div className="flex items-center gap-4 mb-5">
                       <div className="w-12 h-12 rounded-full bg-vc-primary/10 flex items-center justify-center">
@@ -1287,7 +1283,7 @@ export function ProjectOne() {
                   </motion.div>
                 </div>
                 <motion.div variants={fadeUp}>
-                  <div className="aspect-[4/5] overflow-hidden">
+                  <div className="aspect-[4/5] overflow-hidden rounded-xl">
                     <ImageWithFallback
                       src={imgPhoto1666334111978}
                       alt="Target audience analysis"
@@ -1338,7 +1334,7 @@ export function ProjectOne() {
                   <motion.div
                     key={i}
                     variants={fadeUp}
-                    className="p-6 md:p-8 border border-gray-200 dark:border-gray-800"
+                    className="p-6 md:p-8 border border-gray-200 dark:border-gray-800 rounded-xl"
                   >
                     <div className="flex items-center justify-between mb-4">
                       <p className="text-vc-light-text dark:text-vc-dark-text text-sm">
@@ -1356,7 +1352,7 @@ export function ProjectOne() {
               </div>
               <motion.div
                 variants={fadeUp}
-                className="p-8 md:p-10 bg-gray-50 dark:bg-white/[0.03] border border-gray-200 dark:border-gray-800"
+                className="p-8 md:p-10 bg-gray-50 dark:bg-white/[0.03] border border-gray-200 dark:border-gray-800 rounded-xl"
               >
                 <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                   Research Synthesis

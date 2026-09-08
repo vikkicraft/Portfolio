@@ -1,4 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
+import { useState } from "react";
+import { motion } from "motion/react";
 
 const contactLinks = [
   { label: "LinkedIn", href: "https://www.linkedin.com/in/vikkicraft/" },
@@ -7,8 +9,16 @@ const contactLinks = [
   { label: "Resume", href: "https://drive.google.com/file/d/1TqaB6mJC7tqo2n0h58dg5WJHY0QQKYJg/view" },
 ] as const;
 
+const springTransition = {
+  type: "spring" as const,
+  stiffness: 160,
+  damping: 20,
+  mass: 0.7,
+};
+
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <footer
@@ -32,21 +42,39 @@ export function Footer() {
 
         {/* Contact links */}
         <div className="flex flex-wrap gap-6 mb-20">
-          {contactLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-1.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary dark:hover:text-vc-primary transition-colors"
-            >
-              <span>{link.label}</span>
-              <ArrowUpRight
-                size={16}
-                className="opacity-0 -translate-x-1 translate-y-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-200"
-              />
-            </a>
-          ))}
+          {contactLinks.map((link, index) => {
+            const isHovered = hoveredIndex === index;
+            const isAnyHovered = hoveredIndex !== null;
+            const isOtherHovered = isAnyHovered && !isHovered;
+
+            let shiftX = 0;
+            if (isOtherHovered) {
+              shiftX = index < hoveredIndex! ? -12 : 12;
+            }
+
+            return (
+              <motion.a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                animate={{
+                  x: shiftX,
+                  y: isHovered ? -3 : 0,
+                }}
+                transition={springTransition}
+                className="group flex items-center gap-1.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary dark:hover:text-vc-primary transition-colors"
+              >
+                <span>{link.label}</span>
+                <ArrowUpRight
+                  size={16}
+                  className="opacity-0 -translate-x-1 translate-y-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-200"
+                />
+              </motion.a>
+            );
+          })}
         </div>
 
         {/* Bottom bar */}

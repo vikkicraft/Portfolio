@@ -2,6 +2,7 @@ import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useState, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate, useLocation } from "react-router";
+import { motion } from "motion/react";
 import logoImg from "../../asset/images/logo.png";
 import {
   Menu,
@@ -41,6 +42,7 @@ const DEFAULT_THEME: "dark" | "light" = "light";
 export function Navbar() {
   const { isPlaying, play, pause, playClick } = useAudio();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hoveredNavIndex, setHoveredNavIndex] = useState<number | null>(null);
   const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem("theme");
     return saved ? saved === "dark" : DEFAULT_THEME === "dark";
@@ -168,56 +170,83 @@ export function Navbar() {
             <div className="hidden md:flex items-center space-x-8">
               {isProjectPage ? (
                 <>
-                  <button
-                    className={btnClass}
-                    onClick={async () => {
-                      await playClick();
-                      navigate("/");
-                    }}
-                  >
-                    Home
-                  </button>
-                  <button
-                    className={btnClass}
-                    onClick={() => {
-                      playClick();
-                      navigate(projectNav.prev);
-                    }}
-                  >
-                    Previous
-                  </button>
-                  <button
-                    className={btnClass}
-                    onClick={() => {
-                      playClick();
-                      navigate(projectNav.next);
-                    }}
-                  >
-                    Next
-                  </button>
-                  <button
-                    className={btnClass}
-                    onClick={handleContactClick}
-                  >
-                    Contact
-                  </button>
+                  {[
+                    { label: "Home", onClick: async () => { await playClick(); navigate("/"); } },
+                    { label: "Previous", onClick: () => { playClick(); navigate(projectNav.prev); } },
+                    { label: "Next", onClick: () => { playClick(); navigate(projectNav.next); } },
+                    { label: "Contact", onClick: handleContactClick }
+                  ].map((item, index) => {
+                    const isHovered = hoveredNavIndex === index;
+                    const isAnyHovered = hoveredNavIndex !== null;
+                    const isOtherHovered = isAnyHovered && !isHovered;
+
+                    let shiftX = 0;
+                    if (isOtherHovered) {
+                      shiftX = index < hoveredNavIndex ? -12 : 12;
+                    }
+
+                    return (
+                      <motion.button
+                        key={item.label}
+                        onClick={item.onClick}
+                        onMouseEnter={() => setHoveredNavIndex(index)}
+                        onMouseLeave={() => setHoveredNavIndex(null)}
+                        className="font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary cursor-pointer"
+                        animate={{
+                          x: shiftX,
+                          y: isHovered ? -3 : 0,
+                        }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 160,
+                          damping: 20,
+                          mass: 0.7,
+                        }}
+                      >
+                        {item.label}
+                      </motion.button>
+                    );
+                  })}
                 </>
               ) : (
-                HOME_NAV_LINKS.map((link) => (
-                  <button
-                    key={link}
-                    onClick={() => handleNavClick(link)}
-                    className={btnClass}
-                  >
-                    {link}
-                  </button>
-                ))
+                HOME_NAV_LINKS.map((link, index) => {
+                  const isHovered = hoveredNavIndex === index;
+                  const isAnyHovered = hoveredNavIndex !== null;
+                  const isOtherHovered = isAnyHovered && !isHovered;
+
+                  let shiftX = 0;
+                  if (isOtherHovered) {
+                    // Items to left shift left (-12px), items to right shift right (+12px)
+                    shiftX = index < hoveredNavIndex ? -12 : 12;
+                  }
+
+                  return (
+                    <motion.button
+                      key={link}
+                      onClick={() => handleNavClick(link)}
+                      onMouseEnter={() => setHoveredNavIndex(index)}
+                      onMouseLeave={() => setHoveredNavIndex(null)}
+                      className="font-medium text-vc-light-text dark:text-gray-300 hover:text-vc-primary dark:hover:text-vc-primary cursor-pointer"
+                      animate={{
+                        x: shiftX,
+                        y: isHovered ? -3 : 0,
+                      }}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 160,
+                        damping: 20,
+                        mass: 0.7,
+                      }}
+                    >
+                      {link}
+                    </motion.button>
+                  );
+                })
               )}
 
               <div className="flex items-center gap-2">
                 {/* Sound Toggle Button */}
-
-                <button
+                <motion.button
                   onClick={() => {
                     if (isPlaying) {
                       pause();
@@ -225,7 +254,19 @@ export function Navbar() {
                       play();
                     }
                   }}
-                  className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary"
+                  onMouseEnter={() => setHoveredNavIndex(4)}
+                  onMouseLeave={() => setHoveredNavIndex(null)}
+                  animate={{
+                    x: hoveredNavIndex !== null && hoveredNavIndex !== 4 ? (4 < hoveredNavIndex ? -10 : 10) : 0,
+                    y: hoveredNavIndex === 4 ? -3 : 0,
+                  }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 160,
+                    damping: 20,
+                    mass: 0.7,
+                  }}
+                  className="p-2 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary cursor-pointer"
                   aria-label="Toggle soundtrack"
                 >
                   {isPlaying ? (
@@ -233,13 +274,24 @@ export function Navbar() {
                   ) : (
                     <VolumeX size={20} />
                   )}
-                </button>
+                </motion.button>
 
                 {/* Theme Toggle Button */}
-
-                <button
+                <motion.button
                   onClick={toggleTheme}
-                  className="p-2 transition-all hover:-translate-y-0.5 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary dark:hover:text-vc-primary"
+                  onMouseEnter={() => setHoveredNavIndex(5)}
+                  onMouseLeave={() => setHoveredNavIndex(null)}
+                  animate={{
+                    x: hoveredNavIndex !== null && hoveredNavIndex !== 5 ? (5 < hoveredNavIndex ? -10 : 10) : 0,
+                    y: hoveredNavIndex === 5 ? -3 : 0,
+                  }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 160,
+                    damping: 20,
+                    mass: 0.7,
+                  }}
+                  className="p-2 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary dark:hover:text-vc-primary cursor-pointer"
                   aria-label="Toggle theme"
                 >
                   {isDark ? (
@@ -247,7 +299,7 @@ export function Navbar() {
                   ) : (
                     <Moon size={20} />
                   )}
-                </button>
+                </motion.button>
               </div>
             </div>
 

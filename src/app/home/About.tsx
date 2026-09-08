@@ -1,6 +1,6 @@
 import { Plus, Download } from "lucide-react";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useMotionValue, animate } from "motion/react";
 import profileImage from "../../asset/images/profile.png";
 
 const NAVBAR_HEIGHT = 64;
@@ -32,9 +32,80 @@ const experiences = [
 
 export function About() {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [hoveredExpIndex, setHoveredExpIndex] = useState<number | null>(null);
+  const [isImageHovered, setIsImageHovered] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
+  const imgContainerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const placeholderRef = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
   const rafRef = useRef<number>(0);
+
+  const posX = useMotionValue(0);
+  const posY = useMotionValue(0);
+  const isEnteringRef = useRef(true); // true = next move is the entry move
+
+  // Snap to placeholder's top-left — button left-aligns with caption text
+  const snapToHome = useCallback(() => {
+    const wrapper = wrapperRef.current;
+    const placeholder = placeholderRef.current;
+    if (!wrapper || !placeholder) return;
+    const wr = wrapper.getBoundingClientRect();
+    const pr = placeholder.getBoundingClientRect();
+    animate(posX, pr.left - wr.left, { duration: 0.8, ease: [0.16, 1, 0.3, 1] });
+    animate(posY, pr.top - wr.top, { duration: 0.8, ease: [0.16, 1, 0.3, 1] });
+    isEnteringRef.current = true; // reset so next entry bounces again
+  }, [posX, posY]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const wrapper = wrapperRef.current;
+      const placeholder = placeholderRef.current;
+      if (!wrapper || !placeholder) return;
+      const wr = wrapper.getBoundingClientRect();
+      const pr = placeholder.getBoundingClientRect();
+      posX.set(pr.left - wr.left);
+      posY.set(pr.top - wr.top);
+    }, 50);
+    window.addEventListener('resize', snapToHome);
+    return () => { clearTimeout(timer); window.removeEventListener('resize', snapToHome); };
+  }, [snapToHome, posX, posY]);
+
+  // Track mouse only within image — center button on cursor, clamped to image bounds
+  const handleImageMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const container = imgContainerRef.current;
+    const wrapper = wrapperRef.current;
+    const btn = btnRef.current;
+    if (!container || !wrapper || !btn) return;
+
+    const imgRect = container.getBoundingClientRect();
+    const wr = wrapper.getBoundingClientRect();
+    const halfW = btn.offsetWidth / 2;
+    const halfH = btn.offsetHeight / 2;
+
+    // Center pill on cursor — no clamping, pill can extend beyond image edges
+    const targetX = e.clientX - wr.left - halfW;
+    const targetY = e.clientY - wr.top - halfH;
+
+    if (isEnteringRef.current) {
+      // Pill gliding from home — super smooth, relaxing ease
+      animate(posX, targetX, { duration: 0.7, ease: [0.16, 1, 0.3, 1] });
+      animate(posY, targetY, { duration: 0.7, ease: [0.16, 1, 0.3, 1] });
+      isEnteringRef.current = false;
+    } else {
+      // Tight follow during cursor movement
+      animate(posX, targetX, { type: "spring", stiffness: 500, damping: 38 });
+      animate(posY, targetY, { type: "spring", stiffness: 500, damping: 38 });
+    }
+  }, [posX, posY]);
+
+  const handleImageLeave = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const related = e.relatedTarget;
+    if (related instanceof Node && btnRef.current?.contains(related)) return;
+    setIsImageHovered(false);
+    snapToHome();
+  }, [snapToHome]);
 
   // Use ref-based scroll handling to avoid re-renders on every scroll event
   useEffect(() => {
@@ -100,19 +171,49 @@ export function About() {
             <h2 className="text-3xl font-medium sm:text-4xl md:text-5xl mb-8 text-vc-light-text dark:text-vc-dark-text self-start">
               About player
             </h2>
-            <img
-              ref={imgRef}
-              src={profileImage}
-              alt="Profile"
-              className="w-full max-w-md aspect-square object-cover transition-[filter] duration-100"
-            />
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-              What I look like on a good day
-            </p>
-            <button className="mt-4 flex items-center gap-2 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary dark:hover:text-vc-primary transition-colors">
-              <Download size={20} />
-              <span>Download my resume</span>
-            </button>
+            {/* Wrapper: provides positioning context for the floating button */}
+            <div ref={wrapperRef} className="relative w-full max-w-md">
+              {/* Image — only this area tracks the cursor */}
+              <div
+                ref={imgContainerRef}
+                onMouseEnter={() => setIsImageHovered(true)}
+                onMouseLeave={handleImageLeave}
+                onMouseMove={handleImageMouseMove}
+              >
+                <img
+                  ref={imgRef}
+                  src={profileImage}
+                  alt="Profile"
+                  className="w-full aspect-square object-cover rounded-lg transition-[filter] duration-100"
+                />
+              </div>
+
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                What I look like on a good day
+              </p>
+
+              {/* Invisible placeholder — reserves space and provides home coordinates */}
+              <div ref={placeholderRef} className="mt-4 invisible flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium">
+                <Download size={16} />
+                <span>Download resume</span>
+              </div>
+
+              {/* Single floating button — springs between home and cursor, always chip style */}
+              <motion.button
+                ref={btnRef}
+                onMouseLeave={(e) => {
+                  const related = e.relatedTarget;
+                  if (related instanceof Node && imgContainerRef.current?.contains(related)) return;
+                  setIsImageHovered(false);
+                  snapToHome();
+                }}
+                className="absolute top-0 left-0 flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/30 dark:bg-white/10 backdrop-blur-md border border-white/50 dark:border-white/20 text-vc-light-text dark:text-vc-dark-text shadow-[0_4px_24px_rgba(0,0,0,0.12)] text-sm font-medium"
+                style={{ x: posX, y: posY }}
+              >
+                <Download size={16} />
+                <span>Download resume</span>
+              </motion.button>
+            </div>
           </div>
 
           {/* Right section - Text content */}
@@ -151,14 +252,30 @@ export function About() {
                 EXPERIENCE
               </h3>
 
-              <div className="border-b border-gray-300 dark:border-gray-700 mb-0"></div>
+              <div className="space-y-3">
+                {experiences.map((exp, index) => {
+                  const isHovered = expandedIndex === index || hoveredExpIndex === index;
+                  const isAnyHovered = hoveredExpIndex !== null;
+                  const isOtherHovered = isAnyHovered && hoveredExpIndex !== index;
 
-              <div className="space-y-0">
-                {experiences.map((exp, index) => (
-                  <div key={exp.company + exp.period}>
+                  let shiftY = 0;
+                  if (hoveredExpIndex === index) {
+                    shiftY = -6;
+                  } else if (isOtherHovered) {
+                    shiftY = index < hoveredExpIndex! ? -16 : 16;
+                  }
+
+                  return (
+                  <motion.div
+                    key={exp.company + exp.period}
+                    onMouseEnter={() => setHoveredExpIndex(index)}
+                    onMouseLeave={() => setHoveredExpIndex(null)}
+                    animate={{ y: shiftY }}
+                    transition={{ type: 'spring', stiffness: 160, damping: 20, mass: 0.7 }}
+                    className={`rounded-lg border border-gray-200/60 dark:border-gray-800 bg-[#F7F7F8] dark:bg-gray-900/60 overflow-hidden ${isHovered ? 'shadow-[0_2px_6px_rgba(0,0,0,0.05)]' : ''}`}
+                  >
                     <div
-                      className="py-6 group"
-                      data-hover
+                      className="px-6 py-5 cursor-pointer"
                       onClick={() => toggleExpand(index)}
                     >
                       <div className="flex justify-between items-start">
@@ -195,7 +312,7 @@ export function About() {
                             transition={{ duration: 0.3, ease: "easeInOut" }}
                             className="overflow-hidden"
                           >
-                            <div className="mt-6">
+                            <div className="mt-4 pt-4 border-t border-gray-200/60 dark:border-gray-800">
                               <p className="text-gray-700 dark:text-gray-300">
                                 {exp.details}
                               </p>
@@ -204,12 +321,9 @@ export function About() {
                         )}
                       </AnimatePresence>
                     </div>
-
-                    {index < experiences.length - 1 && (
-                      <div className="border-b border-gray-300 dark:border-gray-700"></div>
-                    )}
-                  </div>
-                ))}
+                  </motion.div>
+                  );
+                })}
               </div>
             </div>
           </div>

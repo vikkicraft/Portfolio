@@ -304,7 +304,7 @@ function FullBleedImage({ src, alt }: { src: string; alt: string }) {
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
-      className="w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden"
+      className="w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-xl"
     >
       <ImageWithFallback src={src} alt={alt} className="w-full h-full object-cover" />
     </motion.div>
@@ -334,10 +334,10 @@ function TwoImageGrid({
       viewport={viewportOnce}
       className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
     >
-      <motion.div variants={fadeUp} className="aspect-[4/3] overflow-hidden">
+      <motion.div variants={fadeUp} className="aspect-[4/3] overflow-hidden rounded-xl">
         <ImageWithFallback src={src1} alt={alt1} className="w-full h-full object-contain" />
       </motion.div>
-      <motion.div variants={fadeUp} className="aspect-[4/3] overflow-hidden">
+      <motion.div variants={fadeUp} className="aspect-[4/3] overflow-hidden rounded-xl">
         <ImageWithFallback src={src2} alt={alt2} className="w-full h-full object-contain" />
       </motion.div>
     </motion.div>
@@ -365,7 +365,7 @@ function HorizontalGallery() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: EASE_OUT_EXPO, delay: i * 0.08 }}
-            className="flex-shrink-0 w-[75vw] sm:w-[55vw] md:w-[40vw] lg:w-[30vw] aspect-[3/4] overflow-hidden"
+            className="flex-shrink-0 w-[75vw] sm:w-[55vw] md:w-[40vw] lg:w-[30vw] aspect-[3/4] overflow-hidden rounded-xl"
           >
             <ImageWithFallback
               src={img.src}
@@ -450,7 +450,7 @@ function NextProject({
         className="w-full text-left group cursor-pointer"
         data-hover
       >
-        <div className="relative aspect-[21/9] overflow-hidden mb-6">
+        <div className="relative aspect-[21/9] overflow-hidden rounded-xl mb-6">
           <ImageWithFallback
             src={contentImages.dashboard}
             alt="Next project preview"
@@ -607,7 +607,7 @@ export function ProjectThree() {
                   <motion.div
                     key={i}
                     variants={fadeUp}
-                    className="flex items-start gap-4 p-5 border border-gray-200 dark:border-gray-800"
+                    className="flex items-start gap-4 p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
                   >
                     <span className="text-xs text-vc-primary mt-1 shrink-0">
                       0{i + 1}
@@ -662,7 +662,7 @@ export function ProjectThree() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16">
                 <motion.div
                   variants={fadeUp}
-                  className="p-5 border border-gray-200 dark:border-gray-800"
+                  className="p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
                 >
                   <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                     01 — Foundation Layer
@@ -675,7 +675,7 @@ export function ProjectThree() {
                 </motion.div>
                 <motion.div
                   variants={fadeUp}
-                  className="p-5 border border-gray-200 dark:border-gray-800"
+                  className="p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
                 >
                   <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                     02 — Component Layer
@@ -769,7 +769,7 @@ export function ProjectThree() {
                   ))}
                 </div>
               </motion.div>
-              <motion.div variants={fadeUp} className="aspect-[3/4] overflow-hidden">
+              <motion.div variants={fadeUp} className="aspect-[3/4] overflow-hidden rounded-xl">
                 <ImageWithFallback
                   src={contentImages.collab}
                   alt="Team collaboration"
@@ -841,14 +841,14 @@ export function ProjectThree() {
                 </div>
               </motion.div>
               <motion.div variants={fadeUp} className="space-y-6">
-                <div className="aspect-[4/3] overflow-hidden">
+                <div className="aspect-[4/3] overflow-hidden rounded-xl">
                   <ImageWithFallback
                     src={imgPhoto1653548410454}
                     alt="Wireframe sketches"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="aspect-[4/3] overflow-hidden">
+                <div className="aspect-[4/3] overflow-hidden rounded-xl">
                   <ImageWithFallback
                     src={imgPhoto1580894894513}
                     alt="Usability testing"
@@ -859,7 +859,7 @@ export function ProjectThree() {
             </div>
             <motion.div
               variants={fadeUp}
-              className="mt-12 md:mt-16 p-8 md:p-10 border border-gray-200 dark:border-gray-800"
+              className="mt-12 md:mt-16 p-8 md:p-10 border border-gray-200 dark:border-gray-800 rounded-xl"
             >
               <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                 Key Insight

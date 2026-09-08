@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import { CustomCursor } from "./CustomCursor";
+import { CustomCursor } from "../effects/CustomCursor";
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 
