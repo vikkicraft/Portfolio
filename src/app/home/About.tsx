@@ -272,7 +272,7 @@ export function About() {
                     onMouseLeave={() => setHoveredExpIndex(null)}
                     animate={{ y: shiftY }}
                     transition={{ type: 'spring', stiffness: 160, damping: 20, mass: 0.7 }}
-                    className={`rounded-lg border border-gray-200/60 dark:border-gray-800 bg-[#F7F7F8] dark:bg-gray-900/60 overflow-hidden ${isHovered ? 'shadow-[0_2px_6px_rgba(0,0,0,0.05)]' : ''}`}
+                    className={`rounded-lg border border-gray-200/60 dark:border-vc-dark-border bg-[#F7F7F8] dark:bg-vc-dark-card overflow-hidden ${isHovered ? 'shadow-[0_2px_6px_rgba(0,0,0,0.05)]' : ''}`}
                   >
                     <div
                       className="px-6 py-5 cursor-pointer"
@@ -312,7 +312,7 @@ export function About() {
                             transition={{ duration: 0.3, ease: "easeInOut" }}
                             className="overflow-hidden"
                           >
-                            <div className="mt-4 pt-4 border-t border-gray-200/60 dark:border-gray-800">
+                            <div className="mt-4 pt-4 border-t border-gray-200/60 dark:border-vc-dark-border">
                               <p className="text-gray-700 dark:text-gray-300">
                                 {exp.details}
                               </p>

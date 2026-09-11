@@ -1,6 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import { useState } from "react";
 import { motion } from "motion/react";
+import logoImg from "../../imports/image-8.png";
 
 const contactLinks = [
   { label: "LinkedIn", href: "https://www.linkedin.com/in/vikkicraft/" },
@@ -30,14 +31,21 @@ export function Footer() {
         <div className="w-full h-px bg-gray-300 dark:bg-gray-700 mb-16"></div>
 
         {/* CTA heading */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-4">
-            Let's work together
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-md">
-            Have a project in mind or just want to say hello? I'd love to hear
-            from you.
-          </p>
+        <div className="flex items-start justify-between gap-8 mb-16">
+          <div>
+            <h2 className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-4">
+              Let's work together
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-md">
+              Have a project in mind or just want to say hello? I'd love to hear
+              from you.
+            </p>
+          </div>
+          <img
+            src={logoImg}
+            alt="Logo"
+            className="h-20 w-auto shrink-0 dark:brightness-[2] transition-[filter] duration-300"
+          />
         </div>
 
         {/* Contact links */}
@@ -78,9 +86,9 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-8 border-t border-gray-300 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-500">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-8 border-t border-gray-300 dark:border-vc-dark-border text-sm text-gray-500 dark:text-gray-500">
           <p>&copy; {currentYear} Portfolio. All rights reserved.</p>
-          <p>Designed & built by Vikki</p>
+          <p>Designed & built by Vikki Craft</p>
         </div>
       </div>
     </footer>

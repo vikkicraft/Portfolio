@@ -195,7 +195,7 @@ function MetaStrip() {
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
-      className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 py-12 md:py-16 border-b border-gray-200 dark:border-gray-800"
+      className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 py-12 md:py-16 border-b border-gray-200 dark:border-vc-dark-border"
     >
       {items.map((item) => (
         <motion.div key={item.label} variants={fadeUp}>
@@ -397,7 +397,7 @@ function StatsRow() {
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
-      className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 py-16 md:py-24 border-y border-gray-200 dark:border-gray-800"
+      className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 py-16 md:py-24 border-y border-gray-200 dark:border-vc-dark-border"
     >
       {stats.map((stat) => (
         <motion.div key={stat.value} variants={fadeUp} className="text-center">
@@ -607,7 +607,7 @@ export function ProjectThree() {
                   <motion.div
                     key={i}
                     variants={fadeUp}
-                    className="flex items-start gap-4 p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
+                    className="flex items-start gap-4 p-5 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
                   >
                     <span className="text-xs text-vc-primary mt-1 shrink-0">
                       0{i + 1}
@@ -662,7 +662,7 @@ export function ProjectThree() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16">
                 <motion.div
                   variants={fadeUp}
-                  className="p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
+                  className="p-5 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
                 >
                   <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                     01 — Foundation Layer
@@ -675,7 +675,7 @@ export function ProjectThree() {
                 </motion.div>
                 <motion.div
                   variants={fadeUp}
-                  className="p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
+                  className="p-5 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
                 >
                   <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                     02 — Component Layer
@@ -754,7 +754,7 @@ export function ProjectThree() {
                   ].map((phase, i) => (
                     <div
                       key={i}
-                      className="border-l-2 border-gray-200 dark:border-gray-800 pl-6"
+                      className="border-l-2 border-gray-200 dark:border-vc-dark-border pl-6"
                     >
                       <p className="text-xs text-vc-primary tracking-wider uppercase mb-1">
                         {phase.week}
@@ -859,7 +859,7 @@ export function ProjectThree() {
             </div>
             <motion.div
               variants={fadeUp}
-              className="mt-12 md:mt-16 p-8 md:p-10 border border-gray-200 dark:border-gray-800 rounded-xl"
+              className="mt-12 md:mt-16 p-8 md:p-10 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
             >
               <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                 Key Insight
@@ -896,11 +896,23 @@ export function ProjectThree() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-20 md:py-32">
           <SectionLabel number="07" label="Validation" />
-          <TwoColumnText
-            heading="Adoption metrics exceeded every target"
-            leftText="Within 8 weeks of launch, all 4 product teams had migrated their core flows to the new system. The 98% adoption rate was driven by demonstrably faster development cycles — teams reported building new features 6x faster using pre-built patterns versus their old custom components."
-            rightText="Accessibility compliance jumped from 64% to 100% across all products. Patient satisfaction scores for interface consistency improved by 34 points. The governance model we established — with rotating 'system stewards' from each team — ensured the system continued evolving without becoming a bottleneck."
-          />
+          <motion.div variants={staggerChildren} initial="hidden" whileInView="visible" viewport={viewportOnce}>
+            <motion.h2 variants={fadeUp} className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight">
+              Adoption metrics exceeded every target
+            </motion.h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <motion.div variants={fadeUp} className="p-6 md:p-8 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl">
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Within 8 weeks of launch, all 4 product teams had migrated their core flows to the new system. The 98% adoption rate was driven by demonstrably faster development cycles — teams reported building new features 6x faster using pre-built patterns versus their old custom components.
+                </p>
+              </motion.div>
+              <motion.div variants={fadeUp} className="p-6 md:p-8 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl">
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Accessibility compliance jumped from 64% to 100% across all products. Patient satisfaction scores for interface consistency improved by 34 points. The governance model we established — with rotating system stewards from each team — ensured the system continued evolving without becoming a bottleneck.
+                </p>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
 
         <StatsRow />
@@ -919,54 +931,38 @@ export function ProjectThree() {
             >
               What I learned along the way
             </motion.h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16">
-              <motion.div variants={fadeUp} className="space-y-6">
-                <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "What went well",
+                  body: "Starting with tokens instead of components was the right call. It forced alignment on the visual language before anyone built a single button. The governance model with rotating stewards created genuine ownership across all teams.",
+                },
+                {
+                  title: "Scope of impact",
+                  body: "The system now powers every patient-facing screen and internal tool. It includes 240+ components, 48 documented patterns, comprehensive Storybook documentation, and Figma libraries that stay in sync with code through automated tooling.",
+                },
+                {
+                  title: "What could improve",
+                  body: "We should have built the Figma-to-code sync pipeline from day one instead of adding it in week 14. The manual sync period created drift between design files and production components that took weeks to reconcile.",
+                },
+                {
+                  title: "Looking ahead",
+                  body: "Future plans include AI-assisted component generation, automated visual regression testing in CI/CD, and expanding the system to support native iOS and Android platforms with shared design tokens.",
+                },
+              ].map((item) => (
+                <motion.div
+                  key={item.title}
+                  variants={fadeUp}
+                  className="p-6 md:p-8 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
+                >
                   <p className="text-vc-light-text dark:text-vc-dark-text mb-2">
-                    What went well
+                    {item.title}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    Starting with tokens instead of components was the right call. It
-                    forced alignment on the visual language before anyone built a single
-                    button. The governance model with rotating stewards created genuine
-                    ownership across all teams.
+                    {item.body}
                   </p>
-                </div>
-                <div>
-                  <p className="text-vc-light-text dark:text-vc-dark-text mb-2">
-                    Scope of impact
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    The system now powers every patient-facing screen and internal tool.
-                    It includes 240+ components, 48 documented patterns, comprehensive
-                    Storybook documentation, and Figma libraries that stay in sync with
-                    code through automated tooling.
-                  </p>
-                </div>
-              </motion.div>
-              <motion.div variants={fadeUp} className="space-y-6">
-                <div>
-                  <p className="text-vc-light-text dark:text-vc-dark-text mb-2">
-                    What could improve
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    We should have built the Figma-to-code sync pipeline from day one
-                    instead of adding it in week 14. The manual sync period created
-                    drift between design files and production components that took weeks
-                    to reconcile.
-                  </p>
-                </div>
-                <div>
-                  <p className="text-vc-light-text dark:text-vc-dark-text mb-2">
-                    Looking ahead
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    Future plans include AI-assisted component generation, automated
-                    visual regression testing in CI/CD, and expanding the system to
-                    support native iOS and Android platforms with shared design tokens.
-                  </p>
-                </div>
-              </motion.div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>

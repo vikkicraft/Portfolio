@@ -195,7 +195,7 @@ function MetaStrip() {
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
-      className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 py-12 md:py-16 border-b border-gray-200 dark:border-gray-800"
+      className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 py-12 md:py-16 border-b border-gray-200 dark:border-vc-dark-border"
     >
       {items.map((item) => (
         <motion.div key={item.label} variants={fadeUp}>
@@ -397,7 +397,7 @@ function StatsRow() {
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
-      className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 py-16 md:py-24 border-y border-gray-200 dark:border-gray-800"
+      className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 py-16 md:py-24 border-y border-gray-200 dark:border-vc-dark-border"
     >
       {stats.map((stat) => (
         <motion.div key={stat.value} variants={fadeUp} className="text-center">
@@ -605,7 +605,7 @@ export function ProjectTwo() {
                   <motion.div
                     key={i}
                     variants={fadeUp}
-                    className="flex items-start gap-4 p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
+                    className="flex items-start gap-4 p-5 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
                   >
                     <span className="text-xs text-vc-primary mt-1 shrink-0">
                       0{i + 1}
@@ -658,7 +658,7 @@ export function ProjectTwo() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16">
                 <motion.div
                   variants={fadeUp}
-                  className="p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
+                  className="p-5 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
                 >
                   <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                     01 — Progressive Disclosure
@@ -671,7 +671,7 @@ export function ProjectTwo() {
                 </motion.div>
                 <motion.div
                   variants={fadeUp}
-                  className="p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
+                  className="p-5 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
                 >
                   <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                     02 — Role-Based Views
@@ -751,7 +751,7 @@ export function ProjectTwo() {
                   ].map((phase, i) => (
                     <div
                       key={i}
-                      className="border-l-2 border-gray-200 dark:border-gray-800 pl-6"
+                      className="border-l-2 border-gray-200 dark:border-vc-dark-border pl-6"
                     >
                       <p className="text-xs text-vc-primary tracking-wider uppercase mb-1">
                         {phase.week}
@@ -856,7 +856,7 @@ export function ProjectTwo() {
             </div>
             <motion.div
               variants={fadeUp}
-              className="mt-12 md:mt-16 p-8 md:p-10 border border-gray-200 dark:border-gray-800 rounded-xl"
+              className="mt-12 md:mt-16 p-8 md:p-10 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
             >
               <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                 Key Insight
@@ -893,11 +893,23 @@ export function ProjectTwo() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-20 md:py-32">
           <SectionLabel number="07" label="Validation" />
-          <TwoColumnText
-            heading="Real-time metrics validated the new hierarchy"
-            leftText="We conducted A/B testing with 500 active users over two weeks. The new dashboard showed a 4.8x improvement in time-to-insight for executive users, and a 45% reduction in support tickets related to data confusion. Task completion rates improved across all three user segments."
-            rightText="Post-launch surveys revealed a Net Promoter Score of 72 for the new dashboard (up from 31). Users particularly praised the role-based default views and the ability to customize their layout without losing the curated experience. Mobile usage increased by 340% within the first month."
-          />
+          <motion.div variants={staggerChildren} initial="hidden" whileInView="visible" viewport={viewportOnce}>
+            <motion.h2 variants={fadeUp} className="text-3xl font-medium sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight">
+              Real-time metrics validated the new hierarchy
+            </motion.h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <motion.div variants={fadeUp} className="p-6 md:p-8 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl">
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  We conducted A/B testing with 500 active users over two weeks. The new dashboard showed a 4.8x improvement in time-to-insight for executive users, and a 45% reduction in support tickets related to data confusion. Task completion rates improved across all three user segments.
+                </p>
+              </motion.div>
+              <motion.div variants={fadeUp} className="p-6 md:p-8 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl">
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Post-launch surveys revealed a Net Promoter Score of 72 for the new dashboard (up from 31). Users particularly praised the role-based default views and the ability to customize their layout without losing the curated experience. Mobile usage increased by 340% within the first month.
+                </p>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
 
         <StatsRow />
@@ -916,54 +928,38 @@ export function ProjectTwo() {
             >
               What I learned along the way
             </motion.h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16">
-              <motion.div variants={fadeUp} className="space-y-6">
-                <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "What went well",
+                  body: "The progressive disclosure approach was a breakthrough. Instead of fighting over which metrics to show, we created a system that adapts. The role-based defaults eliminated 90% of first-week confusion for new users.",
+                },
+                {
+                  title: "Scope of impact",
+                  body: "The project touched every layer — from the component library and design tokens to the data visualization framework and responsive grid system. We delivered 150+ components that now serve as the foundation for all future product screens.",
+                },
+                {
+                  title: "What could improve",
+                  body: "We should have involved the data engineering team earlier. Some visualization concepts had to be simplified because the underlying APIs couldn't deliver real-time aggregations at the speed our designs assumed.",
+                },
+                {
+                  title: "Looking ahead",
+                  body: "Next phase includes AI-powered anomaly detection surfaced directly in the dashboard, natural language queries for custom reports, and collaborative annotations so teams can discuss trends in context.",
+                },
+              ].map((item) => (
+                <motion.div
+                  key={item.title}
+                  variants={fadeUp}
+                  className="p-6 md:p-8 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
+                >
                   <p className="text-vc-light-text dark:text-vc-dark-text mb-2">
-                    What went well
+                    {item.title}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    The progressive disclosure approach was a breakthrough. Instead of
-                    fighting over which metrics to show, we created a system that
-                    adapts. The role-based defaults eliminated 90% of first-week
-                    confusion for new users.
+                    {item.body}
                   </p>
-                </div>
-                <div>
-                  <p className="text-vc-light-text dark:text-vc-dark-text mb-2">
-                    Scope of impact
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    The project touched every layer — from the component library and
-                    design tokens to the data visualization framework and responsive
-                    grid system. We delivered 150+ components that now serve as the
-                    foundation for all future product screens.
-                  </p>
-                </div>
-              </motion.div>
-              <motion.div variants={fadeUp} className="space-y-6">
-                <div>
-                  <p className="text-vc-light-text dark:text-vc-dark-text mb-2">
-                    What could improve
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    We should have involved the data engineering team earlier. Some
-                    visualization concepts had to be simplified because the underlying
-                    APIs couldn't deliver real-time aggregations at the speed our
-                    designs assumed.
-                  </p>
-                </div>
-                <div>
-                  <p className="text-vc-light-text dark:text-vc-dark-text mb-2">
-                    Looking ahead
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    Next phase includes AI-powered anomaly detection surfaced directly
-                    in the dashboard, natural language queries for custom reports, and
-                    collaborative annotations so teams can discuss trends in context.
-                  </p>
-                </div>
-              </motion.div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>

@@ -235,7 +235,7 @@ function MetaStrip() {
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
-      className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8 py-12 md:py-16 border-b border-gray-200 dark:border-gray-800"
+      className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8 py-12 md:py-16 border-b border-gray-200 dark:border-vc-dark-border"
     >
       {items.map((item) => (
         <motion.div key={item.label} variants={fadeUp}>
@@ -356,7 +356,7 @@ function FullBleedImage({
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
-      className="w-full rounded-xl border border-gray-200 dark:border-gray-800"
+      className="w-full rounded-xl border border-gray-200 dark:border-vc-dark-border"
     >
       <ImageWithFallback
         src={src}
@@ -467,7 +467,7 @@ function StatsRow() {
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
-      className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 py-16 md:py-24 border-y border-gray-200 dark:border-gray-800"
+      className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 py-16 md:py-24 border-y border-gray-200 dark:border-vc-dark-border"
     >
       {stats.map((stat) => (
         <motion.div
@@ -758,7 +758,7 @@ export function ProjectOne() {
                   <motion.div
                     key={i}
                     variants={fadeUp}
-                    className="flex items-start gap-4 p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
+                    className="flex items-start gap-4 p-5 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
                   >
                     <span className="text-xs text-vc-primary mt-1 shrink-0">
                       0{i + 1}
@@ -820,7 +820,7 @@ export function ProjectOne() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16">
                 <motion.div
                   variants={fadeUp}
-                  className="p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
+                  className="p-5 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
                 >
                   <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                     01 — Model hub
@@ -835,7 +835,7 @@ export function ProjectOne() {
                 </motion.div>
                 <motion.div
                   variants={fadeUp}
-                  className="p-5 border border-gray-200 dark:border-gray-800 rounded-xl"
+                  className="p-5 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
                 >
                   <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                     02 — Personal Workspace
@@ -923,7 +923,7 @@ export function ProjectOne() {
                   ].map((phase, i) => (
                     <div
                       key={i}
-                      className="border-l-2 border-gray-200 dark:border-gray-800 pl-6"
+                      className="border-l-2 border-gray-200 dark:border-vc-dark-border pl-6"
                     >
                       <p className="text-xs text-vc-primary tracking-wider uppercase mb-1">
                         {phase.week}
@@ -1045,7 +1045,7 @@ export function ProjectOne() {
             </div>
             <motion.div
               variants={fadeUp}
-              className="mt-12 md:mt-16 p-8 md:p-10 border border-gray-200 dark:border-gray-800 rounded-xl"
+              className="mt-12 md:mt-16 p-8 md:p-10 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
             >
               <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                 Key Insight
@@ -1131,7 +1131,7 @@ export function ProjectOne() {
                   <motion.div
                     key={persona.name}
                     variants={fadeUp}
-                    className="p-6 md:p-8 border border-gray-200 dark:border-gray-800 rounded-xl"
+                    className="p-6 md:p-8 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
                   >
                     <div className="flex items-center gap-4 mb-5">
                       <div className="w-12 h-12 rounded-full bg-vc-primary/10 flex items-center justify-center">
@@ -1262,7 +1262,7 @@ export function ProjectOne() {
                       <motion.div
                         key={item.segment}
                         variants={fadeUp}
-                        className="flex items-start gap-5 py-4 border-b border-gray-100 dark:border-gray-800/50 last:border-0"
+                        className="flex items-start gap-5 py-4 border-b border-gray-100 dark:border-vc-dark-border/50 last:border-0"
                       >
                         <span className="text-2xl sm:text-3xl text-vc-primary tracking-tight shrink-0 w-16 text-right">
                           {item.percentage}
@@ -1334,7 +1334,7 @@ export function ProjectOne() {
                   <motion.div
                     key={i}
                     variants={fadeUp}
-                    className="p-6 md:p-8 border border-gray-200 dark:border-gray-800 rounded-xl"
+                    className="p-6 md:p-8 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
                   >
                     <div className="flex items-center justify-between mb-4">
                       <p className="text-vc-light-text dark:text-vc-dark-text text-sm">
@@ -1352,7 +1352,7 @@ export function ProjectOne() {
               </div>
               <motion.div
                 variants={fadeUp}
-                className="p-8 md:p-10 bg-gray-50 dark:bg-white/[0.03] border border-gray-200 dark:border-gray-800 rounded-xl"
+                className="p-8 md:p-10 bg-gray-100 dark:bg-[#252527] border border-gray-200 dark:border-vc-dark-border rounded-xl"
               >
                 <p className="text-xs tracking-[0.15em] uppercase text-vc-primary mb-4">
                   Research Synthesis
@@ -1404,11 +1404,23 @@ export function ProjectOne() {
         {/* Testing & Validation */}
         <div className="py-20 md:py-32">
           <SectionLabel number="07" label="Validation" />
-          <TwoColumnText
-            heading="Beta testing validated the unified approach"
-            leftText="We ran moderated usability testing with 15 AI practitioners across all target segments. Testers completed end-to-end flows — from marketplace discovery through My Space experimentation to deployment readiness — with measurably higher success rates than their existing multi-tool workflows."
-            rightText="Participants consistently praised the seamless transition between the marketplace and My Space. The ability to fork a dataset and immediately begin experimenting without switching tools was cited as the single most valuable feature by 80% of beta users."
-          />
+          <motion.div variants={staggerChildren} initial="hidden" whileInView="visible" viewport={viewportOnce}>
+            <motion.h2 variants={fadeUp} className="text-3xl font-medium leading-tight sm:text-4xl md:text-5xl text-vc-light-text dark:text-vc-dark-text mb-10 md:mb-14 max-w-3xl tracking-tight">
+              Beta testing validated the unified approach
+            </motion.h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <motion.div variants={fadeUp} className="p-6 md:p-8 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl">
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  We ran moderated usability testing with 15 AI practitioners across all target segments. Testers completed end-to-end flows — from marketplace discovery through My Space experimentation to deployment readiness — with measurably higher success rates than their existing multi-tool workflows.
+                </p>
+              </motion.div>
+              <motion.div variants={fadeUp} className="p-6 md:p-8 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl">
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Participants consistently praised the seamless transition between the marketplace and My Space. The ability to fork a dataset and immediately begin experimenting without switching tools was cited as the single most valuable feature by 80% of beta users.
+                </p>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
 
         {/* Stats Row */}
@@ -1429,70 +1441,38 @@ export function ProjectOne() {
             >
               What I learned along the way
             </motion.h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16">
-              <motion.div
-                variants={fadeUp}
-                className="space-y-6"
-              >
-                <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "What went well",
+                  body: "The unified marketplace + workspace model resonated strongly with every user segment. DataDock's \"fork and experiment\" flow became the most-used feature in beta, validating our core design hypothesis that reducing tool-switching matters more than adding features.",
+                },
+                {
+                  title: "Scope of impact",
+                  body: "The design spanned the entire platform — marketplace discovery, My Space project management, experiment tracking, collaborative sharing, and the deployment pipeline — all built on a cohesive design system with 120+ components.",
+                },
+                {
+                  title: "What could improve",
+                  body: "We underestimated the complexity of enterprise permissions for shared datasets. Earlier involvement of IT admins and compliance teams would have streamlined the governance features and reduced late-stage scope changes.",
+                },
+                {
+                  title: "Looking ahead",
+                  body: "Future iterations will expand collaborative features — real-time co-editing of notebooks, automated model benchmarking, and deeper integrations with popular ML frameworks like PyTorch and TensorFlow directly within My Space.",
+                },
+              ].map((item) => (
+                <motion.div
+                  key={item.title}
+                  variants={fadeUp}
+                  className="p-6 md:p-8 bg-gray-50 dark:bg-vc-dark-card border border-gray-200 dark:border-vc-dark-border rounded-xl"
+                >
                   <p className="text-vc-light-text dark:text-vc-dark-text mb-2">
-                    What went well
+                    {item.title}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    The unified marketplace + workspace model
-                    resonated strongly with every user segment.
-                    DataDock's "fork and experiment" flow became
-                    the most-used feature in beta, validating
-                    our core design hypothesis that reducing
-                    tool-switching matters more than adding
-                    features.
+                    {item.body}
                   </p>
-                </div>
-                <div>
-                  <p className="text-vc-light-text dark:text-vc-dark-text mb-2">
-                    Scope of impact
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    The design spanned the entire platform —
-                    marketplace discovery, My Space project
-                    management, experiment tracking,
-                    collaborative sharing, and the deployment
-                    pipeline — all built on a cohesive design
-                    system with 120+ components.
-                  </p>
-                </div>
-              </motion.div>
-              <motion.div
-                variants={fadeUp}
-                className="space-y-6"
-              >
-                <div>
-                  <p className="text-vc-light-text dark:text-vc-dark-text mb-2">
-                    What could improve
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    We underestimated the complexity of
-                    enterprise permissions for shared datasets.
-                    Earlier involvement of IT admins and
-                    compliance teams would have streamlined the
-                    governance features and reduced late-stage
-                    scope changes.
-                  </p>
-                </div>
-                <div>
-                  <p className="text-vc-light-text dark:text-vc-dark-text mb-2">
-                    Looking ahead
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    Future iterations will expand collaborative
-                    features — real-time co-editing of
-                    notebooks, automated model benchmarking, and
-                    deeper integrations with popular ML
-                    frameworks like PyTorch and TensorFlow
-                    directly within My Space.
-                  </p>
-                </div>
-              </motion.div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>

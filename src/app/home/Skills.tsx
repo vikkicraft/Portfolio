@@ -111,7 +111,7 @@ export function Skills() {
                 ref={setCardRef(index)}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                className={`group relative p-8 bg-[#F7F7F8] dark:bg-gray-900/60 rounded-lg border border-gray-200/60 dark:border-gray-800 flex flex-col items-center justify-center text-center min-h-[150px] origin-center cursor-pointer shadow-[0_1px_3px_rgba(0,0,0,0.02)] ${
+                className={`group relative p-8 bg-[#F7F7F8] dark:bg-vc-dark-card rounded-lg border border-gray-200/60 dark:border-vc-dark-border flex flex-col items-center justify-center text-center min-h-[150px] origin-center shadow-[0_1px_3px_rgba(0,0,0,0.02)] ${
                   isHovered ? 'z-10 shadow-[0_2px_6px_rgba(0,0,0,0.05)]' : ''
                 }`}
                 animate={{

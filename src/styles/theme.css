@@ -5,7 +5,9 @@
   --vc-primary: #3B82F6;
   --vc-secondary: #8B5CF6;
   --vc-light-bg: #FFFFFF;
-  --vc-dark-bg: #131313;
+  --vc-dark-bg: #1C1C1E;
+  --vc-dark-card: #2C2C2E;
+  --vc-dark-border: #3A3A3C;
   --vc-light-text: #1F2937;
   --vc-dark-text: #F9FAFB;
   --grid-line: rgba(0, 0, 0, 0.06);
@@ -51,7 +53,7 @@
 }
 
 .dark {
-  --background: #131313;
+  --background: #1C1C1E;
   --grid-line: rgba(255, 255, 255, 0.06);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.145 0 0);
@@ -135,6 +137,8 @@
   --color-vc-secondary: var(--vc-secondary);
   --color-vc-light-bg: var(--vc-light-bg);
   --color-vc-dark-bg: var(--vc-dark-bg);
+  --color-vc-dark-card: var(--vc-dark-card);
+  --color-vc-dark-border: var(--vc-dark-border);
   --color-vc-light-text: var(--vc-light-text);
   --color-vc-dark-text: var(--vc-dark-text);
 }

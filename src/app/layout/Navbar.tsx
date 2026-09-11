@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate, useLocation } from "react-router";
 import { motion } from "motion/react";
-import logoImg from "../../asset/images/logo.png";
+import logoImg from "../../imports/image-8.png";
 import {
   Menu,
   X,
@@ -54,13 +54,17 @@ export function Navbar() {
   const projectNav = PROJECT_NAV[location.pathname];
 
   const toggleTheme = useCallback(() => {
-    setIsDark((prev) => {
-      const next = !prev;
-      localStorage.setItem("theme", next ? "dark" : "light");
-      document.documentElement.classList.toggle("dark", next);
-      return next;
-    });
-  }, []);
+    const style = document.createElement("style");
+    style.textContent = `*, *::before, *::after { transition: color 400ms ease, background-color 400ms ease, border-color 400ms ease, fill 400ms ease, stroke 400ms ease !important; }`;
+    document.head.appendChild(style);
+
+    const nextIsDark = !isDark;
+    setIsDark(nextIsDark);
+    localStorage.setItem("theme", nextIsDark ? "dark" : "light");
+    document.documentElement.classList.toggle("dark", nextIsDark);
+
+    setTimeout(() => style.remove(), 450);
+  }, [isDark]);
 
   // Sync <html> class on mount
   useEffect(() => {
@@ -149,7 +153,7 @@ export function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/30 dark:bg-[#131313]/30 backdrop-blur-md border-b border-gray-200/10 dark:border-gray-700/10">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/30 dark:bg-[#1C1C1E]/30 backdrop-blur-md border-b border-gray-200/10 dark:border-vc-dark-border/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -161,7 +165,7 @@ export function Navbar() {
                 <ImageWithFallback
                   src={logoImg}
                   alt="Portfolio"
-                  className="h-6 w-auto"
+                  className="h-9 w-auto dark:brightness-[2] transition-[filter] duration-300"
                 />
               </button>
             </div>
@@ -294,11 +298,7 @@ export function Navbar() {
                   className="p-2 text-vc-light-text dark:text-vc-dark-text hover:text-vc-primary dark:hover:text-vc-primary cursor-pointer"
                   aria-label="Toggle theme"
                 >
-                  {isDark ? (
-                    <Sun size={20} />
-                  ) : (
-                    <Moon size={20} />
-                  )}
+                  {isDark ? <Sun size={20} /> : <Moon size={20} />}
                 </motion.button>
               </div>
             </div>
@@ -348,7 +348,7 @@ export function Navbar() {
 
       {/* Mobile Navigation Overlay */}
       {isMenuOpen && createPortal(
-        <div className="fixed inset-0 z-[100] bg-white/30 dark:bg-[#131313]/30 backdrop-blur-3xl flex flex-col items-center justify-center">
+        <div className="fixed inset-0 z-[100] bg-white/30 dark:bg-[#1C1C1E]/30 backdrop-blur-3xl flex flex-col items-center justify-center">
           <div className="absolute top-0 left-0 right-0 px-4 sm:px-6 lg:px-8">
             <div className="flex justify-end items-center h-16">
               <button 
